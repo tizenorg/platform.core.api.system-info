@@ -1,0 +1,22 @@
+capi-system-info (0.1.0-7) unstable; urgency=low
+
+  * Updated tizen version
+  * Git: api/system-info
+  * Tag: capi-system-info_0.1.0-7
+
+ -- Junghyuk Park <junghyuk.park@samsung.com>  Mon, 09 Jan 2012 15:08:54 +0900
+
+capi-system-info (0.1.0-6) unstable; urgency=low
+
+  * Fixed spelling
+  * Fixed invalid key
+  * Git: api/system-info
+  * Tag: capi-system-info_0.1.0-6
+
+ -- Junghyuk Park <junghyuk.park@samsung.com>  Tue, 20 Dec 2011 16:23:42 +0900
+
+capi-system-info (0.1.0-5) unstable; urgency=low
+
+  * Initial release.
+
+ -- Junghyuk Park <junghyuk.park@samsung.com>  Wed, 07 Dec 2011 11:44:07 +0900

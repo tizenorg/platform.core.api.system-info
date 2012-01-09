@@ -1,0 +1,22 @@
+
+Source: capi-system-info
+Section: libs
+Priority: extra
+Maintainer: Woongsuk Cho <ws77.cho@samsung.com>, Kyuhun Jung <kyuhun.jung@samsung.com>
+Build-Depends: debhelper (>= 5), dlog-dev, capi-base-common-dev, libvconf-dev, iniparser-dev, libx11-dev
+
+Package: capi-system-info
+Architecture: any
+Depends: ${shilbs:Depends}, ${misc:Depends}
+Description: A System Information library in Tizen Native API
+
+Package: capi-system-info-dev
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, capi-system-info (= ${Source-Version}), dlog-dev, capi-base-common-dev, libvconf-dev, iniparser-dev, libx11-dev
+Description: A System Information library in Tizen Native API (DEV)
+
+Package: capi-system-info-dbg
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, capi-system-info (= ${Source-Version})
+Description: A System Information library in Tizen Native API (DBG)
+
