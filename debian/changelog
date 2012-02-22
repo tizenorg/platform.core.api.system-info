@@ -1,3 +1,11 @@
+capi-system-info (0.1.0-9) unstable; urgency=low
+
+  * Updated tizen version
+  * Git: api/system-info
+  * Tag: capi-system-info_0.1.0-9
+
+ -- Junghyuk Park <junghyuk.park@samsung.com>  Wed, 22 Feb 2012 15:23:27 +0900
+
 capi-system-info (0.1.0-8) unstable; urgency=low
 
   * Added version numbering

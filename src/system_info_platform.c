@@ -36,7 +36,7 @@
 
 #define LOG_TAG "TIZEN_N_SYSTEM_INFO"
 
-#define TIZEN_VERSION "Alpha"
+#define TIZEN_VERSION "Beta"
 #define DEVICE_MODEL "SDK"
 #define LIB_GLES_V1 "/usr/lib/libGLESv1_CM.so"
 #define LIB_GLES_V2 "/usr/lib/libGLESv2.so"
