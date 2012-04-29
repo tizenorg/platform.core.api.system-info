@@ -156,6 +156,13 @@ system_info_s system_info_table[] = {
 },
 
 {
+	 /**< The unique ID to identify GSM, and UMTS mobile devices */
+	SYSTEM_INFO_KEY_MOBILE_DEVICE_ID,
+	SYSTEM_INFO_DATA_TYPE_STRING,
+	system_info_get_mobile_device_id
+},
+
+{
 	SYSTEM_INFO_MAX, -1, NULL
 }
 

@@ -48,6 +48,7 @@ int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e
 int system_info_get_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_tvout_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_wifi_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
+int system_info_get_mobile_device_id(system_info_key_e key, system_info_data_type_e data_type, void **value);
 
 #ifdef __cplusplus
 }

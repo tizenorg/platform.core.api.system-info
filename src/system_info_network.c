@@ -14,13 +14,15 @@
  * limitations under the License. 
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <vconf.h>
 #include <dlog.h>
+
+#include <TapiCommon.h>
+#include <ITapiMisc.h>
 
 #include <system_info.h>
 #include <system_info_private.h>
@@ -45,6 +47,30 @@ int system_info_get_network_type(system_info_key_e key, system_info_data_type_e 
 
 	*value = network_type;
 	
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_mobile_device_id(system_info_key_e key, system_info_data_type_e data_type, void **value)
+{
+	TelMiscSNInformation imei = {0,};
+
+	if (tel_init() != TAPI_API_SUCCESS)
+	{
+		LOGE("[%s] IO_ERROR(0x%08x)", __FUNCTION__, SYSTEM_INFO_ERROR_IO_ERROR);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (tel_get_misc_me_sn(TAPI_MISC_ME_IMEI, &imei) != TAPI_API_SUCCESS)
+	{
+		tel_deinit();
+		LOGE("[%s] IO_ERROR(0x%08x)", __FUNCTION__, SYSTEM_INFO_ERROR_IO_ERROR);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	*value = strdup((char*)imei.szNumber);
+
+	tel_deinit();
+
 	return SYSTEM_INFO_ERROR_NONE;
 }
 

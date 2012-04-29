@@ -60,7 +60,8 @@ typedef enum {
 	SYSTEM_INFO_KEY_SCREEN_HEIGHT, /**< The height of the screen in pixels */
 	SYSTEM_INFO_KEY_SCREEN_WIDTH, /**< The width of the screen in pixels */
 	SYSTEM_INFO_KEY_TVOUT_SUPPORTED, /**< Indicates whether the device supports TV-out */
-	SYSTEM_INFO_KEY_WIFI_SUPPORTED /**< Indicates whether the device supports Wi-Fi */
+	SYSTEM_INFO_KEY_WIFI_SUPPORTED, /**< Indicates whether the device supports Wi-Fi */
+	SYSTEM_INFO_KEY_MOBILE_DEVICE_ID, /**< The unique ID to identify GSM, UMTS and CDMA mobile devices */ 
 } system_info_key_e;
 
 /**
