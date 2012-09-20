@@ -1,0 +1,8 @@
+Change-Id: I277fb25ac16a717d4c216e544dfaacb96b01a07a
+Code-Review+2: Hotae Kim <hotae.kim@samsung.com>
+Verified+1: Hotae Kim <hotae.kim@samsung.com>
+Submitted-by: Hotae Kim <hotae.kim@samsung.com>
+Submitted-at: Fri, 21 Sep 2012 00:11:56 +0900
+Reviewed-on: http://review.tizen.org/gerrit/1794
+Project: framework/api/system-info
+Branch: refs/heads/master
