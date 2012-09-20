@@ -10,7 +10,7 @@ SET(PREFIX ${CMAKE_INSTALL_PREFIX})
 SET(INC_DIR include)
 INCLUDE_DIRECTORIES(${INC_DIR})
 
-SET(requires "dlog capi-base-common vconf iniparser x11 tapi")
+SET(requires "dlog capi-base-common capi-network-wifi capi-media-sound-manager capi-uix-stt wifi-direct vconf iniparser x11 xi xrandr tapi devman xproto openssl nfc location bluetooth-api mm-radio sensor")
 SET(pc_requires "capi-base-common")
 
 INCLUDE(FindPkgConfig)

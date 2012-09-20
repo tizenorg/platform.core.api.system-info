@@ -11,7 +11,7 @@
  * distributed under the License is distributed on an AS IS BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 
 #include <stdio.h>
@@ -21,8 +21,8 @@
 #include <vconf.h>
 #include <dlog.h>
 
-#include <TapiCommon.h>
-#include <ITapiMisc.h>
+#include <tapi_common.h>
+#include <ITapiModem.h>
 
 #include <system_info.h>
 #include <system_info_private.h>
@@ -35,42 +35,84 @@
 
 int system_info_get_network_type(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	char * network_type;
+	int service_type = 0;
+	char *NETWORK_TYPE = NULL;
 
-	network_type = strdup("GSM/UMTS");
+	if (system_info_vconf_get_value_int(VCONFKEY_TELEPHONY_SVCTYPE, &service_type))
+		return SYSTEM_INFO_ERROR_IO_ERROR;
 
-	if (network_type == NULL)
-	{
-		LOGE("[%s] OUT_OF_MEMORY(0x%08x)", __FUNCTION__, SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
+	switch (service_type) {
+	case VCONFKEY_TELEPHONY_SVCTYPE_NONE:
+		NETWORK_TYPE = strdup("NoService");
+		break;
+	case VCONFKEY_TELEPHONY_SVCTYPE_NOSVC:
+		NETWORK_TYPE = strdup("NoService");
+		break;
+	case VCONFKEY_TELEPHONY_SVCTYPE_EMERGENCY:
+		NETWORK_TYPE = strdup("Emergency");
+		break;
+	case VCONFKEY_TELEPHONY_SVCTYPE_2G:
+		NETWORK_TYPE = strdup("GSM");
+		break;
+	case VCONFKEY_TELEPHONY_SVCTYPE_2_5G:
+		NETWORK_TYPE = strdup("GPRS");
+		break;
+	case VCONFKEY_TELEPHONY_SVCTYPE_2_5G_EDGE:
+		NETWORK_TYPE = strdup("EDGE");
+		break;
+	case VCONFKEY_TELEPHONY_SVCTYPE_3G:
+		NETWORK_TYPE = strdup("UMTS");
+		break;
+	case VCONFKEY_TELEPHONY_SVCTYPE_HSDPA:
+		NETWORK_TYPE = strdup("HSDPA");
+		break;
+	}
+
+	if (NETWORK_TYPE == NULL) {
+		LOGE("[%s] OUT_OF_MEMORY(0x%08x)", __func__, SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
 		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
 	}
 
-	*value = network_type;
-	
+	*value = NETWORK_TYPE;
+
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
 int system_info_get_mobile_device_id(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	TelMiscSNInformation imei = {0,};
+	TapiHandle *handle = NULL;
+	char *imei = NULL;
+	char *MOBILE_DEVICE_ID = NULL;
 
-	if (tel_init() != TAPI_API_SUCCESS)
-	{
-		LOGE("[%s] IO_ERROR(0x%08x)", __FUNCTION__, SYSTEM_INFO_ERROR_IO_ERROR);
+	handle = tel_init(0);
+
+	if (NULL == handle) {
+		LOGE("[%s] tel_init ERROR", __func__);
+		*value = NULL;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	if (tel_get_misc_me_sn(TAPI_MISC_ME_IMEI, &imei) != TAPI_API_SUCCESS)
-	{
-		tel_deinit();
-		LOGE("[%s] IO_ERROR(0x%08x)", __FUNCTION__, SYSTEM_INFO_ERROR_IO_ERROR);
+	imei = tel_get_misc_me_imei_sync(handle);
+
+	if (imei == NULL) {
+		LOGE("[%s] IMEI value is NULL", __func__);
+		tel_deinit(handle);
+		*value = NULL;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	*value = strdup((char*)imei.szNumber);
+	MOBILE_DEVICE_ID = strdup((char *)imei);
 
-	tel_deinit();
+	if (MOBILE_DEVICE_ID == NULL) {
+		LOGE("[%s] OUT_OF_MEMORY(0x%08x)", __func__, SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
+		free(imei);
+		tel_deinit(handle);
+		*value = NULL;
+		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
+	}
 
+	free(imei);
+	tel_deinit(handle);
+	*value = MOBILE_DEVICE_ID;
 	return SYSTEM_INFO_ERROR_NONE;
 }
-

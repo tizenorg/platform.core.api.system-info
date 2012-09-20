@@ -11,7 +11,7 @@
  * distributed under the License is distributed on an AS IS BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 
 
@@ -25,7 +25,7 @@ extern "C"
 {
 #endif
 
- /**
+/**
  * @addtogroup CAPI_SYSTEM_SYSTEM_INFO_MODULE
  * @{
  */
@@ -33,8 +33,7 @@ extern "C"
 /**
  * @brief Enumeration of error code for system information
  */
-typedef enum
-{
+typedef enum {
 	SYSTEM_INFO_ERROR_NONE = TIZEN_ERROR_NONE, /**< Successful */
 	SYSTEM_INFO_ERROR_INVALID_PARAMETER = TIZEN_ERROR_INVALID_PARAMETER, /**< Invalid parameter */
 	SYSTEM_INFO_ERROR_OUT_OF_MEMORY = TIZEN_ERROR_OUT_OF_MEMORY, /**< Out of memory */
@@ -61,7 +60,39 @@ typedef enum {
 	SYSTEM_INFO_KEY_SCREEN_WIDTH, /**< The width of the screen in pixels */
 	SYSTEM_INFO_KEY_TVOUT_SUPPORTED, /**< Indicates whether the device supports TV-out */
 	SYSTEM_INFO_KEY_WIFI_SUPPORTED, /**< Indicates whether the device supports Wi-Fi */
-	SYSTEM_INFO_KEY_MOBILE_DEVICE_ID, /**< The unique ID to identify GSM, UMTS and CDMA mobile devices */ 
+	SYSTEM_INFO_KEY_MOBILE_DEVICE_ID, /**< The unique ID to identify GSM, UMTS and CDMA mobile devices */
+	SYSTEM_INFO_KEY_CSC_SALES_CODE, /**< The sales code of CSC */
+	SYSTEM_INFO_KEY_PLATFORM_NAME, /**< The name of platform */
+	SYSTEM_INFO_KEY_TIZEN_VERSION_NAME, /**< The name of tizen version  */
+	SYSTEM_INFO_KEY_HAPTIC_SUPPORTED, /**< Indicates whether the device supports Haptic */
+	SYSTEM_INFO_KEY_WIFI_DIRECT_SUPPORTED, /**< Indicates whether the device supports Wi-Fi Direct */
+	SYSTEM_INFO_KEY_SCREEN_DPI, /**< The width of the screen DPI */
+	SYSTEM_INFO_KEY_DEVICE_UUID, /**< The Device unique ID to identify */
+	SYSTEM_INFO_KEY_CPS_SUPPORTED, /**< Indicates whether the device supports CPS */
+	SYSTEM_INFO_KEY_WPS_SUPPORTED, /**< Indicates whether the device supports WPS */
+	SYSTEM_INFO_KEY_USB_HOST_SUPPORTED, /**< Indicates whether the device supports USB host */
+	SYSTEM_INFO_KEY_USB_ACCESSORY_SUPPORTED, /**< Indicates whether the device supports USB accessory */
+	SYSTEM_INFO_KEY_CORE_CPU_ARCH, /**< The CORE CPU architecture of model */
+	SYSTEM_INFO_KEY_CORE_FPU_ARCH, /**< The CORE FPU architecture of model */
+	SYSTEM_INFO_KEY_FRONT_CAMERA_SUPPORTED, /**< Indicates whether the device supports front camera */
+	SYSTEM_INFO_KEY_FRONT_CAMERA_AF_SUPPORTED, /**< Indicates whether the device supports front camera auto focus */
+	SYSTEM_INFO_KEY_FRONT_CAMERA_FLASH_SUPPORTED, /**< Indicates whether the device supports front camera flash */
+	SYSTEM_INFO_KEY_BACK_CAMERA_SUPPORTED, /**< Indicates whether the device supports back camera */
+	SYSTEM_INFO_KEY_BACK_CAMERA_AF_SUPPORTED, /**< Indicates whether the device supports back camera auto focus */
+	SYSTEM_INFO_KEY_BACK_CAMERA_FLASH_SUPPORTED, /**< Indicates whether the device supports back camera flash */
+	SYSTEM_INFO_KEY_HDMI_SUPPORTED, /**< Indicates whether the device supports HDMI */
+	SYSTEM_INFO_KEY_RCA_SUPPORTED, /**< Indicates whether the device supports RCA */
+	SYSTEM_INFO_KEY_SIP_VOIP_SUPPORTED, /**< Indicates whether the device supports SIP VOIP */
+	SYSTEM_INFO_KEY_MICROPHONE_SUPPORTED, /**< Indicates whether the device supports Microphone */
+	SYSTEM_INFO_KEY_SPEECH_RECOGNITION_SUPPORTED, /**< Indicates whether the device supports stt */
+	SYSTEM_INFO_KEY_BAROMETER_SENSOR_SUPPORTED, /**< Indicates whether the device supports barometer sensor */
+	SYSTEM_INFO_KEY_OPENGLES_TEXTURE_FORMAT, /**< The supported texture format of the OpenGL ES */
+	SYSTEM_INFO_KEY_CORE_CPU_FREQ, /**< The CORE CPU frequency of model */
+	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_HEIGHT, /**< The physical screen height in millimeters */
+	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_WIDTH, /**< The physical screen width in millimeters */
+	SYSTEM_INFO_KEY_BUILD_STRING, /**< The build string of platform binary */
+	SYSTEM_INFO_KEY_BUILD_DATE, /**< The build date of platform binary */
+	SYSTEM_INFO_KEY_BUILD_TIME /**< The build time of platform binary */
 } system_info_key_e;
 
 /**
