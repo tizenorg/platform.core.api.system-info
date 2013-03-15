@@ -24,6 +24,7 @@
 
 #include <system_info.h>
 #include <system_info_private.h>
+#include <sys/utsname.h>
 
 #ifdef LOG_TAG
 #undef LOG_TAG
@@ -427,30 +428,23 @@ system_info_mode_type_e system_info_get_system_info_model_type()
 
 int system_info_init(void)
 {
-	FILE *fp;
-	char str[MAXBUFSIZE];
+	struct utsname device_name;
 	extern char *strcasestr(const char *s, const char *find);
 
-	fp = popen("uname -m", "r");
-	if (NULL == fp) {
-		LOGE("cannot execute uname command!!!");
+	int error = uname(&device_name);
+
+	if (error != 0) {
+		LOGE("uname returns error!!!");
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	} else {
-		while (fgets(str, MAXBUFSIZE, fp)) {
-			if (strcasestr(str, "emulated")) {
+		if (strcasestr(device_name.machine, "emulated"))
 				system_info_system_info_model_type = SYSTEM_INFO_MODEL_TYPE_EMULATOR;
-				system_info_set_system_info_initialized(1);
-				pclose(fp);
-				return SYSTEM_INFO_ERROR_NONE;
-
-			}
-		}
-
+		else
 		system_info_system_info_model_type = SYSTEM_INFO_MODEL_TYPE_TARGET;
+
 		system_info_set_system_info_initialized(1);
-		pclose(fp);
-		return SYSTEM_INFO_ERROR_NONE;
 	}
+	return SYSTEM_INFO_ERROR_NONE;
 }
 
 static int system_info_get(system_info_key_e key, system_info_h *system_info)
