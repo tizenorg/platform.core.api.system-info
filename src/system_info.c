@@ -403,6 +403,35 @@ system_info_s system_info_table[] = {
 },
 
 {
+	/**< Indicates whether the device supports MMS */
+	SYSTEM_INFO_KEY_MMS_SUPPORTED,
+	SYSTEM_INFO_DATA_TYPE_BOOL,
+	system_info_get_mms_supported
+},
+
+{
+	/**< Indicates whether the device supports SMS */
+	SYSTEM_INFO_KEY_SMS_SUPPORTED,
+	SYSTEM_INFO_DATA_TYPE_BOOL,
+	system_info_get_sms_supported
+},
+
+{
+	/**< Indicates whether the device supports CBS */
+	SYSTEM_INFO_KEY_CBS_SUPPORTED,
+	SYSTEM_INFO_DATA_TYPE_BOOL,
+	system_info_get_cbs_supported
+},
+
+{
+	/**< Indicates whether the device supports nfc-reserved push */
+	SYSTEM_INFO_KEY_NFC_RESERVED_PUSH_SUPPORTED,
+	SYSTEM_INFO_DATA_TYPE_BOOL,
+	system_info_get_nfc_reserved_push_supported
+},
+
+
+{
 	SYSTEM_INFO_MAX, -1, NULL
 }
 
@@ -411,7 +440,7 @@ system_info_s system_info_table[] = {
 static system_info_mode_type_e system_info_system_info_model_type;
 static int system_info_initialized;
 
-int system_info_get_system_info_initialized()
+int system_info_get_system_info_initialized(void)
 {
 	return system_info_initialized;
 }
@@ -421,7 +450,7 @@ void system_info_set_system_info_initialized(int value)
 	system_info_initialized = value;
 }
 
-system_info_mode_type_e system_info_get_system_info_model_type()
+system_info_mode_type_e system_info_get_system_info_model_type(void)
 {
 	return system_info_system_info_model_type;
 }

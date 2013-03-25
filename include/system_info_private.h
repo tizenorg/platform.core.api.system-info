@@ -51,7 +51,7 @@ typedef int (*system_info_get_value_cb) (system_info_key_e key, system_info_data
 int system_info_init(void);
 int system_info_get_system_info_initialized(void);
 void system_info_set_system_info_initialized(int value);
-system_info_mode_type_e system_info_get_system_info_model_type();
+system_info_mode_type_e system_info_get_system_info_model_type(void);
 
 int system_info_vconf_get_value_int(const char *vconf_key, int *value);
 int system_info_vconf_get_value_bool(const char *vconf_key, bool *value);
@@ -110,7 +110,12 @@ int system_info_get_cp_interface(system_info_key_e key, system_info_data_type_e 
 int system_info_get_build_string(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_build_date(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_build_time(system_info_key_e key, system_info_data_type_e data_type, void **value);
+int system_info_get_mms_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
+int system_info_get_sms_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
+int system_info_get_cbs_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
+int system_info_get_nfc_reserved_push_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 
+int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value);
 #ifdef __cplusplus
 }
 #endif

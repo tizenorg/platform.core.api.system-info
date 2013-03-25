@@ -91,6 +91,8 @@
 #define CAM_VIDEO_PRI_FILE_PATH "/usr/etc/mmfw_camcorder_dev_video_pri.ini"
 #define CAM_VIDEO_SEC_FILE_PATH "/usr/etc/mmfw_camcorder_dev_video_sec.ini"
 
+#define NFC_INFO_FILE_PATH "/etc/config/nfc/sysinfo-nfc-ug.xml"
+
 static char *FRONT_CAM_PATH;
 static char *BACK_CAM_PATH;
 
@@ -1235,5 +1237,33 @@ int system_info_get_cp_interface(system_info_key_e key, system_info_data_type_e 
 	}
 
 	xmlFreeDoc(doc);
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_nfc_reserved_push_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
+{
+	bool *supported;
+	char *string = NULL;
+	char *model = "default";
+
+	supported = (bool *)value;
+
+	if (access(NFC_INFO_FILE_PATH, R_OK)) {
+		*supported = false;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	if (system_info_get_value_from_xml(NFC_INFO_FILE_PATH, model, "reserved-push-support", &string)) {
+		LOGE("cannot get reserved-push-support info from %s!!!", NFC_INFO_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
+
+	free(string);
+
 	return SYSTEM_INFO_ERROR_NONE;
 }

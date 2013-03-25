@@ -94,7 +94,11 @@ typedef enum {
 	SYSTEM_INFO_KEY_SPEECH_RECOGNITION_SUPPORTED, /**< Indicates whether the device supports stt */
 	SYSTEM_INFO_KEY_BAROMETER_SENSOR_SUPPORTED, /**< Indicates whether the device supports barometer sensor */
 	SYSTEM_INFO_KEY_MANUFACTURER, /**< The manufacturer of the device */
-	SYSTEM_INFO_KEY_CP_INTERFACE /**< The method of interface with CP */
+	SYSTEM_INFO_KEY_CP_INTERFACE, /**< The method of interface with CP */
+	SYSTEM_INFO_KEY_MMS_SUPPORTED, /**< Indicates whether the device supports MMS */
+	SYSTEM_INFO_KEY_SMS_SUPPORTED, /**< Indicates whether the device supports SMS */
+	SYSTEM_INFO_KEY_CBS_SUPPORTED, /**< Indicates whether the device supports CBS */
+	SYSTEM_INFO_KEY_NFC_RESERVED_PUSH_SUPPORTED, /**< Indicates whether the device supports nfc-reserved push */
 } system_info_key_e;
 
 /**
