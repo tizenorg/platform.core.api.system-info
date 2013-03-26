@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<sys-info>
+	<default>
+	  <key id="MANUFACTURER" string="samsung"/>
+	  <key id="CP_Interface" string="svnet2"/>
+	  <key id="Keyboad_type" string="NULL"/>
+	  <key id="speech_recognition_support" string="TRUE"/>
+	  <key id="sip_voip_support" string="TRUE"/>
+	  <key id="tv_out_support" string="TRUE"/>
+	  <key id="wifi_support" string="TRUE"/>
+	  <key id="wifi_direct_support" string="TRUE"/>
+	</default>
+</sys-info>

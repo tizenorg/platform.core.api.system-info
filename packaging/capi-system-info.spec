@@ -2,7 +2,7 @@
 Name:       capi-system-info
 Summary:    A System Information library in SLP C API
 Version: 0.1.9
-Release:    0
+Release:    1
 Group:      System/Libraries
 License:    Apache License, Version 2.0 and IEFT RFC Collection
 Source0:    %{name}-%{version}.tar.gz
@@ -59,8 +59,8 @@ cat LICENSE.RFC4122 >> %{buildroot}/usr/share/license/%{name}
 mkdir -p %{buildroot}/etc
 cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 
-mkdir -p %{buildroot}/usr/etc
-cp -f configuration/sys-info_.xml %{buildroot}/usr/etc/sys-info.xml
+mkdir -p %{buildroot}/etc/config
+cp -f configuration/sys-info.xml %{buildroot}/etc/config/sys-info.xml
 
 %make_install
 
@@ -73,7 +73,7 @@ cp -f configuration/sys-info_.xml %{buildroot}/usr/etc/sys-info.xml
 %{_libdir}/libcapi-system-info.so.*
 /usr/share/license/%{name}
 %attr(0744,root,-) /etc/make_info_file.sh
-/usr/etc/sys-info.xml
+/etc/config/sys-info.xml
 %manifest system-info.manifest
 
 %files devel

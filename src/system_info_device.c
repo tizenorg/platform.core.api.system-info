@@ -74,10 +74,6 @@
 #include <sound_manager.h>
 #include <sensor.h>
 
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-
 #define PROP_MULTITOUCH	"EvdevMultitouch MultiTouch"
 #define DEVICE_UUID_STRING_SIZE 37
 
@@ -443,50 +439,16 @@ int system_info_get_wps_supported(system_info_key_e key, system_info_data_type_e
 
 int system_info_get_keyboard_type(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNode *cur_node = NULL;
-	char *id;
-	char *string;
+	char *string = NULL;
+	char *model = "default";
 
-	doc = xmlParseFile(XML_FILE_PATH);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", XML_FILE_PATH);
+	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "Keyboad_type", &string)) {
+		LOGE("cannot get Keyboad_type info from %s!!!", XML_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", XML_FILE_PATH);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	*value = string;
 
-	if (xmlStrcmp(cur->name, (const xmlChar*)"sysinfo")) {
-		LOGE("document of the wrong type, root node != sysinfo");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (cur_node->type == XML_ELEMENT_NODE) {
-			id = (char *)g_strdup((char*)xmlGetProp(cur_node, (const xmlChar*)"id"));
-			string = (char *)g_strdup((char *) xmlGetProp(cur_node, (const xmlChar*)"string"));
-
-			if (!strncmp(id, "Keyboad_type", strlen("Keyboad_type"))) {
-				if (!strncmp(string, "NULL", strlen("NULL")))
-					*value = NULL;
-				else
-					*value = string;
-				break;
-			}
-		}
-	}
-
-	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
@@ -526,64 +488,32 @@ int system_info_get_nfc_supported(system_info_key_e key, system_info_data_type_e
 
 int system_info_get_tvout_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNode *cur_node = NULL;
-	char *id;
-	char *string;
 	bool *supported;
+	char *string = NULL;
+	char *model = "default";
 
 	supported = (bool *)value;
 
-	doc = xmlParseFile(XML_FILE_PATH);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", XML_FILE_PATH);
+	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "tv_out_support", &string)) {
+		LOGE("cannot get tv_out_support info from %s!!!", NFC_INFO_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", XML_FILE_PATH);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
 
-	if (xmlStrcmp(cur->name, (const xmlChar*)"sysinfo")) {
-		LOGE("document of the wrong type, root node != sysinfo");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	free(string);
 
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (cur_node->type == XML_ELEMENT_NODE) {
-			id = (char *)g_strdup((char*)xmlGetProp(cur_node, (const xmlChar*)"id"));
-			string = (char *)g_strdup((char *) xmlGetProp(cur_node, (const xmlChar*)"string"));
-
-			if (!strncmp(id, "tv_out_support", strlen("tv_out_support"))) {
-				if (!strncmp(string, "TRUE", strlen("TRUE")))
-					*supported = true;
-				else
-					*supported = false;
-				break;
-			}
-		}
-	}
-
-	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
 int system_info_get_wifi_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNode *cur_node = NULL;
-	char *id;
-	char *string;
 	bool *supported;
+	char *string = NULL;
+	char *model = "default";
 
 	supported = (bool *)value;
 
@@ -592,55 +522,26 @@ int system_info_get_wifi_supported(system_info_key_e key, system_info_data_type_
 	return SYSTEM_INFO_ERROR_NONE;
 	}
 
-	doc = xmlParseFile(XML_FILE_PATH);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", XML_FILE_PATH);
+	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "wifi_support", &string)) {
+		LOGE("cannot get wifi_support info from %s!!!", NFC_INFO_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", XML_FILE_PATH);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
 
-	if (xmlStrcmp(cur->name, (const xmlChar*)"sysinfo")) {
-		LOGE("document of the wrong type, root node != sysinfo");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	free(string);
 
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (cur_node->type == XML_ELEMENT_NODE) {
-			id = (char *)g_strdup((char*)xmlGetProp(cur_node, (const xmlChar*)"id"));
-			string = (char *)g_strdup((char *) xmlGetProp(cur_node, (const xmlChar*)"string"));
-
-			if (!strncmp(id, "wifi_support", strlen("wifi_support"))) {
-				if (!strncmp(string, "TRUE", strlen("TRUE")))
-					*supported = true;
-				else
-					*supported = false;
-				break;
-			}
-		}
-	}
-
-	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
 int system_info_get_wifi_direct_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNode *cur_node = NULL;
-	char *id;
-	char *string;
 	bool *supported;
+	char *string = NULL;
+	char *model = "default";
 
 	supported = (bool *)value;
 
@@ -649,44 +550,18 @@ int system_info_get_wifi_direct_supported(system_info_key_e key, system_info_dat
 		return SYSTEM_INFO_ERROR_NONE;
 	}
 
-	doc = xmlParseFile(XML_FILE_PATH);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", XML_FILE_PATH);
+	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "wifi_direct_support", &string)) {
+		LOGE("cannot get wifi_direct_support info from %s!!!", NFC_INFO_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", XML_FILE_PATH);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
 
-	if (xmlStrcmp(cur->name, (const xmlChar*)"sysinfo")) {
-		LOGE("document of the wrong type, root node != sysinfo");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	free(string);
 
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (cur_node->type == XML_ELEMENT_NODE) {
-			id = (char *)g_strdup((char*)xmlGetProp(cur_node, (const xmlChar*)"id"));
-			string = (char *)g_strdup((char *) xmlGetProp(cur_node, (const xmlChar*)"string"));
-
-			if (!strncmp(id, "wifi_direct_support", strlen("wifi_direct_support"))) {
-				if (!strncmp(string, "TRUE", strlen("TRUE")))
-					*supported = true;
-				else
-					*supported = false;
-				break;
-			}
-		}
-	}
-
-	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
@@ -717,7 +592,7 @@ int system_info_get_csc_sales_code(system_info_key_e key, system_info_data_type_
 	CSC_SALES_CODE = (char *)value;
 
 	if (system_info_vconf_get_value_string(VCONFKEY_CSC_SALESCODE, &CSC_SALES_CODE))
-			return SYSTEM_INFO_ERROR_IO_ERROR;
+		return SYSTEM_INFO_ERROR_IO_ERROR;
 
 	return SYSTEM_INFO_ERROR_NONE;
 }
@@ -1013,53 +888,24 @@ int system_info_get_back_camera_flash_supported(system_info_key_e key, system_in
 
 int system_info_get_sip_voip_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNode *cur_node = NULL;
-	char *id;
-	char *string;
 	bool *supported;
+	char *string = NULL;
+	char *model = "default";
 
 	supported = (bool *)value;
 
-	doc = xmlParseFile(XML_FILE_PATH);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", XML_FILE_PATH);
+	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "sip_voip_support", &string)) {
+		LOGE("cannot get sip_voip_support info from %s!!!", NFC_INFO_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", XML_FILE_PATH);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
 
-	if (xmlStrcmp(cur->name, (const xmlChar*)"sysinfo")) {
-		LOGE("document of the wrong type, root node != sysinfo");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	free(string);
 
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (cur_node->type == XML_ELEMENT_NODE) {
-			id = (char *)g_strdup((char*)xmlGetProp(cur_node, (const xmlChar*)"id"));
-			string = (char *)g_strdup((char *) xmlGetProp(cur_node, (const xmlChar*)"string"));
-
-			if (!strncmp(id, "sip_voip_support", strlen("sip_voip_support"))) {
-				if (!strncmp(string, "TRUE", strlen("TRUE")))
-					*supported = true;
-				else
-					*supported = false;
-				break;
-			}
-		}
-	}
-
-	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
@@ -1084,53 +930,24 @@ int system_info_get_microphone_supported(system_info_key_e key, system_info_data
 
 int system_info_get_speech_recognition_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNode *cur_node = NULL;
-	char *id;
-	char *string;
 	bool *supported;
+	char *string = NULL;
+	char *model = "default";
 
 	supported = (bool *)value;
 
-	doc = xmlParseFile(XML_FILE_PATH);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", XML_FILE_PATH);
+	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "speech_recognition_support", &string)) {
+		LOGE("cannot get speech_recognition_support info from %s!!!", NFC_INFO_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", XML_FILE_PATH);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
 
-	if (xmlStrcmp(cur->name, (const xmlChar*)"sysinfo")) {
-		LOGE("document of the wrong type, root node != sysinfo");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	free(string);
 
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (cur_node->type == XML_ELEMENT_NODE) {
-			id = (char *)g_strdup((char*)xmlGetProp(cur_node, (const xmlChar*)"id"));
-			string = (char *)g_strdup((char *) xmlGetProp(cur_node, (const xmlChar*)"string"));
-
-			if (!strncmp(id, "speech_recognition_support", strlen("speech_recognition_support"))) {
-				if (!strncmp(string, "TRUE", strlen("TRUE")))
-					*supported = true;
-				else
-					*supported = false;
-				break;
-			}
-		}
-	}
-
-	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
@@ -1150,93 +967,31 @@ int system_info_get_barometer_sensor_supported(system_info_key_e key, system_inf
 
 int system_info_get_manufacturer(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNode *cur_node = NULL;
-	char *id;
-	char *string;
+	char *string = NULL;
+	char *model = "default";
 
-	doc = xmlParseFile(XML_FILE_PATH);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", XML_FILE_PATH);
+	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "MANUFACTURER", &string)) {
+		LOGE("cannot get MANUFACTURER info from %s!!!", XML_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", XML_FILE_PATH);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	if (xmlStrcmp(cur->name, (const xmlChar*)"sysinfo")) {
-		LOGE("document of the wrong type, root node != sysinfo");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (cur_node->type == XML_ELEMENT_NODE) {
-			id = (char *)g_strdup((char*)xmlGetProp(cur_node, (const xmlChar*)"id"));
-			string = (char *)g_strdup((char *) xmlGetProp(cur_node, (const xmlChar*)"string"));
-
-			if (!strncmp(id, "MANUFACTURER", strlen("MANUFACTURER"))) {
 				*value = string;
-				break;
-			}
-		}
-	}
 
-	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
 int system_info_get_cp_interface(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNode *cur_node = NULL;
-	char *id;
-	char *string;
+	char *string = NULL;
+	char *model = "default";
 
-	doc = xmlParseFile(XML_FILE_PATH);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", XML_FILE_PATH);
+	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "CP_Interface", &string)) {
+		LOGE("cannot get CP_Interface info from %s!!!", XML_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", XML_FILE_PATH);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	if (xmlStrcmp(cur->name, (const xmlChar*)"sysinfo")) {
-		LOGE("document of the wrong type, root node != sysinfo");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (cur_node->type == XML_ELEMENT_NODE) {
-			id = (char *)g_strdup((char*)xmlGetProp(cur_node, (const xmlChar*)"id"));
-			string = (char *)g_strdup((char *) xmlGetProp(cur_node, (const xmlChar*)"string"));
-
-			if (!strncmp(id, "CP_Interface", strlen("CP_Interface"))) {
 				*value = string;
-				break;
-			}
-		}
-	}
 
-	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 

@@ -28,7 +28,7 @@ extern "C"
 #define CPU_INFO_FILE_PATH "/proc/cpuinfo"
 #define CPU_INFO_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
 #define CMDLINE_PATH "/proc/cmdline"
-#define XML_FILE_PATH "/usr/etc/sys-info.xml"
+#define XML_FILE_PATH "/etc/config/sys-info.xml"
 #define MAXBUFSIZE 512
 
 typedef enum {
