@@ -112,7 +112,7 @@ int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_fi
 		}
 	}
 
-	if (*value == NULL) {
+	if (*value == NULL && default_node) {
 		cur = default_node->xmlChildrenNode;
 
 		for (cur_node = cur; cur_node; cur_node = cur_node->next) {
