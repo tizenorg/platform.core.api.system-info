@@ -147,6 +147,11 @@ int system_info_get_value_double(system_info_key_e key, double *value);
  */
 int system_info_get_value_string(system_info_key_e key, char **value);
 
+int system_info_get_external_bool(const char *key, bool *value);
+int system_info_get_external_int(const char *key, int *value);
+int system_info_get_external_double(const char *key, double *value);
+int system_info_get_external_string(const char *key, char **value);
+
 /**
  * @}
  */

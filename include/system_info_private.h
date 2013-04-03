@@ -31,6 +31,8 @@ extern "C"
 #define XML_FILE_PATH "/etc/config/sys-info.xml"
 #define MAXBUFSIZE 512
 
+#define EXTERNAL_VCONF_PREFIX "db/externals/"
+
 typedef enum {
 	SYSTEM_INFO_DATA_TYPE_STRING,
 	SYSTEM_INFO_DATA_TYPE_INT,
