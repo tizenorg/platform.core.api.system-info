@@ -447,6 +447,12 @@ int system_info_get_keyboard_type(system_info_key_e key, system_info_data_type_e
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
+	if (!strcmp(string, "NULL")) {
+		*value = NULL;
+		free(string);
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
 	*value = string;
 
 	return SYSTEM_INFO_ERROR_NONE;
