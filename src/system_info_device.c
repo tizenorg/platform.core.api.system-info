@@ -88,6 +88,7 @@
 #define CAM_VIDEO_SEC_FILE_PATH "/usr/etc/mmfw_camcorder_dev_video_sec.ini"
 
 #define NFC_INFO_FILE_PATH "/etc/config/nfc/sysinfo-nfc-ug.xml"
+#define TETHERING_INFO_FILE_PATH "/etc/config/connectivity/sysinfo-tethering.xml"
 
 static char *FRONT_CAM_PATH;
 static char *BACK_CAM_PATH;
@@ -997,6 +998,34 @@ int system_info_get_cp_interface(system_info_key_e key, system_info_data_type_e 
 	}
 
 				*value = string;
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_tethering_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
+{
+	bool *supported;
+	char *string = NULL;
+	char *model = "default";
+
+	supported = (bool *)value;
+
+	if (access(TETHERING_INFO_FILE_PATH, R_OK)) {
+		*supported = false;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	if (system_info_get_value_from_xml(TETHERING_INFO_FILE_PATH, model, "tethering-support", &string)) {
+		LOGE("cannot get tethering-support info from %s!!!", TETHERING_INFO_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
+
+	free(string);
 
 	return SYSTEM_INFO_ERROR_NONE;
 }

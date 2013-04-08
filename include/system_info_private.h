@@ -115,6 +115,7 @@ int system_info_get_build_time(system_info_key_e key, system_info_data_type_e da
 int system_info_get_mms_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_sms_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_cbs_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
+int system_info_get_tethering_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_nfc_reserved_push_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 
 int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value);

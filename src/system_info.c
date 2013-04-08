@@ -430,6 +430,12 @@ system_info_s system_info_table[] = {
 	system_info_get_nfc_reserved_push_supported
 },
 
+{
+	/**< Indicates whether the device supports tethering */
+	SYSTEM_INFO_KEY_TETHERING_SUPPORTED,
+	SYSTEM_INFO_DATA_TYPE_BOOL,
+	system_info_get_tethering_supported
+},
 
 {
 	SYSTEM_INFO_MAX, -1, NULL
