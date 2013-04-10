@@ -100,6 +100,8 @@ typedef enum {
 	SYSTEM_INFO_KEY_CBS_SUPPORTED, /**< Indicates whether the device supports CBS */
 	SYSTEM_INFO_KEY_NFC_RESERVED_PUSH_SUPPORTED, /**< Indicates whether the device supports nfc-reserved push */
 	SYSTEM_INFO_KEY_TETHERING_SUPPORTED, /**< Indicates whether the device supports tethering */
+	SYSTEM_INFO_KEY_SPEECH_SYNTHESIS_SUPPORTED, /**< Indicates whether the device supports tts */
+	SYSTEM_INFO_KEY_GRAPHICS_HWACCEL_SUPPORTED, /**< Indicates whether the device supports graphics hardware acceleration */
 } system_info_key_e;
 
 /**

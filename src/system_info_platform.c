@@ -49,6 +49,7 @@
 #define SIZE_OF_MODEL_NAME 8
 
 #define MESSAGE_INFO_FILE_PATH "/etc/config/sysinfo-message.xml"
+#define GRAPHICS_INFO_FILE_PATH "/etc/config/graphics/sysinfo-graphics.xml"
 
 int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value)
 {
@@ -728,6 +729,34 @@ int system_info_get_cbs_supported(system_info_key_e key, system_info_data_type_e
 
 	if (system_info_get_value_from_xml(MESSAGE_INFO_FILE_PATH, model, "cbs-support", &string)) {
 		LOGE("cannot get cbs-support info from %s!!!", MESSAGE_INFO_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_graphics_hwaccel_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
+{
+	bool *supported;
+	char *string = NULL;
+	char *model = "default";
+
+	supported = (bool *)value;
+
+	if (access(GRAPHICS_INFO_FILE_PATH, R_OK)) {
+		*supported = false;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	if (system_info_get_value_from_xml(GRAPHICS_INFO_FILE_PATH, model, "acceleration-support", &string)) {
+		LOGE("cannot get acceleration-support info from %s!!!", GRAPHICS_INFO_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 

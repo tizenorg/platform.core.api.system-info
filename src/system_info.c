@@ -438,6 +438,20 @@ system_info_s system_info_table[] = {
 },
 
 {
+	/**< Indicates whether the device supports tts */
+	SYSTEM_INFO_KEY_SPEECH_SYNTHESIS_SUPPORTED,
+	SYSTEM_INFO_DATA_TYPE_BOOL,
+	system_info_get_speech_synthesis_supported
+},
+
+{
+	/**< Indicates whether the device supports graphics hardware acceleration */
+	SYSTEM_INFO_KEY_GRAPHICS_HWACCEL_SUPPORTED,
+	SYSTEM_INFO_DATA_TYPE_BOOL,
+	system_info_get_graphics_hwaccel_supported
+},
+
+{
 	SYSTEM_INFO_MAX, -1, NULL
 }
 

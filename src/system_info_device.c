@@ -89,6 +89,8 @@
 
 #define NFC_INFO_FILE_PATH "/etc/config/nfc/sysinfo-nfc-ug.xml"
 #define TETHERING_INFO_FILE_PATH "/etc/config/connectivity/sysinfo-tethering.xml"
+#define TTS_INFO_FILE_PATH "/etc/config/sysinfo-tts.xml"
+#define STT_INFO_FILE_PATH "/etc/config/sysinfo-stt.xml"
 
 static char *FRONT_CAM_PATH;
 static char *BACK_CAM_PATH;
@@ -943,8 +945,41 @@ int system_info_get_speech_recognition_supported(system_info_key_e key, system_i
 
 	supported = (bool *)value;
 
-	if (system_info_get_value_from_xml(XML_FILE_PATH, model, "speech_recognition_support", &string)) {
-		LOGE("cannot get speech_recognition_support info from %s!!!", NFC_INFO_FILE_PATH);
+	if (access(STT_INFO_FILE_PATH, R_OK)) {
+		*supported = false;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	if (system_info_get_value_from_xml(STT_INFO_FILE_PATH, model, "stt-support", &string)) {
+		LOGE("cannot get stt-support info from %s!!!", STT_INFO_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_speech_synthesis_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
+{
+	bool *supported;
+	char *string = NULL;
+	char *model = "default";
+
+	supported = (bool *)value;
+
+	if (access(TTS_INFO_FILE_PATH, R_OK)) {
+		*supported = false;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	if (system_info_get_value_from_xml(TTS_INFO_FILE_PATH, model, "tts-support", &string)) {
+		LOGE("cannot get tts-support info from %s!!!", TTS_INFO_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
