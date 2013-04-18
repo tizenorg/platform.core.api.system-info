@@ -66,6 +66,9 @@ int system_info_get_network_type(system_info_key_e key, system_info_data_type_e 
 	case VCONFKEY_TELEPHONY_SVCTYPE_HSDPA:
 		NETWORK_TYPE = strdup("HSDPA");
 		break;
+	case VCONFKEY_TELEPHONY_SVCTYPE_LTE:
+                NETWORK_TYPE = strdup("LTE");
+                break;
 	}
 
 	if (NETWORK_TYPE == NULL) {
