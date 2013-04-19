@@ -103,6 +103,7 @@ typedef enum {
 	SYSTEM_INFO_KEY_SPEECH_SYNTHESIS_SUPPORTED, /**< Indicates whether the device supports tts */
 	SYSTEM_INFO_KEY_GRAPHICS_HWACCEL_SUPPORTED, /**< Indicates whether the device supports graphics hardware acceleration */
 	SYSTEM_INFO_KEY_FEATURE_AUTO_ROTATION_SUPPORTED, /**< Indicates whether the device supports native auto rotation feature */
+	SYSTEM_INFO_KEY_FEATURE_PINCH_ZOOM_SUPPORTED, /**< Indicates whether the device supports pinch zoom feature */
 } system_info_key_e;
 
 /**

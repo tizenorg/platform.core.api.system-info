@@ -1,7 +1,7 @@
 #sbs-git:slp/api/system-info capi-system-info 0.1.0 63d15bafa590ee9de869c8a8ade712e06828e5c3
 Name:       capi-system-info
 Summary:    A System Information library in SLP C API
-Version: 0.1.13
+Version: 0.1.14
 Release:    0
 Group:      System/Libraries
 License:    Apache License, Version 2.0 and IEFT RFC Collection

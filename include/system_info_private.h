@@ -120,6 +120,7 @@ int system_info_get_tethering_supported(system_info_key_e key, system_info_data_
 int system_info_get_nfc_reserved_push_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_graphics_hwaccel_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_feature_auto_rotation_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
+int system_info_get_feature_pinch_zoom_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 
 int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value);
 #ifdef __cplusplus

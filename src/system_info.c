@@ -459,6 +459,13 @@ system_info_s system_info_table[] = {
 },
 
 {
+	/**< Indicates whether the device supports pinch zoom feature */
+	SYSTEM_INFO_KEY_FEATURE_PINCH_ZOOM_SUPPORTED,
+	SYSTEM_INFO_DATA_TYPE_BOOL,
+	system_info_get_feature_pinch_zoom_supported
+},
+
+{
 	SYSTEM_INFO_MAX, -1, NULL
 }
 

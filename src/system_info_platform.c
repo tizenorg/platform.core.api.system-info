@@ -51,6 +51,7 @@
 #define MESSAGE_INFO_FILE_PATH "/etc/config/sysinfo-message.xml"
 #define GRAPHICS_INFO_FILE_PATH "/etc/config/graphics/sysinfo-graphics.xml"
 #define SCREEN_INFO_FILE_PATH "/etc/config/screen/sysinfo-screen.xml"
+#define TOUCH_INFO_FILE_PATH	"/etc/config/touch/sysinfo-touch.xml"
 
 int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value)
 {
@@ -771,8 +772,35 @@ int system_info_get_graphics_hwaccel_supported(system_info_key_e key, system_inf
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
-int system_info_get_feature_auto_rotation_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
+int system_info_get_feature_pinch_zoom_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
+{
+	bool *supported;
+	char *string = NULL;
+	char *model = "default";
 
+	supported = (bool *)value;
+
+	if (access(TOUCH_INFO_FILE_PATH, R_OK)) {
+		*supported = false;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	if (system_info_get_value_from_xml(TOUCH_INFO_FILE_PATH, model, "pinch-zoom-support", &string)) {
+		LOGE("cannot get pinch-zoom-support info from %s!!!", TOUCH_INFO_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_feature_auto_rotation_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
 	bool *supported;
 	char *string = NULL;
