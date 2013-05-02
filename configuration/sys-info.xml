@@ -4,7 +4,7 @@
 	  <key id="MANUFACTURER" string="samsung"/>
 	  <key id="CP_Interface" string="svnet2"/>
 	  <key id="Keyboad_type" string="NULL"/>
-	  <key id="sip_voip_support" string="TRUE"/>
+	  <key id="sip_voip_support" string="FALSE"/>
 	  <key id="tv_out_support" string="TRUE"/>
 	  <key id="wifi_support" string="TRUE"/>
 	  <key id="wifi_direct_support" string="TRUE"/>
