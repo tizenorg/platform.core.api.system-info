@@ -23,8 +23,12 @@ BuildRequires:	pkgconfig(location)
 BuildRequires:	pkgconfig(bluetooth-api)
 BuildRequires:	pkgconfig(mm-radio)
 BuildRequires:	pkgconfig(sensor)
-BuildRequires:	pkgconfig(gles11)
 BuildRequires:  pkgconfig(libxml-2.0)
+%ifarch x86_64
+BuildRequires:  pkgconfig(glesv2)
+%else
+BuildRequires:	pkgconfig(glesv1_cm)
+%endif
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -45,7 +49,7 @@ Requires: %{name} = %{version}-%{release}
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
+%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 
 make %{?jobs:-j%jobs}
 

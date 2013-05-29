@@ -30,8 +30,13 @@
 #include <system_info.h>
 #include <system_info_private.h>
 
+#if __x86_64__
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#else
 #include <GLES/gl.h>
 #include <GLES/glext.h>
+#endif
 
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
@@ -43,9 +48,14 @@
 
 #define LOG_TAG "CAPI_SYSTEM_INFO"
 
+#if __x86_64__
+#define LIB_GLES_V1 "/usr/lib64/libGLESv1_CM.so"
+#define LIB_GLES_V2 "/usr/lib64/libGLESv2.so"
+#else
 #define LIB_GLES_V1 "/usr/lib/libGLESv1_CM.so"
 #define LIB_GLES_V2 "/usr/lib/libGLESv2.so"
 
+#endif
 #define SIZE_OF_MODEL_NAME 8
 
 #define MESSAGE_INFO_FILE_PATH "/etc/config/sysinfo-message.xml"
