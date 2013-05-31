@@ -1,10 +1,9 @@
-#sbs-git:slp/api/system-info capi-system-info 0.1.0 63d15bafa590ee9de869c8a8ade712e06828e5c3
 Name:       capi-system-info
 Summary:    A System Information library in SLP C API
 Version: 0.1.14
 Release:    0
-Group:      System/Libraries
-License:    Apache License, Version 2.0 and IEFT RFC Collection
+Group:      System/API
+License:    Apache-2.0 and IEFT RFC Collection
 Source0:    %{name}-%{version}.tar.gz
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
@@ -26,18 +25,17 @@ BuildRequires:	pkgconfig(sensor)
 BuildRequires:	pkgconfig(gles11)
 BuildRequires:  pkgconfig(libxml-2.0)
 
-Requires(post): /sbin/ldconfig
-Requires(postun): /sbin/ldconfig
-
 %description
+A System Information library in SLP C API
 
 
 %package devel
 Summary:  A System Information library in SLP C API (Development)
-Group:    TO_BE/FILLED_IN
+Group:    Development/System
 Requires: %{name} = %{version}-%{release}
 
 %description devel
+%devel_desc
 
 
 %prep
@@ -45,24 +43,18 @@ Requires: %{name} = %{version}-%{release}
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
+%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 
 make %{?jobs:-j%jobs}
 
 %install
-rm -rf %{buildroot}
-
-mkdir -p %{buildroot}/usr/share/license
-cp -f LICENSE.APLv2 %{buildroot}/usr/share/license/%{name}
-cat LICENSE.RFC4122 >> %{buildroot}/usr/share/license/%{name}
-
+%make_install
 mkdir -p %{buildroot}/etc
 cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 
 mkdir -p %{buildroot}/etc/config
 cp -f configuration/sys-info.xml %{buildroot}/etc/config/sys-info.xml
 
-%make_install
 
 %post -p /sbin/ldconfig
 
@@ -70,8 +62,8 @@ cp -f configuration/sys-info.xml %{buildroot}/etc/config/sys-info.xml
 
 
 %files
+%license LICENSE.APLv2 LICENSE.RFC4122 
 %{_libdir}/libcapi-system-info.so.*
-/usr/share/license/%{name}
 %attr(0744,root,-) /etc/make_info_file.sh
 /etc/config/sys-info.xml
 %manifest system-info.manifest
