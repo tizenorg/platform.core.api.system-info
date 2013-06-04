@@ -1,3 +1,6 @@
+* Tue Jun 04 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130531.153649@223b43c
+- Fixed build on 64 bit systems
+
 * Fri May 31 2013 Anas Nashif <anas.nashif@intel.com> accepted/tizen/20130520.100834@19c6702
 - Remove placeholders and cleanup spec
 
