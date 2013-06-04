@@ -1,3 +1,4 @@
+%bcond_with mesa
 #sbs-git:slp/api/system-info capi-system-info 0.1.0 63d15bafa590ee9de869c8a8ade712e06828e5c3
 Name:       capi-system-info
 Summary:    A System Information library in SLP C API
@@ -23,8 +24,24 @@ BuildRequires:	pkgconfig(location)
 BuildRequires:	pkgconfig(bluetooth-api)
 BuildRequires:	pkgconfig(mm-radio)
 BuildRequires:	pkgconfig(sensor)
-BuildRequires:	pkgconfig(gles11)
 BuildRequires:  pkgconfig(libxml-2.0)
+%ifarch x86_64
+
+%if %{with mesa}
+BuildRequires:  pkgconfig(glesv2)
+%else
+BuildRequires:   pkgconfig(gles20)
+%endif
+
+%else
+
+%if %{with mesa}
+BuildRequires:  pkgconfig(glesv1_cm)
+%else
+BuildRequires:  pkgconfig(gles11)
+%endif
+
+%endif
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -45,7 +62,7 @@ Requires: %{name} = %{version}-%{release}
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
-cmake . -DCMAKE_INSTALL_PREFIX=/usr -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
+%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 
 make %{?jobs:-j%jobs}
 

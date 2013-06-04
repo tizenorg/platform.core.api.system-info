@@ -3,7 +3,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET(fw_name "capi-system-info")
 
 PROJECT(${fw_name})
-
 SET(CMAKE_INSTALL_PREFIX /usr)
 SET(PREFIX ${CMAKE_INSTALL_PREFIX})
 
@@ -22,6 +21,7 @@ ENDFOREACH(flag)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror")
 SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
 
+
 IF("${ARCH}" STREQUAL "arm")
     ADD_DEFINITIONS("-DTARGET")
 ENDIF("${ARCH}" STREQUAL "arm")
@@ -29,7 +29,7 @@ ENDIF("${ARCH}" STREQUAL "arm")
 ADD_DEFINITIONS("-DPREFIX=\"${CMAKE_INSTALL_PREFIX}\"")
 ADD_DEFINITIONS("-DSLP_DEBUG")
 
-SET(CMAKE_EXE_LINKER_FLAGS "-fvisibility=hidden -Wl,--as-needed -Wl,--rpath=/usr/lib")
+SET(CMAKE_EXE_LINKER_FLAGS "-fvisibility=hidden -Wl,--as-needed -Wl,--rpath=${LIB_INSTALL_DIR}")
 
 aux_source_directory(src SOURCES)
 ADD_LIBRARY(${fw_name} SHARED ${SOURCES})
@@ -43,7 +43,7 @@ SET_TARGET_PROPERTIES(${fw_name}
      CLEAN_DIRECT_OUTPUT 1
 )
 
-INSTALL(TARGETS ${fw_name} DESTINATION lib)
+INSTALL(TARGETS ${fw_name} DESTINATION ${LIB_INSTALL_DIR})
 INSTALL(
         DIRECTORY ${INC_DIR}/ DESTINATION include/system
         FILES_MATCHING
@@ -61,7 +61,7 @@ CONFIGURE_FILE(
     ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc
     @ONLY
 )
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION lib/pkgconfig)
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
 
 IF(UNIX)
 
