@@ -33,10 +33,6 @@
 #include <GLES/gl.h>
 #include <GLES/glext.h>
 
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-
 #ifdef LOG_TAG
 #undef LOG_TAG
 #endif
@@ -52,102 +48,6 @@
 #define GRAPHICS_INFO_FILE_PATH "/etc/config/graphics/sysinfo-graphics.xml"
 #define SCREEN_INFO_FILE_PATH "/etc/config/screen/sysinfo-screen.xml"
 #define TOUCH_INFO_FILE_PATH	"/etc/config/touch/sysinfo-touch.xml"
-
-int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value)
-{
-	xmlDocPtr doc = NULL;
-	xmlNodePtr cur = NULL;
-	xmlNodePtr default_node = NULL;
-	xmlNodePtr model_node = NULL;
-	xmlNode *cur_node = NULL;
-	char *id = NULL;
-	char *string = NULL;
-
-	doc = xmlParseFile(xml_file_path);
-
-	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", xml_file_path);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	cur = xmlDocGetRootElement(doc);
-	if (cur == NULL) {
-		LOGE("empty document %s file!!!", xml_file_path);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (!xmlStrcmp(cur->name, (const xmlChar*)"sys-info"))
-			break;
-	}
-
-	if (cur == NULL) {
-		LOGE("cannot find %s root element file!!!", "sys-info");
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	cur = cur->xmlChildrenNode;
-
-	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-		if (!xmlStrcmp(cur_node->name, (const xmlChar*)"default"))
-			default_node = cur_node;
-		if (strcmp(model, "default") && !xmlStrcmp(cur_node->name, (const xmlChar*)model))
-			model_node = cur_node;
-	}
-
-	if (model_node) {
-		cur = model_node->xmlChildrenNode;
-
-		for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-			if (cur_node->type == XML_ELEMENT_NODE) {
-				id = (char *)xmlGetProp(cur_node, (const xmlChar*)"id");
-				string = (char *) xmlGetProp(cur_node, (const xmlChar*)"string");
-
-				if (!strncmp(id, id_field, strlen(id_field))) {
-					if (string) {
-						*value = strdup(string);
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	if (*value == NULL && default_node) {
-		cur = default_node->xmlChildrenNode;
-
-		for (cur_node = cur; cur_node; cur_node = cur_node->next) {
-			if (cur_node->type == XML_ELEMENT_NODE) {
-				id = (char *)xmlGetProp(cur_node, (const xmlChar*)"id");
-				string = (char *) xmlGetProp(cur_node, (const xmlChar*)"string");
-
-				if (!strncmp(id, id_field, strlen(id_field))) {
-					if (string) {
-						*value = strdup(string);
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	if (!cur_node) {
-		LOGE("cannot find %s field from %s file!!!", id_field, xml_file_path);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	if (*value == NULL) {
-		LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
-	}
-
-	xmlFreeDoc(doc);
-	return SYSTEM_INFO_ERROR_NONE;
-}
 
 int system_info_get_model(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {

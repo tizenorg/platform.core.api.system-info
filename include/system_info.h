@@ -158,6 +158,102 @@ int system_info_get_external_double(const char *key, double *value);
 int system_info_get_external_string(const char *key, char **value);
 
 /**
+ * @brief   Gets the boolean value of the platform feature
+ * @param[in] key The name of the platform feature to get
+ * @param[out] value The value of the given platform feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_platform_bool(const char *key, bool *value);
+
+/**
+ * @brief   Gets the integer value of the platform feature
+ * @param[in] key The name of the platform feature to get
+ * @param[out] value The value of the given platform feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_platform_int(const char *key, int *value);
+
+/**
+ * @brief   Gets the string value of the platform feature
+ * @remarks The @a value must be released with free() by you.
+ * @param[in] key The name of the platform feature to get
+ * @param[out] value The value of the given platform feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_platform_double(const char *key, double *value);
+
+/**
+ * @brief   Gets the string value of the platform feature
+ * @remarks The @a value must be released with free() by you.
+ * @param[in] key The name of the platform feature to get
+ * @param[out] value The value of the given platform feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_platform_string(const char *key, char **value);
+
+
+/**
+ * @brief   Gets the boolean value of the custom feature
+ * @param[in] key The name of the custom feature to get
+ * @param[out] value The value of the given custom feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_custom_bool(const char *key, bool *value);
+
+/**
+ * @brief   Gets the string value of the custom feature
+ * @remarks The @a value must be released with free() by you.
+ * @param[in] key The name of the custom feature to get
+ * @param[out] value The value of the given custom feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_custom_int(const char *key, int *value);
+
+/**
+ * @brief   Gets the string value of the custom feature
+ * @remarks The @a value must be released with free() by you.
+ * @param[in] key The name of the custom feature to get
+ * @param[out] value The value of the given custom feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_custom_double(const char *key, double *value);
+
+/**
+ * @brief   Gets the string value of the custom feature
+ * @remarks The @a value must be released with free() by you.
+ * @param[in] key The name of the custom feature to get
+ * @param[out] value The value of the given custom feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_custom_string(const char *key, char **value);
+
+/**
  * @}
  */
 

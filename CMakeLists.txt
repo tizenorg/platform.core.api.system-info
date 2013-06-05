@@ -10,7 +10,7 @@ SET(PREFIX ${CMAKE_INSTALL_PREFIX})
 SET(INC_DIR include)
 INCLUDE_DIRECTORIES(${INC_DIR})
 
-SET(requires "dlog capi-base-common capi-media-sound-manager vconf x11 xi xrandr tapi haptic xproto openssl nfc location bluetooth-api mm-radio sensor libxml-2.0")
+SET(requires "dlog capi-base-common capi-media-sound-manager vconf x11 xi xrandr tapi haptic xproto openssl nfc location bluetooth-api mm-radio sensor iniparser libxml-2.0")
 SET(pc_requires "capi-base-common")
 
 INCLUDE(FindPkgConfig)

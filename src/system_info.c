@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <vconf.h>
 #include <dlog.h>
@@ -637,6 +638,221 @@ int system_info_get_external_string(const char *key, char **value)
 		LOGE("key : %s, failed get string value", key);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_platform_bool(const char *key, bool *value)
+{
+	int ret;
+	bool *supported;
+	char *string = NULL;
+
+	supported = (bool *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, BOOL_TYPE, &
+string);
+	if (ret) {
+		LOGE("cannot get %s", key);
+		return ret;
+	}
+
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_platform_int(const char *key, int *value)
+{
+	int ret;
+	int *ret_val;
+	char *string = NULL;
+
+	ret_val = (int *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, INT_TYPE, &
+string);
+	if (ret) {
+		LOGE("cannot get %s", key);
+		return ret;
+	}
+
+	*ret_val = atoi(string);
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_platform_double(const char *key, double *value)
+{
+	int ret;
+	double *ret_val;
+	char *string = NULL;
+
+	ret_val = (double *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, DBL_TYPE, &
+string);
+	if (ret) {
+		LOGE("cannot get %s", key);
+		return ret;
+	}
+
+	*ret_val = atof(string);
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_platform_string(const char *key, char **value)
+{
+	int ret;
+	char *string = NULL;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, STR_TYPE, &
+string);
+	if (ret) {
+		LOGE("cannot get %s", key);
+		return ret;
+	}
+
+	*value = string;
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_custom_bool(const char *key, bool *value)
+{
+	int ret;
+	bool *supported;
+	char *string = NULL;
+
+	supported = (bool *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, BOOL_TYPE, &
+string);
+	if (ret) {
+		LOGI("cannot get %s", key);
+		*supported = false;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_custom_int(const char *key, int *value)
+{
+	int ret;
+	int *ret_val;
+	char *string = NULL;
+
+	ret_val = (int *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, INT_TYPE, &
+string);
+	if (ret) {
+		LOGI("cannot get %s", key);
+		*ret_val = 0;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	*ret_val = atoi(string);
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_custom_double(const char *key, double *value)
+{
+	int ret;
+	double *ret_val;
+	char *string = NULL;
+
+	ret_val = (double *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, DBL_TYPE, &
+string);
+	if (ret) {
+		LOGI("cannot get %s", key);
+		*ret_val = 0;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	*ret_val = atof(string);
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_custom_string(const char *key, char **value)
+{
+	int ret;
+	char *string = NULL;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, STR_TYPE, &
+string);
+	if (ret) {
+		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		return ret;
+	}
+
+	*value = string;
 
 	return SYSTEM_INFO_ERROR_NONE;
 }

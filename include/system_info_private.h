@@ -29,9 +29,18 @@ extern "C"
 #define CPU_INFO_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
 #define CMDLINE_PATH "/proc/cmdline"
 #define XML_FILE_PATH "/etc/config/sys-info.xml"
+#define CONFIG_FILE_PATH "/etc/config/model-config.xml"
 #define MAXBUFSIZE 512
 
 #define EXTERNAL_VCONF_PREFIX "db/externals/"
+
+#define PLATFORM_TAG	"platform"
+#define CUSTOM_TAG	"custom"
+
+#define BOOL_TYPE	"bool"
+#define INT_TYPE	"int"
+#define DBL_TYPE	"double"
+#define STR_TYPE	"string"
 
 typedef enum {
 	SYSTEM_INFO_DATA_TYPE_STRING,
@@ -54,6 +63,10 @@ int system_info_init(void);
 int system_info_get_system_info_initialized(void);
 void system_info_set_system_info_initialized(int value);
 system_info_mode_type_e system_info_get_system_info_model_type(void);
+
+int system_info_ini_get_string(char *ini_file, char *key, char **output);
+int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value);
+int system_info_get_value_from_config_xml(char *feature_tag, const char *name_field, char *type_field, char **value);
 
 int system_info_vconf_get_value_int(const char *vconf_key, int *value);
 int system_info_vconf_get_value_bool(const char *vconf_key, bool *value);
@@ -122,7 +135,6 @@ int system_info_get_graphics_hwaccel_supported(system_info_key_e key, system_inf
 int system_info_get_feature_auto_rotation_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_feature_pinch_zoom_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 
-int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value);
 #ifdef __cplusplus
 }
 #endif
