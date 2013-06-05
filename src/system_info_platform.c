@@ -43,8 +43,8 @@
 
 #define LOG_TAG "CAPI_SYSTEM_INFO"
 
-#define LIB_GLES_V1 "/usr/lib/libGLESv1_CM.so"
-#define LIB_GLES_V2 "/usr/lib/libGLESv2.so"
+#define LIB_GLES_V1 LIBPATH "/libGLESv1_CM.so"
+#define LIB_GLES_V2 LIBPATH "/libGLESv2.so"
 
 #define SIZE_OF_MODEL_NAME 8
 
