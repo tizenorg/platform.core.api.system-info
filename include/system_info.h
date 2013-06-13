@@ -54,12 +54,9 @@ typedef enum {
 	SYSTEM_INFO_KEY_SCREEN_BITS_PER_PIXEL, /**< The number of bits per pixel */
 	SYSTEM_INFO_KEY_SCREEN_HEIGHT, /**< The height of the screen in pixels */
 	SYSTEM_INFO_KEY_SCREEN_WIDTH, /**< The width of the screen in pixels */
-	SYSTEM_INFO_KEY_MOBILE_DEVICE_ID, /**< The unique ID to identify GSM, UMTS and CDMA mobile devices */
-	SYSTEM_INFO_KEY_CSC_SALES_CODE, /**< The sales code of CSC */
 	SYSTEM_INFO_KEY_PLATFORM_NAME, /**< The name of platform */
 	SYSTEM_INFO_KEY_TIZEN_VERSION_NAME, /**< The name of tizen version  */
 	SYSTEM_INFO_KEY_SCREEN_DPI, /**< The width of the screen DPI */
-	SYSTEM_INFO_KEY_DEVICE_UUID, /**< The Device unique ID to identify */
 	SYSTEM_INFO_KEY_CORE_CPU_ARCH, /**< The CORE CPU architecture of model */
 	SYSTEM_INFO_KEY_CORE_FPU_ARCH, /**< The CORE FPU architecture of model */
 	SYSTEM_INFO_KEY_OPENGLES_TEXTURE_FORMAT, /**< The supported texture format of the OpenGL ES */
@@ -73,19 +70,14 @@ typedef enum {
 	SYSTEM_INFO_KEY_FMRADIO_SUPPORTED, /**< Indicates whether the device supports FM radio */
 	SYSTEM_INFO_KEY_GPS_SUPPORTED, /**< Indicates whether the device supports GPS */
 	SYSTEM_INFO_KEY_NFC_SUPPORTED, /**< Indicates whether the device supports NFC */
-	SYSTEM_INFO_KEY_TVOUT_SUPPORTED, /**< Indicates whether the device supports TV-out */
 	SYSTEM_INFO_KEY_WIFI_SUPPORTED, /**< Indicates whether the device supports Wi-Fi */
-	SYSTEM_INFO_KEY_HAPTIC_SUPPORTED, /**< Indicates whether the device supports Haptic */
 	SYSTEM_INFO_KEY_WIFI_DIRECT_SUPPORTED, /**< Indicates whether the device supports Wi-Fi Direct */
-	SYSTEM_INFO_KEY_CPS_SUPPORTED, /**< Indicates whether the device supports CPS */
 	SYSTEM_INFO_KEY_WPS_SUPPORTED, /**< Indicates whether the device supports WPS */
 	SYSTEM_INFO_KEY_USB_HOST_SUPPORTED, /**< Indicates whether the device supports USB host */
 	SYSTEM_INFO_KEY_USB_ACCESSORY_SUPPORTED, /**< Indicates whether the device supports USB accessory */
 	SYSTEM_INFO_KEY_FRONT_CAMERA_SUPPORTED, /**< Indicates whether the device supports front camera */
-	SYSTEM_INFO_KEY_FRONT_CAMERA_AF_SUPPORTED, /**< Indicates whether the device supports front camera auto focus */
 	SYSTEM_INFO_KEY_FRONT_CAMERA_FLASH_SUPPORTED, /**< Indicates whether the device supports front camera flash */
 	SYSTEM_INFO_KEY_BACK_CAMERA_SUPPORTED, /**< Indicates whether the device supports back camera */
-	SYSTEM_INFO_KEY_BACK_CAMERA_AF_SUPPORTED, /**< Indicates whether the device supports back camera auto focus */
 	SYSTEM_INFO_KEY_BACK_CAMERA_FLASH_SUPPORTED, /**< Indicates whether the device supports back camera flash */
 	SYSTEM_INFO_KEY_HDMI_SUPPORTED, /**< Indicates whether the device supports HDMI */
 	SYSTEM_INFO_KEY_RCA_SUPPORTED, /**< Indicates whether the device supports RCA */
@@ -93,8 +85,6 @@ typedef enum {
 	SYSTEM_INFO_KEY_MICROPHONE_SUPPORTED, /**< Indicates whether the device supports Microphone */
 	SYSTEM_INFO_KEY_SPEECH_RECOGNITION_SUPPORTED, /**< Indicates whether the device supports stt */
 	SYSTEM_INFO_KEY_BAROMETER_SENSOR_SUPPORTED, /**< Indicates whether the device supports barometer sensor */
-	SYSTEM_INFO_KEY_MANUFACTURER, /**< The manufacturer of the device */
-	SYSTEM_INFO_KEY_CP_INTERFACE, /**< The method of interface with CP */
 	SYSTEM_INFO_KEY_MMS_SUPPORTED, /**< Indicates whether the device supports MMS */
 	SYSTEM_INFO_KEY_SMS_SUPPORTED, /**< Indicates whether the device supports SMS */
 	SYSTEM_INFO_KEY_CBS_SUPPORTED, /**< Indicates whether the device supports CBS */
@@ -104,6 +94,7 @@ typedef enum {
 	SYSTEM_INFO_KEY_GRAPHICS_HWACCEL_SUPPORTED, /**< Indicates whether the device supports graphics hardware acceleration */
 	SYSTEM_INFO_KEY_FEATURE_AUTO_ROTATION_SUPPORTED, /**< Indicates whether the device supports native auto rotation feature */
 	SYSTEM_INFO_KEY_FEATURE_PINCH_ZOOM_SUPPORTED, /**< Indicates whether the device supports pinch zoom feature */
+	SYSTEM_INFO_KEY_MANUFACTURER, /**< The manufacturer of the device */
 } system_info_key_e;
 
 /**
@@ -252,6 +243,54 @@ int system_info_get_custom_double(const char *key, double *value);
  * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
  */
 int system_info_get_custom_string(const char *key, char **value);
+
+/**
+ * @brief   Gets the boolean value of the internal feature
+ * @param[in] key The name of the custom feature to get
+ * @param[out] value The value of the given internal feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_internal_bool(const char *key, bool *value);
+
+/**
+ * @brief   Gets the string value of the internal feature
+ * @remarks The @a value must be released with free() by you.
+ * @param[in] key The name of the custom feature to get
+ * @param[out] value The value of the given internal feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_internal_int(const char *key, int *value);
+
+/**
+ * @brief   Gets the string value of the internal feature
+ * @remarks The @a value must be released with free() by you.
+ * @param[in] key The name of the custom feature to get
+ * @param[out] value The value of the given internal feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_internal_double(const char *key, double *value);
+
+/**
+ * @brief   Gets the string value of the internal feature
+ * @remarks The @a value must be released with free() by you.
+ * @param[in] key The name of the internal feature to get
+ * @param[out] value The value of the given internal feature
+ * @return  0 on success, otherwise a negative error value.
+ * @retval  #SYSTEM_INFO_ERROR_NONE Successful
+ * @retval  #SYSTEM_INFO_ERROR_OUT_OF_MEMORY Out of memory
+ * @retval  #SYSTEM_INFO_ERROR_INVALID_PARAMETER cannot find key in model config file
+ * @retval  #SYSTEM_INFO_ERROR_IO_ERROR An input/output error occurred when read value from model config file
+ */
+int system_info_get_internal_string(const char *key, char **value);
 
 /**
  * @}

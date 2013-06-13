@@ -18,11 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <vconf.h>
 #include <dlog.h>
-
-#include <tapi_common.h>
-#include <ITapiModem.h>
 
 #include <system_info.h>
 #include <system_info_private.h>
@@ -35,87 +31,50 @@
 
 int system_info_get_network_type(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	int service_type = 0;
-	char *NETWORK_TYPE = NULL;
+	bool service_type = 0;
+	char *NET_TYPE = NULL;
+	char NETWORK_TYPE[MAXBUFSIZE];
 
-	if (system_info_vconf_get_value_int(VCONFKEY_TELEPHONY_SVCTYPE, &service_type))
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+	NETWORK_TYPE[0] = '\0';
 
-	switch (service_type) {
-	case VCONFKEY_TELEPHONY_SVCTYPE_NONE:
-		NETWORK_TYPE = strdup("NoService");
-		break;
-	case VCONFKEY_TELEPHONY_SVCTYPE_NOSVC:
-		NETWORK_TYPE = strdup("NoService");
-		break;
-	case VCONFKEY_TELEPHONY_SVCTYPE_EMERGENCY:
-		NETWORK_TYPE = strdup("Emergency");
-		break;
-	case VCONFKEY_TELEPHONY_SVCTYPE_2G:
-		NETWORK_TYPE = strdup("GSM");
-		break;
-	case VCONFKEY_TELEPHONY_SVCTYPE_2_5G:
-		NETWORK_TYPE = strdup("GPRS");
-		break;
-	case VCONFKEY_TELEPHONY_SVCTYPE_2_5G_EDGE:
-		NETWORK_TYPE = strdup("EDGE");
-		break;
-	case VCONFKEY_TELEPHONY_SVCTYPE_3G:
-		NETWORK_TYPE = strdup("UMTS");
-		break;
-	case VCONFKEY_TELEPHONY_SVCTYPE_HSDPA:
-		NETWORK_TYPE = strdup("HSDPA");
-		break;
-	case VCONFKEY_TELEPHONY_SVCTYPE_LTE:
-                NETWORK_TYPE = strdup("LTE");
-                break;
-	}
+	strcat(NETWORK_TYPE, "Emergency ");
 
-	if (NETWORK_TYPE == NULL) {
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.cdma", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| cdma ");
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.edge", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| edge ");
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.gprs", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| gprs ");
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.gsm", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| gsm ");
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.hsdpa", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| hsdpa ");
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.hspa", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| hspa ");
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.hsupa", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| hsupa ");
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.umts", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| umts ");
+	if (system_info_get_platform_bool("tizen.org/feature/network.telephony.service.lte", &service_type) == SYSTEM_INFO_ERROR_NONE
+		&& service_type == true)
+		strcat(NETWORK_TYPE, "| lte ");
+
+	NET_TYPE = strdup(NETWORK_TYPE);
+
+	if (NET_TYPE == NULL) {
 		LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
 		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
 	}
 
-	*value = NETWORK_TYPE;
+	*value = NET_TYPE;
 
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_mobile_device_id(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	TapiHandle *handle = NULL;
-	char *imei = NULL;
-	char *MOBILE_DEVICE_ID = NULL;
-
-	handle = tel_init(0);
-
-	if (NULL == handle) {
-		LOGE("tel_init ERROR");
-		*value = NULL;
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	imei = tel_get_misc_me_imei_sync(handle);
-
-	if (imei == NULL) {
-		LOGE("IMEI value is NULL");
-		tel_deinit(handle);
-		*value = NULL;
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	MOBILE_DEVICE_ID = strdup((char *)imei);
-
-	if (MOBILE_DEVICE_ID == NULL) {
-		LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
-		free(imei);
-		tel_deinit(handle);
-		*value = NULL;
-		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
-	}
-
-	free(imei);
-	tel_deinit(handle);
-	*value = MOBILE_DEVICE_ID;
 	return SYSTEM_INFO_ERROR_NONE;
 }

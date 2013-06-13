@@ -20,7 +20,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <vconf.h>
 #include <dlog.h>
 
 #include <system_info.h>
@@ -145,31 +144,10 @@ system_info_s system_info_table[] = {
 },
 
 {
-	/**< Indicates whether the device supports TV-out */
-	SYSTEM_INFO_KEY_TVOUT_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_tvout_supported
-},
-
-{
 	 /**< Indicates whether the device supports Wi-Fi */
 	SYSTEM_INFO_KEY_WIFI_SUPPORTED,
 	SYSTEM_INFO_DATA_TYPE_BOOL,
 	system_info_get_wifi_supported
-},
-
-{
-	 /**< The unique ID to identify GSM, and UMTS mobile devices */
-	SYSTEM_INFO_KEY_MOBILE_DEVICE_ID,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_mobile_device_id
-},
-
-{
-	/**< The sales code of the CSC */
-	SYSTEM_INFO_KEY_CSC_SALES_CODE,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_csc_sales_code
 },
 
 {
@@ -187,14 +165,7 @@ system_info_s system_info_table[] = {
 },
 
 {
-	/**< Indicates whether the device supports HAPTIC */
-	SYSTEM_INFO_KEY_HAPTIC_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_haptic_supproted
-},
-
-{
-	/**< Indicates whether the device supports HAPTIC */
+	/**< Indicates whether the device supports wifi direct */
 	SYSTEM_INFO_KEY_WIFI_DIRECT_SUPPORTED,
 	SYSTEM_INFO_DATA_TYPE_BOOL,
 	system_info_get_wifi_direct_supported
@@ -205,20 +176,6 @@ system_info_s system_info_table[] = {
 	SYSTEM_INFO_KEY_SCREEN_DPI,
 	SYSTEM_INFO_DATA_TYPE_INT,
 	system_info_get_screen_DPI
-},
-
-{
-	/**< The Device unique ID to identify */
-	SYSTEM_INFO_KEY_DEVICE_UUID,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_device_uuid
-},
-
-{
-	/**< Indicates whether the device supports GPS */
-	SYSTEM_INFO_KEY_CPS_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_cps_supported
 },
 
 {
@@ -264,13 +221,6 @@ system_info_s system_info_table[] = {
 },
 
 {
-	/**< Indicates whether the device supports front camera auto focus */
-	SYSTEM_INFO_KEY_FRONT_CAMERA_AF_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_front_camera_af_supported
-},
-
-{
 	/**< Indicates whether the device supports front camera flash */
 	SYSTEM_INFO_KEY_FRONT_CAMERA_FLASH_SUPPORTED,
 	SYSTEM_INFO_DATA_TYPE_BOOL,
@@ -282,13 +232,6 @@ system_info_s system_info_table[] = {
 	SYSTEM_INFO_KEY_BACK_CAMERA_SUPPORTED,
 	SYSTEM_INFO_DATA_TYPE_BOOL,
 	system_info_get_back_camera_supported
-},
-
-{
-	/**< Indicates whether the device supports back camera auto focus */
-	SYSTEM_INFO_KEY_BACK_CAMERA_AF_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_back_camera_af_supported
 },
 
 {
@@ -394,13 +337,6 @@ system_info_s system_info_table[] = {
 	SYSTEM_INFO_KEY_MANUFACTURER,
 	SYSTEM_INFO_DATA_TYPE_STRING,
 	system_info_get_manufacturer
-},
-
-{
-	/**< The method of interface with CP */
-	SYSTEM_INFO_KEY_CP_INTERFACE,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_cp_interface
 },
 
 {
@@ -655,8 +591,7 @@ int system_info_get_platform_bool(const char *key, bool *value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, BOOL_TYPE, &
-string);
+	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, BOOL_TYPE, &string);
 	if (ret) {
 		LOGE("cannot get %s", key);
 		return ret;
@@ -685,8 +620,7 @@ int system_info_get_platform_int(const char *key, int *value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, INT_TYPE, &
-string);
+	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, INT_TYPE, &string);
 	if (ret) {
 		LOGE("cannot get %s", key);
 		return ret;
@@ -712,8 +646,7 @@ int system_info_get_platform_double(const char *key, double *value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, DBL_TYPE, &
-string);
+	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, DBL_TYPE, &string);
 	if (ret) {
 		LOGE("cannot get %s", key);
 		return ret;
@@ -736,8 +669,7 @@ int system_info_get_platform_string(const char *key, char **value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, STR_TYPE, &
-string);
+	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, STR_TYPE, &string);
 	if (ret) {
 		LOGE("cannot get %s", key);
 		return ret;
@@ -761,8 +693,7 @@ int system_info_get_custom_bool(const char *key, bool *value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, BOOL_TYPE, &
-string);
+	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, BOOL_TYPE, &string);
 	if (ret) {
 		LOGI("cannot get %s", key);
 		*supported = false;
@@ -792,8 +723,7 @@ int system_info_get_custom_int(const char *key, int *value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, INT_TYPE, &
-string);
+	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, INT_TYPE, &string);
 	if (ret) {
 		LOGI("cannot get %s", key);
 		*ret_val = 0;
@@ -820,8 +750,7 @@ int system_info_get_custom_double(const char *key, double *value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, DBL_TYPE, &
-string);
+	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, DBL_TYPE, &string);
 	if (ret) {
 		LOGI("cannot get %s", key);
 		*ret_val = 0;
@@ -845,8 +774,112 @@ int system_info_get_custom_string(const char *key, char **value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, STR_TYPE, &
-string);
+	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, STR_TYPE, &string);
+	if (ret) {
+		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		return ret;
+	}
+
+	*value = string;
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_internal_bool(const char *key, bool *value)
+{
+	int ret;
+	bool *supported;
+	char *string = NULL;
+
+	supported = (bool *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(INTERNAL_TAG, key, BOOL_TYPE, &string);
+	if (ret) {
+		LOGI("cannot get %s", key);
+		*supported = false;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
+		*supported = true;
+	else
+		*supported = false;
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_internal_int(const char *key, int *value)
+{
+	int ret;
+	int *ret_val;
+	char *string = NULL;
+
+	ret_val = (int *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(INTERNAL_TAG, key, INT_TYPE, &string);
+	if (ret) {
+		LOGI("cannot get %s", key);
+		*ret_val = 0;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	*ret_val = atoi(string);
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_internal_double(const char *key, double *value)
+{
+	int ret;
+	double *ret_val;
+	char *string = NULL;
+
+	ret_val = (double *)value;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(INTERNAL_TAG, key, DBL_TYPE, &string);
+	if (ret) {
+		LOGI("cannot get %s", key);
+		*ret_val = 0;
+		return SYSTEM_INFO_ERROR_NONE;
+	}
+
+	*ret_val = atof(string);
+
+	free(string);
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+int system_info_get_internal_string(const char *key, char **value)
+{
+	int ret;
+	char *string = NULL;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_value_from_config_xml(INTERNAL_TAG, key, STR_TYPE, &string);
 	if (ret) {
 		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
 		return ret;

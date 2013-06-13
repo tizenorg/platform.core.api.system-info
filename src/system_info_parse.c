@@ -242,6 +242,7 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 						*value = strdup(string);
 						free(name);
 						free(type);
+						free(string);
 						break;
 					}
 				}
