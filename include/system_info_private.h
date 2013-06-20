@@ -30,8 +30,6 @@ extern "C"
 #define CONFIG_FILE_PATH "/etc/config/model-config.xml"
 #define MAXBUFSIZE 512
 
-#define EXTERNAL_VCONF_PREFIX "db/externals/"
-
 #define PLATFORM_TAG	"platform"
 #define CUSTOM_TAG	"custom"
 #define INTERNAL_TAG	"internal"

@@ -522,62 +522,6 @@ int system_info_get_value_string(system_info_key_e key, char **value)
 	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_STRING, (void **)value);
 }
 
-int system_info_get_external_bool(const char *key, bool *value)
-{
-	char vconfkey[MAXBUFSIZE] = {0,};
-
-	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
-
-	if (system_info_vconf_get_value_bool(vconfkey, value)) {
-		LOGE("key : %s, failed get bool value", key);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_external_int(const char *key, int *value)
-{
-	char vconfkey[MAXBUFSIZE] = {0,};
-
-	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
-
-	if (system_info_vconf_get_value_int(vconfkey, value)) {
-		LOGE("key : %s, failed get int value", key);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_external_double(const char *key, double *value)
-{
-	char vconfkey[MAXBUFSIZE] = {0,};
-
-	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
-
-	if (system_info_vconf_get_value_double(vconfkey, value)) {
-		LOGE("key : %s, failed get double value", key);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_external_string(const char *key, char **value)
-{
-	char vconfkey[MAXBUFSIZE] = {0,};
-
-	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
-
-	if (system_info_vconf_get_value_string(vconfkey, value)) {
-		LOGE("key : %s, failed get string value", key);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
 int system_info_get_platform_bool(const char *key, bool *value)
 {
 	int ret;
