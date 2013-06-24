@@ -88,7 +88,6 @@ int system_info_get_usb_host_supported(system_info_key_e key, system_info_data_t
 int system_info_get_usb_accessory_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_multi_point_touch_count(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_network_type(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_mobile_device_id(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_nfc_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_front_camera_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_front_camera_flash_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
