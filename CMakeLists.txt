@@ -10,7 +10,7 @@ SET(PREFIX ${CMAKE_INSTALL_PREFIX})
 SET(INC_DIR include)
 INCLUDE_DIRECTORIES(${INC_DIR})
 
-SET(requires "dlog capi-base-common iniparser libxml-2.0")
+SET(requires "dlog capi-base-common x11 xi xrandr xproto vconf iniparser libxml-2.0")
 SET(pc_requires "capi-base-common")
 
 INCLUDE(FindPkgConfig)

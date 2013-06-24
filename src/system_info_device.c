@@ -19,6 +19,12 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <X11/extensions/XI2.h>
+#include <X11/extensions/XI2proto.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#include <X11/extensions/XInput2.h>
+
 #include <dlog.h>
 
 #include <system_info.h>
@@ -29,6 +35,8 @@
 #endif
 
 #define LOG_TAG "CAPI_SYSTEM_INFO"
+
+#define PROP_MULTITOUCH	"EvdevMultitouch MultiTouch"
 
 #define TETHERING_INFO_FILE_PATH "/etc/config/connectivity/sysinfo-tethering.xml"
 #define CAMERA_INFO_FILE_PATH	"/usr/etc/mmfw_camcorder.ini"
@@ -78,9 +86,126 @@ int system_info_get_keyboard_type(system_info_key_e key, system_info_data_type_e
 	return system_info_get_platform_string("tizen.org/feature/input.keyboard.layout", (char**)value);
 }
 
+extern char *strcasestr(const char *s, const char *find);
+
+int xinput_extension_init(Display *disp)
+{
+	int opcode;
+	int event, error;
+	int major = XI_2_Major, minor = XI_2_Minor;
+
+	if (!XQueryExtension(disp, "XInputExtension", &opcode, &event, &error)) {
+		LOGE("XInput Extension isn't supported.");
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (XIQueryVersion(disp, &major, &minor) == BadRequest) {
+		LOGE("Failed to query XI version.");
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (!(major >= XI_2_Major && minor >= XI_2_Minor)) {
+		LOGE("XI2 is not supported ! (major:%d, minor:%d)", major, minor);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+	return opcode;
+}
+
+int get_device_property_value(Display *disp, int deviceid, Atom prop)
+{
+	Atom act_type;
+	unsigned long nitems, bytes_after;
+	unsigned char *data;
+	int act_format, ret = -1;
+
+	if (XIGetProperty(disp, deviceid, prop, 0, 1000, False,
+							XA_INTEGER, &act_type, &act_format,
+							&nitems, &bytes_after, &data) != Success) {
+		LOGE("Failed to get XI2 device property !(deviceid=%d)", deviceid);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	if (!nitems)
+		goto out;
+
+	ret = (int)*data;
+
+out:
+	if (data)
+		XFree(data);
+
+	return ret;
+}
+
+int get_multitouch_max_count(Display *disp)
+{
+	int i;
+	int max_count;
+	int ndevices;
+	XIDeviceInfo *dev, *info = NULL;
+	Atom atomMultiTouch;
+	int xi_opcode = xinput_extension_init(disp);
+
+	if (0 >= xi_opcode) {
+		LOGE("Failed to initialize X Input Extension !");
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	atomMultiTouch = XInternAtom(disp, PROP_MULTITOUCH, True);
+
+	if (!atomMultiTouch) {
+		LOGE("Failed to make an atom for multitouch property !");
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	info = XIQueryDevice(disp, XIAllDevices, &ndevices);
+
+	if (!info) {
+		LOGE("Failed to query XI device.");
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	for (i = 0; i < ndevices ; i++) {
+		dev = &info[i];
+
+		switch (dev->use) {
+		case XISlavePointer:
+			if (strcasestr(dev->name, "virtual") && !strcasestr(dev->name, "maru"))
+				continue;
+			if (strcasestr(dev->name, "extended"))
+				continue;
+			if (!strcasestr(dev->name, "touch"))
+				continue;
+			max_count = get_device_property_value(disp, dev->deviceid, atomMultiTouch);
+			goto out;
+		}
+	}
+
+	XIFreeDeviceInfo(info);
+	return -1;
+
+out:
+	XIFreeDeviceInfo(info);
+	return max_count;
+}
+
 int system_info_get_multi_point_touch_count(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	return system_info_get_platform_int("tizen.org/feature/multi_point_touch.point_count", (int *)value);
+	int *count;
+	Display *disp;
+
+	count = (int *)value;
+
+	disp = XOpenDisplay(NULL);
+
+	if (!disp) {
+		LOGE("Failed to open display!");
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	*count = get_multitouch_max_count(disp);
+
+	return SYSTEM_INFO_ERROR_NONE;
 }
 
 int system_info_get_nfc_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)

@@ -27,8 +27,11 @@ extern "C"
 #define OS_RELEASE_FILE_PATH "/etc/os-release"
 #define CPU_INFO_FILE_PATH "/proc/cpuinfo"
 #define CPU_INFO_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
+#define CMDLINE_PATH "/proc/cmdline"
 #define CONFIG_FILE_PATH "/etc/config/model-config.xml"
 #define MAXBUFSIZE 512
+
+#define EXTERNAL_VCONF_PREFIX "db/externals/"
 
 #define PLATFORM_TAG	"platform"
 #define CUSTOM_TAG	"custom"

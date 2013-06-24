@@ -9,6 +9,11 @@ Source0:	%{name}-%{version}.tar.gz
 BuildRequires:	cmake
 BuildRequires:	pkgconfig(dlog)
 BuildRequires:	pkgconfig(capi-base-common)
+BuildRequires:  pkgconfig(vconf)
+BuildRequires:  pkgconfig(x11)
+BuildRequires:  pkgconfig(xi)
+BuildRequires:	pkgconfig(xrandr)
+BuildRequires:	pkgconfig(xproto)
 BuildRequires:	pkgconfig(iniparser)
 BuildRequires: 	pkgconfig(libxml-2.0)
 
