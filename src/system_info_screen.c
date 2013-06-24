@@ -37,42 +37,12 @@ int system_info_get_screen_bits_per_pixel(system_info_key_e key, system_info_dat
 
 int system_info_get_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	bool check;
-	int *width = 0;
-
-	width = (int *)value;
-
-	if (system_info_get_platform_bool("tizen.org/feature/screen.size.normal.480.800", &check) == SYSTEM_INFO_ERROR_NONE
-		&& check == true)
-		*width = 480;
-	if (system_info_get_platform_bool("tizen.org/feature/screen.size.normal.720.1280", &check) == SYSTEM_INFO_ERROR_NONE
-		&& check == true)
-		*width = 720;
-
-	if (*width)
-	return SYSTEM_INFO_ERROR_NONE;
-	else
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+	return system_info_get_platform_int("tizen.org/feature/screen.width", (int *)value);
 }
 
 int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	bool check;
-	int *height = 0;
-
-	height = (int *)value;
-
-	if (system_info_get_platform_bool("tizen.org/feature/screen.size.normal.480.800", &check) == SYSTEM_INFO_ERROR_NONE
-		&& check == true)
-		*height = 800;
-	if (system_info_get_platform_bool("tizen.org/feature/screen.size.normal.720.1280", &check) == SYSTEM_INFO_ERROR_NONE
-		&& check == true)
-		*height = 1280;
-
-	if (*height)
-	return SYSTEM_INFO_ERROR_NONE;
-	else
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+	return system_info_get_platform_int("tizen.org/feature/screen.height", (int *)value);
 }
 
 int system_info_get_screen_DPI(system_info_key_e key, system_info_data_type_e data_type, void **value)

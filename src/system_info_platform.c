@@ -262,19 +262,19 @@ int system_info_get_opengles_texture_format(system_info_key_e key, system_info_d
 		strcat(textureformat, "utc ");
 	if (system_info_get_platform_bool("tizen.org/feature/opengles.texture_format.ptc", &texture) == SYSTEM_INFO_ERROR_NONE
 		&& texture == true)
-		strcat(textureformat, "| ptc ");
+		strcat(textureformat, "ptc ");
 	if (system_info_get_platform_bool("tizen.org/feature/opengles.texture_format.etc", &texture) == SYSTEM_INFO_ERROR_NONE
 		&& texture == true)
-		strcat(textureformat, "| etc ");
+		strcat(textureformat, "etc ");
 	if (system_info_get_platform_bool("tizen.org/feature/opengles.texture_format.3dc", &texture) == SYSTEM_INFO_ERROR_NONE
 		&& texture == true)
-		strcat(textureformat, "| 3dc ");
+		strcat(textureformat, "3dc ");
 	if (system_info_get_platform_bool("tizen.org/feature/opengles.texture_format.atc", &texture) == SYSTEM_INFO_ERROR_NONE
 		&& texture == true)
-		strcat(textureformat, "| atc ");
+		strcat(textureformat, "atc ");
 	if (system_info_get_platform_bool("tizen.org/feature/opengles.texture_format.pvrtc", &texture) == SYSTEM_INFO_ERROR_NONE
 		&& texture == true)
-		strcat(textureformat, "| pvrtc");
+		strcat(textureformat, "pvrtc");
 
 	OPENGLES_TEXTURE_FORMAT = strdup(textureformat);
 
