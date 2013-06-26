@@ -20,7 +20,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <vconf.h>
 #include <dlog.h>
 
 #include <system_info.h>
@@ -410,56 +409,35 @@ system_info_s system_info_table[] = {
 };
 
 static system_info_mode_type_e system_info_system_info_model_type;
-static int system_info_initialized;
-
-int system_info_get_system_info_initialized(void)
-{
-	return system_info_initialized;
-}
-
-void system_info_set_system_info_initialized(int value)
-{
-	system_info_initialized = value;
-}
 
 system_info_mode_type_e system_info_get_system_info_model_type(void)
 {
 	return system_info_system_info_model_type;
 }
 
-int system_info_init(void)
+void __attribute__((constructor)) system_info_init(void)
 {
-	struct utsname device_name;
-	extern char *strcasestr(const char *s, const char *find);
+	int ret;
+	char *str;
 
-	int error = uname(&device_name);
+	ret = system_info_get_platform_string("tizen.org/system/model_name", &str);
 
-	if (error != 0) {
-		LOGE("uname returns error!!!");
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	} else {
-		if (strcasestr(device_name.machine, "emulated"))
+	if (ret != SYSTEM_INFO_ERROR_NONE) {
+		LOGE("initialize error");
+		return;
+	}
+
+	if (!strcmp(str, "Emulator"))
 				system_info_system_info_model_type = SYSTEM_INFO_MODEL_TYPE_EMULATOR;
 		else
 		system_info_system_info_model_type = SYSTEM_INFO_MODEL_TYPE_TARGET;
 
-		system_info_set_system_info_initialized(1);
-	}
-	return SYSTEM_INFO_ERROR_NONE;
+	free(str);
 }
 
 static int system_info_get(system_info_key_e key, system_info_h *system_info)
 {
 	int index = 0;
-	int ret_val;
-
-	if (0 == system_info_get_system_info_initialized()) {
-		ret_val = system_info_init();
-		if (ret_val) {
-			LOGE("system information initialize fail!!!");
-			return ret_val;
-		}
-	}
 
 	while (system_info_table[index].key != SYSTEM_INFO_MAX) {
 		if (system_info_table[index].key == key) {
@@ -503,27 +481,83 @@ int system_info_get_value(system_info_key_e key, system_info_data_type_e data_ty
 	return system_info_getter(key, system_info->data_type, value);
 }
 
-int system_info_get_value_int(system_info_key_e key, int *value)
+API int system_info_get_value_int(system_info_key_e key, int *value)
 {
 	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_INT, (void **)value);
 }
 
-int system_info_get_value_bool(system_info_key_e key, bool *value)
+API int system_info_get_value_bool(system_info_key_e key, bool *value)
 {
 	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_BOOL, (void **)value);
 }
 
-int system_info_get_value_double(system_info_key_e key, double *value)
+API int system_info_get_value_double(system_info_key_e key, double *value)
 {
 	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_DOUBLE, (void **)value);
 }
 
-int system_info_get_value_string(system_info_key_e key, char **value)
+API int system_info_get_value_string(system_info_key_e key, char **value)
 {
 	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_STRING, (void **)value);
 }
 
-int system_info_get_platform_bool(const char *key, bool *value)
+API int system_info_get_external_bool(const char *key, bool *value)
+{
+	char vconfkey[MAXBUFSIZE] = {0,};
+
+	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
+
+	if (system_info_vconf_get_value_bool(vconfkey, value)) {
+		LOGE("key : %s, failed get bool value", key);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+API int system_info_get_external_int(const char *key, int *value)
+{
+	char vconfkey[MAXBUFSIZE] = {0,};
+
+	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
+
+	if (system_info_vconf_get_value_int(vconfkey, value)) {
+		LOGE("key : %s, failed get int value", key);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+API int system_info_get_external_double(const char *key, double *value)
+{
+	char vconfkey[MAXBUFSIZE] = {0,};
+
+	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
+
+	if (system_info_vconf_get_value_double(vconfkey, value)) {
+		LOGE("key : %s, failed get double value", key);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+API int system_info_get_external_string(const char *key, char **value)
+{
+	char vconfkey[MAXBUFSIZE] = {0,};
+
+	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
+
+	if (system_info_vconf_get_value_string(vconfkey, value)) {
+		LOGE("key : %s, failed get string value", key);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+API int system_info_get_platform_bool(const char *key, bool *value)
 {
 	int ret;
 	bool *supported;
@@ -552,7 +586,7 @@ int system_info_get_platform_bool(const char *key, bool *value)
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
-int system_info_get_platform_int(const char *key, int *value)
+API int system_info_get_platform_int(const char *key, int *value)
 {
 	int ret;
 	int *ret_val;
@@ -578,7 +612,7 @@ int system_info_get_platform_int(const char *key, int *value)
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
-int system_info_get_platform_double(const char *key, double *value)
+API int system_info_get_platform_double(const char *key, double *value)
 {
 	int ret;
 	double *ret_val;
@@ -604,7 +638,7 @@ int system_info_get_platform_double(const char *key, double *value)
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
-int system_info_get_platform_string(const char *key, char **value)
+API int system_info_get_platform_string(const char *key, char **value)
 {
 	int ret;
 	char *string = NULL;
@@ -625,7 +659,7 @@ int system_info_get_platform_string(const char *key, char **value)
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
-int system_info_get_custom_bool(const char *key, bool *value)
+API int system_info_get_custom_bool(const char *key, bool *value)
 {
 	int ret;
 	bool *supported;
@@ -655,7 +689,7 @@ int system_info_get_custom_bool(const char *key, bool *value)
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
-int system_info_get_custom_int(const char *key, int *value)
+API int system_info_get_custom_int(const char *key, int *value)
 {
 	int ret;
 	int *ret_val;
@@ -682,62 +716,7 @@ int system_info_get_custom_int(const char *key, int *value)
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
-int system_info_get_external_bool(const char *key, bool *value)
-{
-	char vconfkey[MAXBUFSIZE] = {0,};
-
-	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
-
-	if (system_info_vconf_get_value_bool(vconfkey, value)) {
-		LOGE("key : %s, failed get bool value", key);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_external_int(const char *key, int *value)
-{
-	char vconfkey[MAXBUFSIZE] = {0,};
-
-	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
-
-	if (system_info_vconf_get_value_int(vconfkey, value)) {
-		LOGE("key : %s, failed get int value", key);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_external_double(const char *key, double *value)
-{
-	char vconfkey[MAXBUFSIZE] = {0,};
-
-	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
-
-	if (system_info_vconf_get_value_double(vconfkey, value)) {
-		LOGE("key : %s, failed get double value", key);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_external_string(const char *key, char **value)
-{
-	char vconfkey[MAXBUFSIZE] = {0,};
-
-	snprintf(vconfkey, strlen(EXTERNAL_VCONF_PREFIX)+strlen(key)+1, "%s%s", EXTERNAL_VCONF_PREFIX, key);
-
-	if (system_info_vconf_get_value_string(vconfkey, value)) {
-		LOGE("key : %s, failed get string value", key);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-int system_info_get_custom_double(const char *key, double *value)
+API int system_info_get_custom_double(const char *key, double *value)
 {
 	int ret;
 	double *ret_val;
@@ -754,8 +733,8 @@ int system_info_get_custom_double(const char *key, double *value)
 	if (ret) {
 		LOGI("cannot get %s", key);
 		*ret_val = 0;
-		return SYSTEM_INFO_ERROR_NONE;
-	}
+	return SYSTEM_INFO_ERROR_NONE;
+}
 
 	*ret_val = atof(string);
 
@@ -764,7 +743,7 @@ int system_info_get_custom_double(const char *key, double *value)
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
-int system_info_get_custom_string(const char *key, char **value)
+API int system_info_get_custom_string(const char *key, char **value)
 {
 	int ret;
 	char *string = NULL;

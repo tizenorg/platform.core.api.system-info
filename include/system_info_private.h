@@ -23,6 +23,10 @@ extern "C"
 {
 #endif
 
+#ifndef API
+#define API __attribute__ ((visibility("default")))
+#endif
+
 #define INFO_FILE_PATH "/etc/info.ini"
 #define OS_RELEASE_FILE_PATH "/etc/os-release"
 #define CPU_INFO_FILE_PATH "/proc/cpuinfo"
@@ -59,9 +63,6 @@ typedef enum {
 
 typedef int (*system_info_get_value_cb) (system_info_key_e key, system_info_data_type_e data_type, void **value);
 
-int system_info_init(void);
-int system_info_get_system_info_initialized(void);
-void system_info_set_system_info_initialized(int value);
 system_info_mode_type_e system_info_get_system_info_model_type(void);
 
 int system_info_ini_get_string(char *ini_file, char *key, char **output);
