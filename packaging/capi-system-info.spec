@@ -4,16 +4,13 @@ Summary:	A System Information library in SLP C API
 Version:	0.2.0
 Release:	0
 Group:		System/Libraries
-License:	Apache License, Version 2.0 and IEFT RFC Collection
+License:	Apache License, Version 2.0
 Source0:	%{name}-%{version}.tar.gz
 BuildRequires:	cmake
 BuildRequires:	pkgconfig(dlog)
 BuildRequires:	pkgconfig(capi-base-common)
-BuildRequires:  pkgconfig(vconf)
-BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xi)
 BuildRequires:	pkgconfig(xrandr)
-BuildRequires:	pkgconfig(xproto)
 BuildRequires:	pkgconfig(iniparser)
 BuildRequires: 	pkgconfig(libxml-2.0)
 
