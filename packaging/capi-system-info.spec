@@ -5,6 +5,7 @@ Release:    0
 Group:      System/API
 License:    Apache-2.0 and IEFT RFC Collection
 Source0:    %{name}-%{version}.tar.gz
+Source1001: 	capi-system-info.manifest
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(vconf)
@@ -40,6 +41,7 @@ Requires: %{name} = %{version}-%{release}
 
 %prep
 %setup -q
+cp %{SOURCE1001} .
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
@@ -62,6 +64,7 @@ cp -f configuration/sys-info.xml %{buildroot}/etc/config/sys-info.xml
 
 
 %files
+%manifest %{name}.manifest
 %license LICENSE.APLv2 LICENSE.RFC4122 
 %{_libdir}/libcapi-system-info.so.*
 %attr(0744,root,-) /etc/make_info_file.sh
@@ -69,6 +72,7 @@ cp -f configuration/sys-info.xml %{buildroot}/etc/config/sys-info.xml
 %manifest system-info.manifest
 
 %files devel
+%manifest %{name}.manifest
 %{_includedir}/system/system_info.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libcapi-system-info.so
