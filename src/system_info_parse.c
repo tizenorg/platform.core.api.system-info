@@ -126,21 +126,23 @@ int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_fi
 				string = (char *) xmlGetProp(cur_node, (const xmlChar*)"string");
 
 				if (!strncmp(id, id_field, strlen(id))) {
-					if (!string) {
-						free(id);
-						continue;
-					}
+					if (!strncmp(id, id_field, strlen(id_field))) {
+						if (!string) {
+							free(id);
+							continue;
+						}
 
-						*value = strdup(string);
-					free(id);
-					free(string);
-					xmlFreeDoc(doc);
-					if (*value == NULL) {
-							LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
-							xmlFreeDoc(doc);
-							return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
+							*value = strdup(string);
+						free(id);
+						free(string);
+						xmlFreeDoc(doc);
+						if (*value == NULL) {
+								LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
+								xmlFreeDoc(doc);
+								return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
+						}
+						return SYSTEM_INFO_ERROR_NONE;
 					}
-					return SYSTEM_INFO_ERROR_NONE;
 				}
 				free(id);
 				free(string);
@@ -157,21 +159,23 @@ int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_fi
 				string = (char *) xmlGetProp(cur_node, (const xmlChar*)"string");
 
 				if (!strncmp(id, id_field, strlen(id))) {
-					if (!string) {
-						free(id);
-						continue;
-					}
+					if (!strncmp(id, id_field, strlen(id_field))) {
+						if (!string) {
+							free(id);
+							continue;
+						}
 
-						*value = strdup(string);
-						free(id);
-						free(string);
-					xmlFreeDoc(doc);
-					if (*value == NULL) {
-							LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
-							xmlFreeDoc(doc);
-							return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
+							*value = strdup(string);
+							free(id);
+							free(string);
+						xmlFreeDoc(doc);
+						if (*value == NULL) {
+								LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
+								xmlFreeDoc(doc);
+								return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
+						}
+						return SYSTEM_INFO_ERROR_NONE;
 					}
-					return SYSTEM_INFO_ERROR_NONE;
 				}
 				free(id);
 				free(string);
@@ -241,20 +245,22 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 				type = (char *)xmlGetProp(cur_node, (const xmlChar*)"type");
 
 				if (!strncmp(name, name_field, strlen(name))) {
-					if (strncmp(type, type_field, strlen(type_field))) {
-						LOGE("INVALID_PARAMETER(0x%08x) : invalid output param", SYSTEM_INFO_ERROR_INVALID_PARAMETER);
-						free(name);
-						free(type);
-						xmlFreeDoc(doc);
-						return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
-					}
-					string = (char *)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
-					if (string) {
-						*value = strdup(string);
-						free(name);
-						free(type);
-						free(string);
-						break;
+					if (!strncmp(name, name_field, strlen(name_field))) {
+						if (strncmp(type, type_field, strlen(type_field))) {
+							LOGE("INVALID_PARAMETER(0x%08x) : invalid output param", SYSTEM_INFO_ERROR_INVALID_PARAMETER);
+							free(name);
+							free(type);
+							xmlFreeDoc(doc);
+							return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+						}
+						string = (char *)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
+						if (string) {
+							*value = strdup(string);
+							free(name);
+							free(type);
+							free(string);
+							break;
+						}
 					}
 				}
 				free(name);
