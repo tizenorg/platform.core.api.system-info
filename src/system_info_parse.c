@@ -125,7 +125,7 @@ int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_fi
 				id = (char *)xmlGetProp(cur_node, (const xmlChar*)"id");
 				string = (char *) xmlGetProp(cur_node, (const xmlChar*)"string");
 
-				if (!strncmp(id, id_field, strlen(id_field))) {
+				if (!strncmp(id, id_field, strlen(id))) {
 					if (!string) {
 						free(id);
 						continue;
@@ -156,7 +156,7 @@ int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_fi
 				id = (char *)xmlGetProp(cur_node, (const xmlChar*)"id");
 				string = (char *) xmlGetProp(cur_node, (const xmlChar*)"string");
 
-				if (!strncmp(id, id_field, strlen(id_field))) {
+				if (!strncmp(id, id_field, strlen(id))) {
 					if (!string) {
 						free(id);
 						continue;
@@ -240,7 +240,7 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 				name = (char *)xmlGetProp(cur_node, (const xmlChar*)"name");
 				type = (char *)xmlGetProp(cur_node, (const xmlChar*)"type");
 
-				if (!strncmp(name, name_field, strlen(name_field))) {
+				if (!strncmp(name, name_field, strlen(name))) {
 					if (strncmp(type, type_field, strlen(type_field))) {
 						LOGE("INVALID_PARAMETER(0x%08x) : invalid output param", SYSTEM_INFO_ERROR_INVALID_PARAMETER);
 						free(name);
