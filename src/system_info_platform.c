@@ -300,7 +300,7 @@ int system_info_get_sms_supported(system_info_key_e key, system_info_data_type_e
 
 int system_info_get_cbs_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	return system_info_get_platform_bool("tizen.org/feature/network.telephony.cbs", (bool *)value);
+	return system_info_get_platform_bool("tizen.org/feature/network.telephony.sms.cbs", (bool *)value);
 }
 
 int system_info_get_graphics_hwaccel_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
