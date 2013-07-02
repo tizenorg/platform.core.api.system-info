@@ -73,32 +73,10 @@ system_info_s system_info_table[] = {
 },
 
 {
-	/**< Indicates whether the device supports FM radio */
-	SYSTEM_INFO_KEY_FMRADIO_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_fmradio_supported
-},
-
-{
 	/**< Indicates whether the device supports GPS */
 	SYSTEM_INFO_KEY_GPS_SUPPORTED,
 	SYSTEM_INFO_DATA_TYPE_BOOL,
 	system_info_get_gps_supported
-},
-
-{
-	/**< The type of the keyboard */
-	SYSTEM_INFO_KEY_KEYBOARD_TYPE,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_keyboard_type
-},
-
-{
-	/**< The maximum number of concurrent touch points supported
-	in the device */
-	SYSTEM_INFO_KEY_MULTI_POINT_TOUCH_COUNT,
-	SYSTEM_INFO_DATA_TYPE_INT,
-	system_info_get_multi_point_touch_count
 },
 
 {
@@ -113,20 +91,6 @@ system_info_s system_info_table[] = {
 	SYSTEM_INFO_KEY_NFC_SUPPORTED,
 	SYSTEM_INFO_DATA_TYPE_BOOL,
 	system_info_get_nfc_supported
-},
-
-{
-	/**< The supported version of the OpenGL ES */
-	SYSTEM_INFO_KEY_OPENGLES_VERSION,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_opengles_version
-},
-
-{
-	/**< The number of bits per pixel */
-	SYSTEM_INFO_KEY_SCREEN_BITS_PER_PIXEL,
-	SYSTEM_INFO_DATA_TYPE_INT,
-	system_info_get_screen_bits_per_pixel
 },
 
 {
@@ -165,13 +129,6 @@ system_info_s system_info_table[] = {
 },
 
 {
-	/**< Indicates whether the device supports wifi direct */
-	SYSTEM_INFO_KEY_WIFI_DIRECT_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_wifi_direct_supported
-},
-
-{
 	/**< The height of the screen DPI */
 	SYSTEM_INFO_KEY_SCREEN_DPI,
 	SYSTEM_INFO_DATA_TYPE_INT,
@@ -179,115 +136,10 @@ system_info_s system_info_table[] = {
 },
 
 {
-	/**< Indicates whether the device supports GPS */
-	SYSTEM_INFO_KEY_WPS_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_wps_supported
-},
-
-{
-	/**< Indicates whether the device supports USB host */
-	SYSTEM_INFO_KEY_USB_HOST_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_usb_host_supported
-},
-
-{
-	/**< Indicates whether the device supports USB accessory */
-	SYSTEM_INFO_KEY_USB_ACCESSORY_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_usb_accessory_supported
-},
-
-{
 	/**< The CORE CPU architecture of model */
 	SYSTEM_INFO_KEY_CORE_CPU_ARCH,
 	SYSTEM_INFO_DATA_TYPE_STRING,
 	system_info_get_core_cpu_arch
-},
-
-{
-	/**< The CORE FPU architecture of model */
-	SYSTEM_INFO_KEY_CORE_FPU_ARCH,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_core_fpu_arch
-},
-
-{
-	/**< Indicates whether the device supports front camera */
-	SYSTEM_INFO_KEY_FRONT_CAMERA_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_front_camera_supported
-},
-
-{
-	/**< Indicates whether the device supports front camera flash */
-	SYSTEM_INFO_KEY_FRONT_CAMERA_FLASH_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_front_camera_flash_supported
-},
-
-{
-	/**< Indicates whether the device supports back camera */
-	SYSTEM_INFO_KEY_BACK_CAMERA_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_back_camera_supported
-},
-
-{
-	/**< Indicates whether the device supports back camera flash */
-	SYSTEM_INFO_KEY_BACK_CAMERA_FLASH_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_back_camera_flash_supported
-},
-
-{
-	/**< Indicates whether the device supports HDMI */
-	SYSTEM_INFO_KEY_HDMI_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_hdmi_supported
-},
-
-{
-	/**< Indicates whether the device supports RCA */
-	SYSTEM_INFO_KEY_RCA_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_rca_supported
-},
-
-{
-	/**< Indicates whether the device supports SIP VOIP */
-	SYSTEM_INFO_KEY_SIP_VOIP_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_sip_voip_supported
-},
-
-{
-	/**< Indicates whether the device supports Microphone */
-	SYSTEM_INFO_KEY_MICROPHONE_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_microphone_supported
-},
-
-{
-	/**< Indicates whether the device supports stt */
-	SYSTEM_INFO_KEY_SPEECH_RECOGNITION_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_speech_recognition_supported
-},
-
-{
-	/**< Indicates whether the device supports barometer sensor */
-	SYSTEM_INFO_KEY_BAROMETER_SENSOR_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_barometer_sensor_supported
-},
-
-{
-	/**< The supported texture format of the OpenGL ES */
-	SYSTEM_INFO_KEY_OPENGLES_TEXTURE_FORMAT,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_opengles_texture_format
 },
 
 {
@@ -340,66 +192,10 @@ system_info_s system_info_table[] = {
 },
 
 {
-	/**< Indicates whether the device supports MMS */
-	SYSTEM_INFO_KEY_MMS_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_mms_supported
-},
-
-{
-	/**< Indicates whether the device supports SMS */
-	SYSTEM_INFO_KEY_SMS_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_sms_supported
-},
-
-{
-	/**< Indicates whether the device supports CBS */
-	SYSTEM_INFO_KEY_CBS_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_cbs_supported
-},
-
-{
-	/**< Indicates whether the device supports nfc-reserved push */
-	SYSTEM_INFO_KEY_NFC_RESERVED_PUSH_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_nfc_reserved_push_supported
-},
-
-{
 	/**< Indicates whether the device supports tethering */
 	SYSTEM_INFO_KEY_TETHERING_SUPPORTED,
 	SYSTEM_INFO_DATA_TYPE_BOOL,
 	system_info_get_tethering_supported
-},
-
-{
-	/**< Indicates whether the device supports tts */
-	SYSTEM_INFO_KEY_SPEECH_SYNTHESIS_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_speech_synthesis_supported
-},
-
-{
-	/**< Indicates whether the device supports graphics hardware acceleration */
-	SYSTEM_INFO_KEY_GRAPHICS_HWACCEL_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_graphics_hwaccel_supported
-},
-
-{
-	/**< Indicates whether the device supports auto rotation feature */
-	SYSTEM_INFO_KEY_FEATURE_AUTO_ROTATION_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_feature_auto_rotation_supported
-},
-
-{
-	/**< Indicates whether the device supports pinch zoom feature */
-	SYSTEM_INFO_KEY_FEATURE_PINCH_ZOOM_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_feature_pinch_zoom_supported
 },
 
 {

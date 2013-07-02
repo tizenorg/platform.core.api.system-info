@@ -112,11 +112,6 @@ int system_info_screen_init()
 	return 0;
 }
 
-int system_info_get_screen_bits_per_pixel(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	return system_info_get_platform_int("tizen.org/feature/screen.bpp", (int *)value);
-}
-
 int system_info_get_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
 	return system_info_get_platform_int("tizen.org/feature/screen.width", (int *)value);
@@ -130,16 +125,6 @@ int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e
 int system_info_get_screen_DPI(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
 	return system_info_get_platform_int("tizen.org/feature/screen.dpi", (int *)value);
-}
-
-int system_info_get_hdmi_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	return system_info_get_platform_bool("tizen.org/feature/screen.output.hdmi", (bool *)value);
-}
-
-int system_info_get_rca_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	return system_info_get_platform_bool("tizen.org/feature/screen.output.rca", (bool *)value);
 }
 
 int system_info_get_physical_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value)

@@ -46,55 +46,26 @@ typedef enum {
 typedef enum {
 	SYSTEM_INFO_KEY_MODEL, /**< The model of the device */
 	SYSTEM_INFO_KEY_TIZEN_VERSION, /**< The version of the Tizen API */
-	SYSTEM_INFO_KEY_CAMERA_COUNT, /**< The number of cameras in the device */
-	SYSTEM_INFO_KEY_KEYBOARD_TYPE, /**< The type of the keyboard */
-	SYSTEM_INFO_KEY_MULTI_POINT_TOUCH_COUNT, /**< The maximum number of concurrent touch points supported in the device */
-	SYSTEM_INFO_KEY_NETWORK_TYPE, /**< The supported network type */
-	SYSTEM_INFO_KEY_OPENGLES_VERSION, /**< The supported version of the OpenGL ES */
-	SYSTEM_INFO_KEY_SCREEN_BITS_PER_PIXEL, /**< The number of bits per pixel */
-	SYSTEM_INFO_KEY_SCREEN_HEIGHT, /**< The height of the screen in pixels */
-	SYSTEM_INFO_KEY_SCREEN_WIDTH, /**< The width of the screen in pixels */
 	SYSTEM_INFO_KEY_PLATFORM_NAME, /**< The name of platform */
 	SYSTEM_INFO_KEY_TIZEN_VERSION_NAME, /**< The name of tizen version  */
-	SYSTEM_INFO_KEY_SCREEN_DPI, /**< The width of the screen DPI */
+	SYSTEM_INFO_KEY_NETWORK_TYPE, /**< The supported network type */
+	SYSTEM_INFO_KEY_MANUFACTURER, /**< The manufacturer of the device */
 	SYSTEM_INFO_KEY_CORE_CPU_ARCH, /**< The CORE CPU architecture of model */
-	SYSTEM_INFO_KEY_CORE_FPU_ARCH, /**< The CORE FPU architecture of model */
-	SYSTEM_INFO_KEY_OPENGLES_TEXTURE_FORMAT, /**< The supported texture format of the OpenGL ES */
 	SYSTEM_INFO_KEY_CORE_CPU_FREQ, /**< The CORE CPU frequency of model */
-	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_HEIGHT, /**< The physical screen height in millimeters */
-	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_WIDTH, /**< The physical screen width in millimeters */
 	SYSTEM_INFO_KEY_BUILD_STRING, /**< The build string of platform binary */
 	SYSTEM_INFO_KEY_BUILD_DATE, /**< The build date of platform binary */
 	SYSTEM_INFO_KEY_BUILD_TIME, /**< The build time of platform binary */
+	SYSTEM_INFO_KEY_SCREEN_HEIGHT, /**< The height of the screen in pixels */
+	SYSTEM_INFO_KEY_SCREEN_WIDTH, /**< The width of the screen in pixels */
+	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_HEIGHT, /**< The physical screen height in millimeters */
+	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_WIDTH, /**< The physical screen width in millimeters */
+	SYSTEM_INFO_KEY_SCREEN_DPI, /**< The width of the screen DPI */
+	SYSTEM_INFO_KEY_CAMERA_COUNT, /**< The number of cameras in the device */
 	SYSTEM_INFO_KEY_BLUETOOTH_SUPPORTED, /**< Indicates whether the device supports Bluetooth */
-	SYSTEM_INFO_KEY_FMRADIO_SUPPORTED, /**< Indicates whether the device supports FM radio */
 	SYSTEM_INFO_KEY_GPS_SUPPORTED, /**< Indicates whether the device supports GPS */
 	SYSTEM_INFO_KEY_NFC_SUPPORTED, /**< Indicates whether the device supports NFC */
 	SYSTEM_INFO_KEY_WIFI_SUPPORTED, /**< Indicates whether the device supports Wi-Fi */
-	SYSTEM_INFO_KEY_WIFI_DIRECT_SUPPORTED, /**< Indicates whether the device supports Wi-Fi Direct */
-	SYSTEM_INFO_KEY_WPS_SUPPORTED, /**< Indicates whether the device supports WPS */
-	SYSTEM_INFO_KEY_USB_HOST_SUPPORTED, /**< Indicates whether the device supports USB host */
-	SYSTEM_INFO_KEY_USB_ACCESSORY_SUPPORTED, /**< Indicates whether the device supports USB accessory */
-	SYSTEM_INFO_KEY_FRONT_CAMERA_SUPPORTED, /**< Indicates whether the device supports front camera */
-	SYSTEM_INFO_KEY_FRONT_CAMERA_FLASH_SUPPORTED, /**< Indicates whether the device supports front camera flash */
-	SYSTEM_INFO_KEY_BACK_CAMERA_SUPPORTED, /**< Indicates whether the device supports back camera */
-	SYSTEM_INFO_KEY_BACK_CAMERA_FLASH_SUPPORTED, /**< Indicates whether the device supports back camera flash */
-	SYSTEM_INFO_KEY_HDMI_SUPPORTED, /**< Indicates whether the device supports HDMI */
-	SYSTEM_INFO_KEY_RCA_SUPPORTED, /**< Indicates whether the device supports RCA */
-	SYSTEM_INFO_KEY_SIP_VOIP_SUPPORTED, /**< Indicates whether the device supports SIP VOIP */
-	SYSTEM_INFO_KEY_MICROPHONE_SUPPORTED, /**< Indicates whether the device supports Microphone */
-	SYSTEM_INFO_KEY_SPEECH_RECOGNITION_SUPPORTED, /**< Indicates whether the device supports stt */
-	SYSTEM_INFO_KEY_BAROMETER_SENSOR_SUPPORTED, /**< Indicates whether the device supports barometer sensor */
-	SYSTEM_INFO_KEY_MMS_SUPPORTED, /**< Indicates whether the device supports MMS */
-	SYSTEM_INFO_KEY_SMS_SUPPORTED, /**< Indicates whether the device supports SMS */
-	SYSTEM_INFO_KEY_CBS_SUPPORTED, /**< Indicates whether the device supports CBS */
-	SYSTEM_INFO_KEY_NFC_RESERVED_PUSH_SUPPORTED, /**< Indicates whether the device supports nfc-reserved push */
 	SYSTEM_INFO_KEY_TETHERING_SUPPORTED, /**< Indicates whether the device supports tethering */
-	SYSTEM_INFO_KEY_SPEECH_SYNTHESIS_SUPPORTED, /**< Indicates whether the device supports tts */
-	SYSTEM_INFO_KEY_GRAPHICS_HWACCEL_SUPPORTED, /**< Indicates whether the device supports graphics hardware acceleration */
-	SYSTEM_INFO_KEY_FEATURE_AUTO_ROTATION_SUPPORTED, /**< Indicates whether the device supports native auto rotation feature */
-	SYSTEM_INFO_KEY_FEATURE_PINCH_ZOOM_SUPPORTED, /**< Indicates whether the device supports pinch zoom feature */
-	SYSTEM_INFO_KEY_MANUFACTURER, /**< The manufacturer of the device */
 } system_info_key_e;
 
 /**
