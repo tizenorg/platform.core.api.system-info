@@ -77,17 +77,10 @@ int system_info_get_platform_name(system_info_key_e key, system_info_data_type_e
 int system_info_get_tizen_version_name(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_core_cpu_arch(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_core_cpu_freq(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_bluetooth_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_camera_count(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_gps_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_network_type(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_nfc_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_screen_DPI(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_physical_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_physical_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_wifi_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_manufacturer(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_build_string(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_build_date(system_info_key_e key, system_info_data_type_e data_type, void **value);

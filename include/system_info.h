@@ -48,7 +48,6 @@ typedef enum {
 	SYSTEM_INFO_KEY_TIZEN_VERSION, /**< The version of the Tizen API */
 	SYSTEM_INFO_KEY_PLATFORM_NAME, /**< The name of platform */
 	SYSTEM_INFO_KEY_TIZEN_VERSION_NAME, /**< The name of tizen version  */
-	SYSTEM_INFO_KEY_NETWORK_TYPE, /**< The supported network type */
 	SYSTEM_INFO_KEY_MANUFACTURER, /**< The manufacturer of the device */
 	SYSTEM_INFO_KEY_CORE_CPU_ARCH, /**< The CORE CPU architecture of model */
 	SYSTEM_INFO_KEY_CORE_CPU_FREQ, /**< The CORE CPU frequency of model */
@@ -59,12 +58,6 @@ typedef enum {
 	SYSTEM_INFO_KEY_SCREEN_WIDTH, /**< The width of the screen in pixels */
 	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_HEIGHT, /**< The physical screen height in millimeters */
 	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_WIDTH, /**< The physical screen width in millimeters */
-	SYSTEM_INFO_KEY_SCREEN_DPI, /**< The width of the screen DPI */
-	SYSTEM_INFO_KEY_CAMERA_COUNT, /**< The number of cameras in the device */
-	SYSTEM_INFO_KEY_BLUETOOTH_SUPPORTED, /**< Indicates whether the device supports Bluetooth */
-	SYSTEM_INFO_KEY_GPS_SUPPORTED, /**< Indicates whether the device supports GPS */
-	SYSTEM_INFO_KEY_NFC_SUPPORTED, /**< Indicates whether the device supports NFC */
-	SYSTEM_INFO_KEY_WIFI_SUPPORTED, /**< Indicates whether the device supports Wi-Fi */
 	SYSTEM_INFO_KEY_TETHERING_SUPPORTED, /**< Indicates whether the device supports tethering */
 } system_info_key_e;
 

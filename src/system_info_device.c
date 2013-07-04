@@ -31,47 +31,6 @@
 #define LOG_TAG "CAPI_SYSTEM_INFO"
 
 #define TETHERING_INFO_FILE_PATH "/etc/config/connectivity/sysinfo-tethering.xml"
-#define CAMERA_INFO_FILE_PATH	"/usr/etc/mmfw_camcorder.ini"
-
-int system_info_get_camera_count(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	int *count;
-	char *devicecount;
-
-	count = (int *)value;
-	*count = 0;
-
-	if (system_info_ini_get_string(CAMERA_INFO_FILE_PATH, "videoinput:devicecount", &devicecount)
-			!= SYSTEM_INFO_ERROR_NONE) {
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	*count = atoi(devicecount);
-
-	free(devicecount);
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_bluetooth_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	return system_info_get_platform_bool("tizen.org/feature/network.bluetooth", (bool *)value);
-}
-
-int system_info_get_gps_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	return system_info_get_platform_bool("tizen.org/feature/location.gps", (bool *)value);
-}
-
-int system_info_get_nfc_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	return system_info_get_platform_bool("tizen.org/feature/network.nfc", (bool *)value);
-}
-
-int system_info_get_wifi_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	return system_info_get_platform_bool("tizen.org/feature/network.wifi", (bool *)value);
-}
 
 int system_info_get_manufacturer(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {

@@ -122,11 +122,6 @@ int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e
 	return system_info_get_platform_int("tizen.org/feature/screen.height", (int *)value);
 }
 
-int system_info_get_screen_DPI(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	return system_info_get_platform_int("tizen.org/feature/screen.dpi", (int *)value);
-}
-
 int system_info_get_physical_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
 	int *height;

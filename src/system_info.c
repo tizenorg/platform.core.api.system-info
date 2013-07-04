@@ -59,41 +59,6 @@ system_info_s system_info_table[] = {
 },
 
 {
-	/**< Indicates whether the device supports Bluetooth */
-	SYSTEM_INFO_KEY_BLUETOOTH_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_bluetooth_supported
-},
-
-{
-	/**< The number of cameras in the device */
-	SYSTEM_INFO_KEY_CAMERA_COUNT,
-	SYSTEM_INFO_DATA_TYPE_INT,
-	system_info_get_camera_count
-},
-
-{
-	/**< Indicates whether the device supports GPS */
-	SYSTEM_INFO_KEY_GPS_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_gps_supported
-},
-
-{
-	/**< The supported network type */
-	SYSTEM_INFO_KEY_NETWORK_TYPE,
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	system_info_get_network_type
-},
-
-{
-	/**< Indicates whether the device supports NFC */
-	SYSTEM_INFO_KEY_NFC_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_nfc_supported
-},
-
-{
 	/**< The height of the screen in pixels */
 	SYSTEM_INFO_KEY_SCREEN_HEIGHT,
 	SYSTEM_INFO_DATA_TYPE_INT,
@@ -108,13 +73,6 @@ system_info_s system_info_table[] = {
 },
 
 {
-	 /**< Indicates whether the device supports Wi-Fi */
-	SYSTEM_INFO_KEY_WIFI_SUPPORTED,
-	SYSTEM_INFO_DATA_TYPE_BOOL,
-	system_info_get_wifi_supported
-},
-
-{
 	/**< The Name of the Platform */
 	SYSTEM_INFO_KEY_PLATFORM_NAME,
 	SYSTEM_INFO_DATA_TYPE_STRING,
@@ -126,13 +84,6 @@ system_info_s system_info_table[] = {
 	SYSTEM_INFO_KEY_TIZEN_VERSION_NAME,
 	SYSTEM_INFO_DATA_TYPE_STRING,
 	system_info_get_tizen_version_name
-},
-
-{
-	/**< The height of the screen DPI */
-	SYSTEM_INFO_KEY_SCREEN_DPI,
-	SYSTEM_INFO_DATA_TYPE_INT,
-	system_info_get_screen_DPI
 },
 
 {
