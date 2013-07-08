@@ -1,0 +1,8 @@
+Change-Id: If931f9059ee982c3f1bca2e5563fac5e1ff168a5
+Code-Review+2: Ryan Ware <ware@linux.intel.com>
+Verified+1: Ryan Ware <ware@linux.intel.com>
+Submitted-by: Ryan Ware <ware@linux.intel.com>
+Submitted-at: Mon, 08 Jul 2013 10:08:26 -0700
+Reviewed-on: https://review.tizen.org/gerrit/4397
+Project: platform/core/api/system-info
+Branch: refs/heads/tizen
