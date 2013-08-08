@@ -205,7 +205,7 @@ int system_info_get_tizen_version(system_info_key_e key, system_info_data_type_e
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	} else {
 		while (fgets(str, MAXBUFSIZE, info)) {
-			if (strcasestr(str, "VERSION_ID")) {
+			if (strcasestr(str, "VERSION")) {
 				name = strchr(str, '=');
 				name += 2;
 				tmpStrlen = strlen(name);
@@ -246,7 +246,7 @@ int system_info_get_platform_name(system_info_key_e key, system_info_data_type_e
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	} else {
 		while (fgets(str, MAXBUFSIZE, info)) {
-			if (strcasestr(str, "NAME")) {
+			if (strcasestr(str, "PRETTY_NAME")) {
 				name = strchr(str, '=');
 				name += 2;
 				tmpStrlen = strlen(name);
@@ -291,8 +291,8 @@ int system_info_get_tizen_version_name(system_info_key_e key, system_info_data_t
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	} else {
 		while (fgets(str, MAXBUFSIZE, info)) {
-			if (strcasestr(str, "VERSION")) {
-				name = strchr(str, ',');
+			if (strcasestr(str, "VERSION_ID")) {
+				name = strchr(str, '=');
 				name += 2;
 				tmpStrlen = strlen(name);
 
@@ -383,6 +383,9 @@ int system_info_get_core_cpu_arch(system_info_key_e key, system_info_data_type_e
 				} else if (!(strncmp("x86", name+2, strlen("x86")))) {
 					strncpy(tmpStr, name+2, strlen("x86"));
 					tmpStr[strlen("x86")] = '\0';
+				} else if (!(strncmp("x86_64", name+2, strlen("x86_64")))) {
+					strncpy(tmpStr, name+2, strlen("x86_64"));
+					tmpStr[strlen("x86_64")] = '\0';
 				}
 			} else
 				continue;
@@ -398,7 +401,6 @@ int system_info_get_core_cpu_arch(system_info_key_e key, system_info_data_type_e
 		}
 
 		CORE_CPU_ARCH = strdup(tmpStr);
-
 		if (CORE_CPU_ARCH == NULL) {
 			LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
 			fclose(cpuinfo);
@@ -426,7 +428,7 @@ int system_info_get_core_fpu_arch(system_info_key_e key, system_info_data_type_e
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	} else {
 		/* The target and the emulator uses the field "Features" and "flags" in /proc/cpuinfo */
-		if (system_info_get_system_info_model_type() != SYSTEM_INFO_MODEL_TYPE_EMULATOR)
+		if (system_info_get_system_info_model_type() == SYSTEM_INFO_MODEL_TYPE_EMULATOR)
 			snprintf(tmpStr, strlen("Features"), "Features");
 		else
 			snprintf(tmpStr, strlen("flags"), "flags");
@@ -438,6 +440,10 @@ int system_info_get_core_fpu_arch(system_info_key_e key, system_info_data_type_e
 					CORE_FPU_ARCH = strdup("vfpv3");
 				else if (strstr(name+2, "vfpv2"))
 					CORE_FPU_ARCH = strdup("vfpv2");
+                else if (strstr(name+2, "sse4_2"))
+					CORE_FPU_ARCH = strdup("sse4_2");
+                else if (strstr(name+2, "sse4_1"))
+					CORE_FPU_ARCH = strdup("sse4_1");
 				else if (strstr(name+2, "ssse3"))
 					CORE_FPU_ARCH = strdup("ssse3");
 				else if (strstr(name+2, "sse3"))
