@@ -1,0 +1,9 @@
+Code-Review+2: Auke Kok <auke-jan.h.kok@intel.com>
+Code-Review+1: Rusty Lynch <rusty.lynch@intel.com>
+Code-Review+1: Xavier Roche <xavier.roche@eurogiciel.fr>
+Verified+1: Xavier Roche <xavier.roche@eurogiciel.fr>
+Submitted-by: Anas Nashif <anas.nashif@intel.com>
+Submitted-at: Wed, 14 Aug 2013 09:53:29 -0700
+Reviewed-on: https://review.tizen.org/gerrit/7853
+Project: platform/core/api/system-info
+Branch: refs/heads/tizen
