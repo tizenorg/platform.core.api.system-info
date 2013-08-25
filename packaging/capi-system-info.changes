@@ -1,3 +1,6 @@
+* Sun Aug 25 2013 Chengwei Yang <chengwei.yang@intel.com>
+- Remove debian packaging stuff
+
 * Wed Jun 05 2013 Baptiste DURAND <baptiste.durand@eurogiciel.fr> accepted/tizen/20130604.182843@6aa8b00
 - remove hardcoded lib path
 
