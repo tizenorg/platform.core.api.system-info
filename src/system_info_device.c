@@ -487,7 +487,7 @@ int system_info_get_nfc_supported(system_info_key_e key, system_info_data_type_e
 
 	supported = (bool *)value;
 
-	if (NET_NFC_OK == net_nfc_is_supported(&nfc_supported))
+	if (NET_NFC_OK == net_nfc_client_is_nfc_supported(&nfc_supported))
 		*supported = true;
 	else
 		*supported = false;
