@@ -1,3 +1,17 @@
+* Mon Sep 16 2013 Anas Nashif <anas.nashif@intel.com> 2.2_release@38abaa2
+- remove unused enum keys
+- change cbs key name
+- change logic to comapre xml file key and input key
+- remove API for external feature
+- apply visibility hidden, add constructor
+- Revert model-config
+- remove unused API
+- remove internal API
+- change logic to get camera count, screen width, screen height
+- remove API for external feature
+- refactoring for model-config
+- add new API for model-config
+
 * Sun Aug 25 2013 Chengwei Yang <chengwei.yang@intel.com>
 - Remove debian packaging stuff
 
