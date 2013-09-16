@@ -23,15 +23,25 @@ extern "C"
 {
 #endif
 
+#ifndef API
+#define API __attribute__ ((visibility("default")))
+#endif
+
 #define INFO_FILE_PATH "/etc/info.ini"
 #define OS_RELEASE_FILE_PATH "/etc/os-release"
 #define CPU_INFO_FILE_PATH "/proc/cpuinfo"
 #define CPU_INFO_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
-#define CMDLINE_PATH "/proc/cmdline"
-#define XML_FILE_PATH "/etc/config/sys-info.xml"
+#define CONFIG_FILE_PATH "/etc/config/model-config.xml"
 #define MAXBUFSIZE 512
 
-#define EXTERNAL_VCONF_PREFIX "db/externals/"
+#define PLATFORM_TAG	"platform"
+#define CUSTOM_TAG	"custom"
+#define INTERNAL_TAG	"internal"
+
+#define BOOL_TYPE	"bool"
+#define INT_TYPE	"int"
+#define DBL_TYPE	"double"
+#define STR_TYPE	"string"
 
 typedef enum {
 	SYSTEM_INFO_DATA_TYPE_STRING,
@@ -50,10 +60,11 @@ typedef enum {
 
 typedef int (*system_info_get_value_cb) (system_info_key_e key, system_info_data_type_e data_type, void **value);
 
-int system_info_init(void);
-int system_info_get_system_info_initialized(void);
-void system_info_set_system_info_initialized(int value);
 system_info_mode_type_e system_info_get_system_info_model_type(void);
+
+int system_info_ini_get_string(char *ini_file, char *key, char **output);
+int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value);
+int system_info_get_value_from_config_xml(char *feature_tag, const char *name_field, char *type_field, char **value);
 
 int system_info_vconf_get_value_int(const char *vconf_key, int *value);
 int system_info_vconf_get_value_bool(const char *vconf_key, bool *value);
@@ -65,64 +76,16 @@ int system_info_get_tizen_version(system_info_key_e key, system_info_data_type_e
 int system_info_get_platform_name(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_tizen_version_name(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_core_cpu_arch(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_core_fpu_arch(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_core_cpu_freq(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_opengles_texture_format(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_bluetooth_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_camera_count(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_fmradio_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_gps_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_cps_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_wps_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_keyboard_type(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_usb_host_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_usb_accessory_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_multi_point_touch_count(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_network_type(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_mobile_device_id(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_nfc_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_front_camera_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_front_camera_af_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_front_camera_flash_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_back_camera_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_back_camera_af_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_back_camera_flash_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_opengles_version(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_screen_bits_per_pixel(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_screen_DPI(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_hdmi_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_rca_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_physical_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_physical_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_tvout_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_wifi_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_wifi_direct_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_haptic_supproted(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_mobile_device_id(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_csc_sales_code(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_device_uuid(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_sip_voip_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_microphone_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_speech_recognition_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_speech_synthesis_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_barometer_sensor_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_manufacturer(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_cp_interface(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_build_string(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_build_date(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_build_time(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_mms_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_sms_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_cbs_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_tethering_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_nfc_reserved_push_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_graphics_hwaccel_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_feature_auto_rotation_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_feature_pinch_zoom_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
-
-int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value);
 #ifdef __cplusplus
 }
 #endif

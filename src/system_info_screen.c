@@ -18,12 +18,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
-#include <vconf.h>
 #include <dlog.h>
 
-#include <X11/X.h>
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrandr.h>
 
@@ -50,20 +47,13 @@ struct _progInfo {
 	XRRScreenResources *res;
 };
 
-static int RCA_SUPPORTED;
-static int HDMI_SUPPORTED;
-static int SCREEN_DPI;
-static int BITS_PER_PIXEL;
-static int SCREEN_WIDTH;
-static int SCREEN_HEIGHT;
 static int PHYSICAL_SCREEN_WIDTH;
 static int PHYSICAL_SCREEN_HEIGHT;
 int system_info_screen_initialized;
 
 int system_info_screen_init()
 {
-	int i, n;
-	XPixmapFormatValues *pmf = NULL;
+	int i;
 
 	memset(&g_pinfo, 0x0, sizeof(ProgInfo));
 
@@ -92,21 +82,6 @@ int system_info_screen_init()
 		return -1;
 	}
 
-	pmf = XListPixmapFormats(g_pinfo.dpy, &n);
-
-	if (!pmf) {
-		LOGE("XListPixmapFormats Failed");
-		XCloseDisplay(g_pinfo.dpy);
-		return -1;
-	}
-
-	for (i = 0; i < n; i++) {
-		if (BITS_PER_PIXEL < pmf[i].bits_per_pixel)
-			BITS_PER_PIXEL = pmf[i].bits_per_pixel;
-	}
-	XFree(pmf);
-	pmf = NULL;
-
 	for (i = 0; i < g_pinfo.res->noutput; i++) {
 		XRROutputInfo *output_info = XRRGetOutputInfo(g_pinfo.dpy, g_pinfo.res, g_pinfo.res->outputs[i]);
 		if (!output_info) {
@@ -122,69 +97,12 @@ int system_info_screen_init()
 			if (!crtc_info)
 				break;
 
-			SCREEN_WIDTH = crtc_info->width;
-			SCREEN_HEIGHT = crtc_info->height;
 			PHYSICAL_SCREEN_WIDTH = output_info->mm_width;
 			PHYSICAL_SCREEN_HEIGHT = output_info->mm_height;
 
 			XRRFreeCrtcInfo(crtc_info);
-		} else if (!strcmp(output_info->name, "HDMI1"))
-			HDMI_SUPPORTED = true;
-		XRRFreeOutputInfo(output_info);
-	}
-
-	if (BITS_PER_PIXEL == 0) {
-		LOGE("BIT PER PIXEL is Zero");
-		XCloseDisplay(g_pinfo.dpy);
-		return -1;
-	}
-
-	if (!SCREEN_WIDTH)
-		SCREEN_WIDTH = DisplayWidth(g_pinfo.dpy, DefaultScreen(g_pinfo.dpy));
-
-	if (!SCREEN_WIDTH) {
-		LOGE("SCREEN WIDTH is Zero");
-		XCloseDisplay(g_pinfo.dpy);
-		return -1;
-	}
-
-	if (!SCREEN_HEIGHT)
-		SCREEN_HEIGHT = DisplayHeight(g_pinfo.dpy, DefaultScreen(g_pinfo.dpy));
-
-	if (!SCREEN_HEIGHT) {
-		LOGE("SCREEN HEIGHT is Zero");
-		XCloseDisplay(g_pinfo.dpy);
-		return -1;
-	}
-
-	if (system_info_get_system_info_model_type() == SYSTEM_INFO_MODEL_TYPE_EMULATOR) {
-		FILE *cmdline;
-		char *dpi;
-		char str[MAXBUFSIZE];
-
-		cmdline = fopen(CMDLINE_PATH, "r");
-		if (NULL == cmdline) {
-			LOGE("cannot file open %s file!!!", CPU_INFO_FILE_PATH);
-			XCloseDisplay(g_pinfo.dpy);
-			return SYSTEM_INFO_ERROR_IO_ERROR;
-		} else {
-			while (fgets(str, MAXBUFSIZE, cmdline)) {
-				dpi = strstr(str, "dpi=");
-				SCREEN_DPI = atoi(dpi+4) / 10;
-				break;
-			}
 		}
-		fclose(cmdline);
-
-	} else {
-		double dp, di;
-
-		/* diagonal size(logical) by pixel */
-		dp = sqrt(SCREEN_WIDTH*SCREEN_WIDTH+SCREEN_HEIGHT*SCREEN_HEIGHT);
-		/* diagonal size(physical) by inch */
-		di = sqrt(PHYSICAL_SCREEN_WIDTH*PHYSICAL_SCREEN_WIDTH + PHYSICAL_SCREEN_HEIGHT*PHYSICAL_SCREEN_HEIGHT) / 10 / 2.54;
-		/* DPI = PPI */
-		SCREEN_DPI = round(dp/di);
+		XRRFreeOutputInfo(output_info);
 	}
 
 	XCloseDisplay(g_pinfo.dpy);
@@ -194,43 +112,17 @@ int system_info_screen_init()
 	return 0;
 }
 
-int system_info_get_screen_bits_per_pixel(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	int *bpp;
-	int ret_val;
-
-	bpp = (int *)value;
-
-	if (0 == system_info_screen_initialized) {
-		ret_val = system_info_screen_init();
-		if (ret_val)
-			return ret_val;
-	}
-
-	*bpp = BITS_PER_PIXEL;
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
 int system_info_get_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	int *width;
-	int ret_val;
-
-	width = (int *)value;
-
-	if (0 == system_info_screen_initialized) {
-		ret_val = system_info_screen_init();
-		if (ret_val)
-			return ret_val;
-	}
-
-	*width = SCREEN_WIDTH;
-
-	return SYSTEM_INFO_ERROR_NONE;
+	return system_info_get_platform_int("tizen.org/feature/screen.width", (int *)value);
 }
 
 int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value)
+{
+	return system_info_get_platform_int("tizen.org/feature/screen.height", (int *)value);
+}
+
+int system_info_get_physical_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
 	int *height;
 	int ret_val;
@@ -243,82 +135,17 @@ int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e
 			return ret_val;
 	}
 
-	*height = SCREEN_HEIGHT;
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_screen_DPI(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	int *bpp;
-	int ret_val;
-
-	bpp = (int *)value;
-
-	if (0 == system_info_screen_initialized) {
-		ret_val = system_info_screen_init();
-		if (ret_val)
-			return ret_val;
-	}
-
-	*bpp = SCREEN_DPI;
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_hdmi_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	bool *supported;
-	int ret_val;
-
-	if (0 == system_info_screen_initialized) {
-		ret_val = system_info_screen_init();
-		if (ret_val)
-			return ret_val;
-	}
-
-	supported = (bool *)value;
-
-	*supported = HDMI_SUPPORTED;
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_rca_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	bool *supported;
-
-	supported = (bool *)value;
-
-	*supported = RCA_SUPPORTED;
-
-	return SYSTEM_INFO_ERROR_NONE;
-}
-
-int system_info_get_physical_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value)
-{
-	int *bpp;
-	int ret_val;
-
-	bpp = (int *)value;
-
-	if (0 == system_info_screen_initialized) {
-		ret_val = system_info_screen_init();
-		if (ret_val)
-			return ret_val;
-	}
-
-	*bpp = PHYSICAL_SCREEN_HEIGHT;
+	*height = PHYSICAL_SCREEN_HEIGHT;
 
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
 int system_info_get_physical_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	int *bpp;
+	int *width;
 	int ret_val;
 
-	bpp = (int *)value;
+	width = (int *)value;
 
 	if (0 == system_info_screen_initialized) {
 		ret_val = system_info_screen_init();
@@ -326,7 +153,7 @@ int system_info_get_physical_screen_width(system_info_key_e key, system_info_dat
 			return ret_val;
 	}
 
-	*bpp = PHYSICAL_SCREEN_WIDTH;
+	*width = PHYSICAL_SCREEN_WIDTH;
 
 	return SYSTEM_INFO_ERROR_NONE;
 }

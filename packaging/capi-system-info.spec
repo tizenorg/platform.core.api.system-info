@@ -1,43 +1,32 @@
-Name:       capi-system-info
-Summary:    A System Information library in SLP C API
-Version: 0.1.14
-Release:    0
-Group:      System/API
-License:    Apache-2.0 and IEFT RFC Collection
-Source0:    %{name}-%{version}.tar.gz
-Source1001: 	capi-system-info.manifest
+Name:           capi-system-info
+Version:        0.2.0
+Release:        0
+License:        Apache-2.0
+Summary:        A System Information library in SLP C API
+Group:          System/API
+Source0:        %{name}-%{version}.tar.gz
+Source1001:     capi-system-info.manifest
 BuildRequires:  cmake
-BuildRequires:  pkgconfig(dlog)
-BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(capi-base-common)
-BuildRequires:	pkgconfig(capi-media-sound-manager)
+BuildRequires:  pkgconfig(capi-media-sound-manager)
+BuildRequires:  pkgconfig(dlog)
+BuildRequires:  pkgconfig(iniparser)
+BuildRequires:  pkgconfig(libxml-2.0)
+BuildRequires:  pkgconfig(vconf)
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xi)
-BuildRequires:	pkgconfig(xrandr)
-BuildRequires:  pkgconfig(tapi)
-BuildRequires:	pkgconfig(haptic)
-BuildRequires:	pkgconfig(xproto)
-BuildRequires:	pkgconfig(openssl)
-BuildRequires:	pkgconfig(nfc)
-BuildRequires:	pkgconfig(location)
-BuildRequires:	pkgconfig(bluetooth-api)
-BuildRequires:	pkgconfig(mm-radio)
-BuildRequires:	pkgconfig(sensor)
-BuildRequires:	pkgconfig(gles11)
-BuildRequires:  pkgconfig(libxml-2.0)
+BuildRequires:  pkgconfig(xrandr)
 
 %description
 A System Information library in SLP C API
 
-
 %package devel
-Summary:  A System Information library in SLP C API (Development)
-Group:    Development/System
-Requires: %{name} = %{version}-%{release}
+Summary:        A System Information library in SLP C API (Development)
+Group:          Development/System
+Requires:       %{name} = %{version}
 
 %description devel
 %devel_desc
-
 
 %prep
 %setup -q
@@ -47,16 +36,12 @@ cp %{SOURCE1001} .
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 %cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 
-make %{?jobs:-j%jobs}
+make %{?_smp_mflags}
 
 %install
 %make_install
 mkdir -p %{buildroot}/etc
-cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
-
-mkdir -p %{buildroot}/etc/config
-cp -f configuration/sys-info.xml %{buildroot}/etc/config/sys-info.xml
-
+cp -f script/make_info_file.sh %{buildroot}%{_sysconfdir}/make_info_file.sh
 
 %post -p /sbin/ldconfig
 
@@ -65,10 +50,9 @@ cp -f configuration/sys-info.xml %{buildroot}/etc/config/sys-info.xml
 
 %files
 %manifest %{name}.manifest
-%license LICENSE.APLv2 LICENSE.RFC4122 
+%license LICENSE.APLv2
 %{_libdir}/libcapi-system-info.so.*
-%attr(0744,root,-) /etc/make_info_file.sh
-/etc/config/sys-info.xml
+%attr(0744,root,-) %{_sysconfdir}/make_info_file.sh
 %manifest system-info.manifest
 
 %files devel
