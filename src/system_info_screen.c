@@ -21,8 +21,10 @@
 
 #include <dlog.h>
 
+#ifdef X11_PLATFORM
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrandr.h>
+#endif
 
 #include <system_info.h>
 #include <system_info_private.h>
@@ -37,7 +39,16 @@ typedef struct _progInfo ProgInfo;
 
 /* globals */
 ProgInfo g_pinfo;
-
+#ifdef WAYLAND_PLATFORM
+struct _progInfo {
+        int *dpy;
+        int root;
+        int screen;
+        int event_base, error_base;
+        int major, minor;
+        int *res;
+};
+#else
 struct _progInfo {
 	Display *dpy;
 	Window root;
@@ -46,6 +57,7 @@ struct _progInfo {
 	int major, minor;
 	XRRScreenResources *res;
 };
+#endif
 
 static int PHYSICAL_SCREEN_WIDTH;
 static int PHYSICAL_SCREEN_HEIGHT;
@@ -55,6 +67,10 @@ int system_info_screen_init()
 {
 	int i;
 
+        #ifdef WAYLAND_PLATFORM
+	        LOGE("XOpenDisplay Failed");
+                return -1;
+        #else
 	memset(&g_pinfo, 0x0, sizeof(ProgInfo));
 
 	g_pinfo.dpy = XOpenDisplay(NULL);
@@ -62,7 +78,12 @@ int system_info_screen_init()
 		LOGE("XOpenDisplay Failed");
 		return -1;
 	}
+	#endif
 
+    #ifdef WAYLAND_PLATFORM
+	LOGE("XRRQuery Failed");
+	return -1;
+	#else
 	if (0 > g_pinfo.screen)
 		g_pinfo.screen = DefaultScreen(g_pinfo.dpy);
 	g_pinfo.root = RootWindow(g_pinfo.dpy, g_pinfo.screen);
@@ -73,15 +94,23 @@ int system_info_screen_init()
 		XCloseDisplay(g_pinfo.dpy);
 		return -1;
 	}
+    #endif
 
-	g_pinfo.res = XRRGetScreenResources(g_pinfo.dpy, g_pinfo.root);
-
+    #ifdef WAYLAND_PLATFORM
+    LOGE("XRRGetScreenResources Failed");
+    return -1; 
+    #else 
+	g_pinfo.res = XRRGetScreenResources(g_pinfo.dpy, g_pinfo.root); 
 	if (!g_pinfo.res) {
 		LOGE("XRRGetScreenResources Failed");
 		XCloseDisplay(g_pinfo.dpy);
 		return -1;
 	}
-
+    #endif
+	#ifdef WAYLAND_PLATFORM
+        LOGE("XRRGetOutputInfo Failed");
+	return -1;
+	#else
 	for (i = 0; i < g_pinfo.res->noutput; i++) {
 		XRROutputInfo *output_info = XRRGetOutputInfo(g_pinfo.dpy, g_pinfo.res, g_pinfo.res->outputs[i]);
 		if (!output_info) {
@@ -89,24 +118,23 @@ int system_info_screen_init()
 			XCloseDisplay(g_pinfo.dpy);
 			return -1;
 		}
-
 		/* find target lcd */
 		if (!strcmp(output_info->name, "LVDS1")) {
 			/* XRRCrtcInfo information */
 			XRRCrtcInfo *crtc_info = XRRGetCrtcInfo(g_pinfo.dpy, g_pinfo.res, output_info->crtc);
 			if (!crtc_info)
 				break;
-
 			PHYSICAL_SCREEN_WIDTH = output_info->mm_width;
 			PHYSICAL_SCREEN_HEIGHT = output_info->mm_height;
-
 			XRRFreeCrtcInfo(crtc_info);
 		}
 		XRRFreeOutputInfo(output_info);
 	}
+	  #endif
 
+    #ifndef WAYLAND_PLATFORM
 	XCloseDisplay(g_pinfo.dpy);
-
+    #endif
 	system_info_screen_initialized = 1;
 
 	return 0;
