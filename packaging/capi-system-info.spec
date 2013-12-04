@@ -1,3 +1,4 @@
+%bcond_without x
 Name:           capi-system-info
 Version:        0.2.0
 Release:        0
@@ -13,9 +14,13 @@ BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(vconf)
+%if %{without x}
+BuildRequires:  pkgconfig(ecore-wayland)
+%else
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xi)
 BuildRequires:  pkgconfig(xrandr)
+%endif
 
 %description
 A System Information library in SLP C API
@@ -36,6 +41,11 @@ cp %{SOURCE1001} .
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 %cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 
+%if %{without x}
+%cmake . -DWITH_WAYLAND=On
+%else
+%cmake . -DWITH_WAYLAND=Off
+%endif
 make %{?_smp_mflags}
 
 %install
