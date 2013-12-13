@@ -1,3 +1,5 @@
+%bcond_with x
+%bcond_with wayland
 Name:           capi-system-info
 Version:        0.2.0
 Release:        0
@@ -13,9 +15,14 @@ BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(vconf)
+%if %{with wayland}
+BuildRequires:  pkgconfig(ecore-wayland)
+%endif
+%if %{with x}
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xi)
 BuildRequires:  pkgconfig(xrandr)
+%endif
 
 %description
 A System Information library in SLP C API
@@ -33,6 +40,7 @@ Requires:       %{name} = %{version}
 cp %{SOURCE1001} .
 
 %build
+%cmake . -DENABLE_WAYLAND=TRUE
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 %cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 
