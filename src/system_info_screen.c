@@ -21,8 +21,10 @@
 
 #include <dlog.h>
 
+#ifndef WAYLAND_PLATFORM
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrandr.h>
+#endif
 
 #include <system_info.h>
 #include <system_info_private.h>
@@ -37,7 +39,16 @@ typedef struct _progInfo ProgInfo;
 
 /* globals */
 ProgInfo g_pinfo;
-
+#ifdef WAYLAND_PLATFORM
+struct _progInfo {
+        int *dpy;
+        int root;
+        int screen;
+        int event_base, error_base;
+        int major, minor;
+        int *res;
+};
+#else
 struct _progInfo {
 	Display *dpy;
 	Window root;
@@ -46,17 +57,22 @@ struct _progInfo {
 	int major, minor;
 	XRRScreenResources *res;
 };
-
+#endif
 static int PHYSICAL_SCREEN_WIDTH;
 static int PHYSICAL_SCREEN_HEIGHT;
 int system_info_screen_initialized;
 
 int system_info_screen_init()
 {
-	int i;
 
 	memset(&g_pinfo, 0x0, sizeof(ProgInfo));
-
+	#ifdef WAYLAND_PLATFORM
+	//In wayland environment, noting to do in this function, FIXME if necessary.
+	LOGE("In wayland environment, system_info_screen_init Failed");
+	system_info_screen_initialized = 1;
+		return -1;
+	#else
+	int i;
 	g_pinfo.dpy = XOpenDisplay(NULL);
 	if (NULL == g_pinfo.dpy) {
 		LOGE("XOpenDisplay Failed");
@@ -110,6 +126,7 @@ int system_info_screen_init()
 	system_info_screen_initialized = 1;
 
 	return 0;
+	#endif
 }
 
 int system_info_get_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value)

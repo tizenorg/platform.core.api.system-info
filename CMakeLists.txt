@@ -10,7 +10,12 @@ SET(PREFIX ${CMAKE_INSTALL_PREFIX})
 SET(INC_DIR include)
 INCLUDE_DIRECTORIES(${INC_DIR})
 
+IF(ENABLE_WAYLAND)
+    ADD_DEFINITIONS("-DWAYLAND_PLATFORM")
+SET(requires "dlog capi-base-common iniparser libxml-2.0")
+ELSE(ENABLE_WAYLAND)
 SET(requires "dlog capi-base-common xi xrandr iniparser libxml-2.0")
+ENDIF(ENABLE_WAYLAND)
 SET(pc_requires "capi-base-common")
 
 INCLUDE(FindPkgConfig)
