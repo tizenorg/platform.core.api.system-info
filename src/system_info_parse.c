@@ -51,7 +51,7 @@ int system_info_ini_get_string(char *ini_file, char *key, char **output)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	str = iniparser_getstr(ini, key);
+	str = iniparser_getstring(ini, key, NULL);
 
 	if (str == NULL) {
 		LOGE("NOT found %s(0x%08x)", key, SYSTEM_INFO_ERROR_IO_ERROR);
