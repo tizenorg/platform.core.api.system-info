@@ -10,7 +10,6 @@ Source0:        %{name}-%{version}.tar.gz
 Source1001:     capi-system-info.manifest
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(capi-base-common)
-BuildRequires:  pkgconfig(capi-media-sound-manager)
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  pkgconfig(libxml-2.0)
