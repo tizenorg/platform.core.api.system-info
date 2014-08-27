@@ -24,14 +24,15 @@ BuildRequires:  pkgconfig(xrandr)
 %endif
 
 %description
-A System Information library in SLP C API
-
+A System Information library in SLP C API package.
+ 
 %package devel
 Summary:        A System Information library in SLP C API (Development)
 Group:          Development/System
 Requires:       %{name} = %{version}
 
 %description devel
+A System Information library in SLP C API (Development) package.
 %devel_desc
 
 %prep
@@ -45,8 +46,7 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 %else
 %cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
 %endif
-
-make %{?_smp_mflags}
+%__make %{?_smp_mflags}
 
 %install
 %make_install
@@ -57,13 +57,11 @@ cp -f script/make_info_file.sh %{buildroot}%{_sysconfdir}/make_info_file.sh
 
 %postun -p /sbin/ldconfig
 
-
 %files
 %manifest %{name}.manifest
 %license LICENSE.APLv2
 %{_libdir}/libcapi-system-info.so.*
 %attr(0744,root,-) %{_sysconfdir}/make_info_file.sh
-%manifest system-info.manifest
 
 %files devel
 %manifest %{name}.manifest
