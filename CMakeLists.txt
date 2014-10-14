@@ -5,9 +5,6 @@ SET(external_plugin "${fw_name}-plugin")
 
 PROJECT(${fw_name})
 
-SET(CMAKE_INSTALL_PREFIX /usr)
-SET(PREFIX ${CMAKE_INSTALL_PREFIX})
-
 SET(INC_DIR include)
 INCLUDE_DIRECTORIES(${INC_DIR})
 
