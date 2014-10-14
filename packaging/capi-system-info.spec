@@ -50,8 +50,8 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 
 %install
 %make_install
-mkdir -p %{buildroot}%{_bindir}
-cp -f script/make_info_file.sh %{buildroot}%{_bindir}/make_info_file.sh
+mkdir -p %{buildroot}%{_sysconfdir}
+cp -f script/make_info_file.sh %{buildroot}%{_sysconfdir}/make_info_file.sh
 
 %post -p /sbin/ldconfig
 
