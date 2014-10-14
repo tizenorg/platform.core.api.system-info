@@ -4,9 +4,6 @@ SET(fw_name "capi-system-info")
 
 PROJECT(${fw_name})
 
-SET(CMAKE_INSTALL_PREFIX /usr)
-SET(PREFIX ${CMAKE_INSTALL_PREFIX})
-
 SET(INC_DIR include)
 INCLUDE_DIRECTORIES(${INC_DIR})
 
