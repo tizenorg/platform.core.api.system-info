@@ -50,8 +50,8 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 
 %install
 %make_install
-mkdir -p %{buildroot}/etc
-cp -f script/make_info_file.sh %{buildroot}%{_sysconfdir}/make_info_file.sh
+mkdir -p %{buildroot}%{_bindir}
+cp -f script/make_info_file.sh %{buildroot}%{_bindir}/make_info_file.sh
 
 %post -p /sbin/ldconfig
 
@@ -61,7 +61,7 @@ cp -f script/make_info_file.sh %{buildroot}%{_sysconfdir}/make_info_file.sh
 %manifest %{name}.manifest
 %license LICENSE.APLv2
 %{_libdir}/libcapi-system-info.so.*
-%attr(0744,root,-) %{_sysconfdir}/make_info_file.sh
+%attr(0744,root,-) %{_bindir}/make_info_file.sh
 
 %files devel
 %manifest %{name}.manifest

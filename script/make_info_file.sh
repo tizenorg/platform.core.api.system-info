@@ -1,19 +1,13 @@
-#! /bin/bash
+#!/bin/sh
 # make_info_file.sh : make /etc/info.ini
 #
 
-if [ $# != 2 ]; then
-        echo "Usage : make_info_file.sh [model] [build] "
-        exit
-fi
+. /etc/os-release
 
-MODEL=$1
-BUILD=$2
-
-cat >/etc/info.ini <<EOF
+cat <<EOF > /etc/info.ini
 [Version]
-Model=$MODEL;
-Build=$BUILD;
+Model=$PRETTY_NAME;
+Build=$BUILD_ID;
 [Build]
 Date=`date +%Y.%m.%d`;
 Time=`date +%H:%M:%S`;
