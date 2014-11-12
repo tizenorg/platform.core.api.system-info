@@ -1,20 +1,14 @@
-#! /bin/bash
+#!/bin/sh
 # make_info_file.sh : make /etc/info.ini
 #
 
-if [ $# != 2 ]; then
-        echo "Usage : make_info_file.sh [model] [build] "
-        exit
-fi
+. /etc/tizen-build.conf
 
-MODEL=$1
-BUILD=$2
-
-cat >/etc/info.ini <<EOF
+cat <<EOF > /etc/info.ini
 [Version]
-Model=$MODEL;
-Build=$BUILD;
+Model=$TZ_BUILD_RELEASE_NAME;
+Build=$TZ_BUILD_ID;
 [Build]
-Date=`date +%Y.%m.%d`;
-Time=`date +%H:%M:%S`;
+Date=$TZ_BUILD_DATE;
+Time=$TZ_BUILD_TIME;
 EOF
