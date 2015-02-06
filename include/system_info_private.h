@@ -32,16 +32,40 @@ extern "C"
 #define CPU_INFO_FILE_PATH "/proc/cpuinfo"
 #define CPU_INFO_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
 #define CONFIG_FILE_PATH "/etc/config/model-config.xml"
+#define SERIAL_PATH "/csa/imei/serialno.dat"
 #define MAXBUFSIZE 512
 
 #define PLATFORM_TAG	"platform"
-#define CUSTOM_TAG	"custom"
+#define CUSTOM_TAG		"custom"
 #define INTERNAL_TAG	"internal"
 
 #define BOOL_TYPE	"bool"
 #define INT_TYPE	"int"
 #define DBL_TYPE	"double"
 #define STR_TYPE	"string"
+
+#define BOARD_CONFIG	"board"
+
+/**
+ * @brief Enumeration of key for system information
+ */
+typedef enum {
+	SYSTEM_INFO_KEY_MODEL,                  /**< The model of the device */
+	SYSTEM_INFO_KEY_TIZEN_VERSION,          /**< The version of the Tizen API */
+	SYSTEM_INFO_KEY_PLATFORM_NAME,          /**< The name of platform */
+	SYSTEM_INFO_KEY_TIZEN_VERSION_NAME,     /**< The name of tizen version  */
+	SYSTEM_INFO_KEY_MANUFACTURER,           /**< The manufacturer of the device */
+	SYSTEM_INFO_KEY_CORE_CPU_ARCH,          /**< The CORE CPU architecture of model */
+	SYSTEM_INFO_KEY_CORE_CPU_FREQ,          /**< The CORE CPU frequency of model */
+	SYSTEM_INFO_KEY_BUILD_STRING,           /**< The build string of platform binary */
+	SYSTEM_INFO_KEY_BUILD_DATE,             /**< The build date of platform binary */
+	SYSTEM_INFO_KEY_BUILD_TIME,             /**< The build time of platform binary */
+	SYSTEM_INFO_KEY_SCREEN_HEIGHT,          /**< The height of the screen in pixels */
+	SYSTEM_INFO_KEY_SCREEN_WIDTH,           /**< The width of the screen in pixels */
+	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_HEIGHT, /**< The physical screen height in millimeters */
+	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_WIDTH,  /**< The physical screen width in millimeters */
+	SYSTEM_INFO_KEY_TETHERING_SUPPORTED,    /**< Indicates whether the device supports tethering */
+} system_info_key_e;
 
 typedef enum {
 	SYSTEM_INFO_DATA_TYPE_STRING,
@@ -86,6 +110,9 @@ int system_info_get_build_string(system_info_key_e key, system_info_data_type_e 
 int system_info_get_build_date(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_build_time(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_tethering_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
+
+int system_info_get_no_file(const char *key, void **value);
+
 #ifdef __cplusplus
 }
 #endif

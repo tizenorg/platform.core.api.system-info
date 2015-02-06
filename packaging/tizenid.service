@@ -1,0 +1,10 @@
+[Unit]
+Description=Making Tizen ID
+Requires=opt-usr.mount
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/tizen_id
+
+[Install]
+WantedBy=multi-user.target

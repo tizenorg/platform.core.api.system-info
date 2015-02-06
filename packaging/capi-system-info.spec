@@ -4,16 +4,18 @@ Name:           capi-system-info
 Version:        0.2.0
 Release:        0
 License:        Apache-2.0
-Summary:        A System Information library in SLP C API
+Summary:        A System Information library in Core API
 Group:          System/API
 Source0:        %{name}-%{version}.tar.gz
-Source1001:     capi-system-info.manifest
+Source1001:     %{name}.manifest
+Source2001:     tizenid.service
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(capi-base-common)
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  pkgconfig(libxml-2.0)
-BuildRequires:  pkgconfig(vconf)
+BuildRequires:  pkgconfig(openssl)
+BuildRequires:  pkgconfig(cryptsvc)
 %if %{with wayland}
 BuildRequires:  pkgconfig(ecore-wayland)
 %endif
@@ -24,16 +26,15 @@ BuildRequires:  pkgconfig(xrandr)
 %endif
 
 %description
-A System Information library in SLP C API package.
- 
+
+
 %package devel
-Summary:        A System Information library in SLP C API (Development)
-Group:          Development/System
-Requires:       %{name} = %{version}
+Summary:  A System Information library in Core API (Development)
+Group:    Development/System
+Requires: %{name} = %{version}-%{release}
 
 %description devel
-A System Information library in SLP C API (Development) package.
-%devel_desc
+
 
 %prep
 %setup -q
@@ -50,21 +51,30 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 
 %install
 %make_install
-mkdir -p %{buildroot}%{_bindir}
-cp -f script/make_info_file.sh %{buildroot}%{_bindir}/make_info_file.sh
+mkdir -p %{buildroot}/etc
+cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
+
+mkdir -p %{buildroot}%{_libdir}/systemd/system/multi-user.target.wants
+install -m 0644 %SOURCE2001 %{buildroot}%{_libdir}/systemd/system/tizenid.service
+ln -s ../tizenid.service %{buildroot}%{_libdir}/systemd/system/multi-user.target.wants/tizenid.service
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
+
 %files
 %manifest %{name}.manifest
 %license LICENSE.APLv2
 %{_libdir}/libcapi-system-info.so.*
-%attr(0744,root,-) %{_bindir}/make_info_file.sh
+%attr(0744,root,-) /etc/make_info_file.sh
+%{_bindir}/tizen_id
+%{_libdir}/systemd/system/tizenid.service
+%{_libdir}/systemd/system/multi-user.target.wants/tizenid.service
 
 %files devel
 %manifest %{name}.manifest
 %{_includedir}/system/system_info.h
+%{_includedir}/system/system_info_type.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libcapi-system-info.so
