@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 
 #include <dlog.h>
 
@@ -164,8 +165,8 @@ system_info_mode_type_e system_info_get_system_info_model_type(void)
 
 void __attribute__((constructor)) system_info_init(void)
 {
-	int ret;
-	char *str;
+	int ret, len, i;
+	char *str = NULL;
 
 	ret = system_info_get_platform_string("tizen.org/system/model_name", &str);
 
@@ -174,9 +175,19 @@ void __attribute__((constructor)) system_info_init(void)
 		return;
 	}
 
-	if (!strcmp(str, "Emulator"))
-				system_info_system_info_model_type = SYSTEM_INFO_MODEL_TYPE_EMULATOR;
-		else
+	if (!str) {
+		LOGE("Failed to get model name");
+		return;
+	}
+
+	len = strlen(str);
+	for (i = 0 ; i < len ; i++) {
+		str[i] = toupper(str[i]);
+	}
+
+	if (!strcmp(str, "EMULATOR"))
+		system_info_system_info_model_type = SYSTEM_INFO_MODEL_TYPE_EMULATOR;
+	else
 		system_info_system_info_model_type = SYSTEM_INFO_MODEL_TYPE_TARGET;
 
 	free(str);
@@ -228,26 +239,6 @@ int system_info_get_value(system_info_key_e key, system_info_data_type_e data_ty
 	return system_info_getter(key, system_info->data_type, value);
 }
 
-API int system_info_get_value_int(system_info_key_e key, int *value)
-{
-	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_INT, (void **)value);
-}
-
-API int system_info_get_value_bool(system_info_key_e key, bool *value)
-{
-	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_BOOL, (void **)value);
-}
-
-API int system_info_get_value_double(system_info_key_e key, double *value)
-{
-	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_DOUBLE, (void **)value);
-}
-
-API int system_info_get_value_string(system_info_key_e key, char **value)
-{
-	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_STRING, (void **)value);
-}
-
 API int system_info_get_platform_bool(const char *key, bool *value)
 {
 	int ret;
@@ -258,6 +249,8 @@ API int system_info_get_platform_bool(const char *key, bool *value)
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
 		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
@@ -287,6 +280,8 @@ API int system_info_get_platform_int(const char *key, int *value)
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
 		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
@@ -313,6 +308,8 @@ API int system_info_get_platform_double(const char *key, double *value)
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
 		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
@@ -336,7 +333,15 @@ API int system_info_get_platform_string(const char *key, char **value)
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
 		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_no_file(key, (void**)&string);
+	if (ret == 0) {
+		*value = string;
+		return SYSTEM_INFO_ERROR_NONE;
 	}
 
 	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, STR_TYPE, &string);
@@ -360,14 +365,15 @@ API int system_info_get_custom_bool(const char *key, bool *value)
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
 		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, BOOL_TYPE, &string);
 	if (ret) {
-		LOGI("cannot get %s", key);
-		*supported = false;
-		return SYSTEM_INFO_ERROR_NONE;
+		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		return ret;
 	}
 
 	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
@@ -390,14 +396,15 @@ API int system_info_get_custom_int(const char *key, int *value)
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
 		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, INT_TYPE, &string);
 	if (ret) {
-		LOGI("cannot get %s", key);
-		*ret_val = 0;
-		return SYSTEM_INFO_ERROR_NONE;
+		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		return ret;
 	}
 
 	*ret_val = atoi(string);
@@ -417,15 +424,16 @@ API int system_info_get_custom_double(const char *key, double *value)
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
 		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, DBL_TYPE, &string);
 	if (ret) {
-		LOGI("cannot get %s", key);
-		*ret_val = 0;
-	return SYSTEM_INFO_ERROR_NONE;
-}
+		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		return ret;
+	}
 
 	*ret_val = atof(string);
 
@@ -441,6 +449,8 @@ API int system_info_get_custom_string(const char *key, char **value)
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
 		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
