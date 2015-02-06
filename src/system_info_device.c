@@ -40,7 +40,7 @@ int system_info_get_manufacturer(system_info_key_e key, system_info_data_type_e 
 	if (manufacturer == NULL) {
 		LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
 		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
-    }
+	}
 
 	*value = manufacturer;
 
@@ -56,13 +56,13 @@ int system_info_get_tethering_supported(system_info_key_e key, system_info_data_
 	supported = (bool *)value;
 
 	if (access(TETHERING_INFO_FILE_PATH, R_OK)) {
-		*supported = false;
-		return SYSTEM_INFO_ERROR_NONE;
+			*supported = false;
+			return SYSTEM_INFO_ERROR_NONE;
 	}
 
 	if (system_info_get_value_from_xml(TETHERING_INFO_FILE_PATH, model, "tethering-support", &string)) {
-		LOGE("cannot get tethering-support info from %s!!!", TETHERING_INFO_FILE_PATH);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+			LOGE("cannot get tethering-support info from %s!!!", TETHERING_INFO_FILE_PATH);
+			return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))

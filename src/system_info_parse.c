@@ -51,7 +51,7 @@ int system_info_ini_get_string(char *ini_file, char *key, char **output)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	str = iniparser_getstring(ini, key, NULL);
+	str = iniparser_getstr(ini, key);
 
 	if (str == NULL) {
 		LOGE("NOT found %s(0x%08x)", key, SYSTEM_INFO_ERROR_IO_ERROR);
@@ -132,7 +132,7 @@ int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_fi
 							continue;
 						}
 
-							*value = strdup(string);
+						*value = strdup(string);
 						free(id);
 						free(string);
 						xmlFreeDoc(doc);
@@ -165,9 +165,9 @@ int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_fi
 							continue;
 						}
 
-							*value = strdup(string);
-							free(id);
-							free(string);
+						*value = strdup(string);
+						free(id);
+						free(string);
 						xmlFreeDoc(doc);
 						if (*value == NULL) {
 								LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
@@ -183,10 +183,10 @@ int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_fi
 		}
 	}
 
-		LOGE("cannot find %s field from %s file!!!", id_field, xml_file_path);
-		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
+	LOGE("cannot find %s field from %s file!!!", id_field, xml_file_path);
+	xmlFreeDoc(doc);
+	return SYSTEM_INFO_ERROR_IO_ERROR;
+}
 
 int system_info_get_value_from_config_xml(char *feature_tag, const char *name_field, char *type_field, char **value)
 {
@@ -194,7 +194,7 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	xmlNodePtr cur = NULL;
 	xmlNodePtr model_node = NULL;
 	xmlNode *cur_node = NULL;
-	char *name = NULL;
+	char *name = NULL, *p_name = NULL;
 	char *type = NULL;
 	char *string = NULL;
 
@@ -233,7 +233,7 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	if (model_node == NULL) {
 		LOGE("cannot find %s field from %s file!!!", name_field, CONFIG_FILE_PATH);
 		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 	}
 
 	if (model_node) {
@@ -244,8 +244,14 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 				name = (char *)xmlGetProp(cur_node, (const xmlChar*)"name");
 				type = (char *)xmlGetProp(cur_node, (const xmlChar*)"type");
 
-				if (!strncmp(name, name_field, strlen(name))) {
-					if (!strncmp(name, name_field, strlen(name_field))) {
+				p_name = strstr(name_field, "http://");
+				if (p_name && p_name == name_field)
+					p_name = (char *)name_field + strlen("http://");
+				else
+					p_name = (char *)name_field;
+
+				if (!strncmp(name, p_name, strlen(name))) {
+					if (!strncmp(name, p_name, strlen(p_name))) {
 						if (strncmp(type, type_field, strlen(type_field))) {
 							LOGE("INVALID_PARAMETER(0x%08x) : invalid output param", SYSTEM_INFO_ERROR_INVALID_PARAMETER);
 							free(name);
@@ -272,7 +278,7 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	if (!cur_node) {
 		LOGE("cannot find %s field from %s file!!!", name_field, CONFIG_FILE_PATH);
 		xmlFreeDoc(doc);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 	}
 
 	if (*value == NULL) {
