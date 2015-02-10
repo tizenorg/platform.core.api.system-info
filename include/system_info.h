@@ -19,6 +19,7 @@
 #define __TIZEN_SYSTEM_SYSTEM_INFO_H__
 
 #include "system_info_type.h"
+#include "system_info_private.h"
 
 #ifdef __cplusplus
 extern "C"
