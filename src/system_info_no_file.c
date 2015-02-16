@@ -80,14 +80,17 @@ int system_info_get_no_file(const char *key, void **value)
 	else
 		p_key = (char *)key;
 
-	if (!strncmp(p_key, "tizen.org/system/tizenid", strlen(p_key))) {
+	if (!strncmp(p_key, "tizen.org/system/tizenid", strlen(p_key)))
 		return get_tizenid((char **)value);
-	}
 
-	if (!strncmp(p_key, "tizen.org/system/build.date", strlen(p_key)) ||
-	    !strncmp(p_key, "tizen.org/system/build.string", strlen(p_key)) ||
-		!strncmp(p_key, "tizen.org/system/build.time", strlen(p_key)))
-		return system_info_get_platform_string(p_key, (char **)value);
+	if (!strncmp(p_key, "tizen.org/system/build.date", strlen(p_key)))
+		return system_info_ini_get_string(INFO_FILE_PATH, "build:date", (char **)value);
+
+	if (!strncmp(p_key, "tizen.org/system/build.string", strlen(p_key)))
+		return system_info_ini_get_string(INFO_FILE_PATH, "version:build", (char **)value);
+
+	if (!strncmp(p_key, "tizen.org/system/build.time", strlen(p_key)))
+		return system_info_ini_get_string(INFO_FILE_PATH, "build:time", (char **)value);
 
 	return -ENOENT;
 }
