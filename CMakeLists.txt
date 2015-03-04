@@ -2,6 +2,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET(fw_name "capi-system-info")
 SET(external_plugin "${fw_name}-plugin")
+SET(VERSION "0.2.0")
 
 PROJECT(${fw_name})
 
