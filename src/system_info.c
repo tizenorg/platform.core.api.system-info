@@ -338,7 +338,7 @@ API int system_info_get_platform_string(const char *key, char **value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	ret = system_info_get_no_file(key, (void**)&string);
+	ret = system_info_get_file(key, (void**)&string);
 	if (ret == 0) {
 		*value = string;
 		return SYSTEM_INFO_ERROR_NONE;

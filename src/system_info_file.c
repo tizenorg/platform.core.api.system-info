@@ -65,7 +65,7 @@ static int get_tizenid(char **value)
 	return 0;
 }
 
-int system_info_get_no_file(const char *key, void **value)
+int system_info_get_file(const char *key, void **value)
 {
 	char *p_key;
 
