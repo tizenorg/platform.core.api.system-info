@@ -34,43 +34,31 @@
 
 int system_info_get_manufacturer(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	char *manufacturer = NULL;
+	int ret;
+	char *manufacturer;
 
-	manufacturer = strdup("samsung");
-	if (manufacturer == NULL) {
-		LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
-		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
-	}
+	ret = system_info_get_platform_string(
+			"tizen.org/system/manufacturer",
+			&manufacturer);
+	if (ret == SYSTEM_INFO_ERROR_NONE)
+		*value = manufacturer;
 
-	*value = manufacturer;
-
-	return SYSTEM_INFO_ERROR_NONE;
+	return ret;
 }
 
 int system_info_get_tethering_supported(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
 	bool *supported;
-	char *string = NULL;
-	char *model = "default";
+	bool tethering;
+	int ret;
 
 	supported = (bool *)value;
 
-	if (access(TETHERING_INFO_FILE_PATH, R_OK)) {
-			*supported = false;
-			return SYSTEM_INFO_ERROR_NONE;
-	}
+	ret = system_info_get_platform_bool(
+			"tizen.org/feature/network.tethering",
+			&tethering);
+	if (ret == SYSTEM_INFO_ERROR_NONE)
+		*supported = tethering;
 
-	if (system_info_get_value_from_xml(TETHERING_INFO_FILE_PATH, model, "tethering-support", &string)) {
-			LOGE("cannot get tethering-support info from %s!!!", TETHERING_INFO_FILE_PATH);
-			return SYSTEM_INFO_ERROR_IO_ERROR;
-	}
-
-	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
-		*supported = true;
-	else
-		*supported = false;
-
-	free(string);
-
-	return SYSTEM_INFO_ERROR_NONE;
+	return ret;
 }
