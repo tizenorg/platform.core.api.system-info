@@ -1,5 +1,3 @@
-%bcond_with x
-%bcond_with wayland
 Name:           capi-system-info
 Version:        0.2.0
 Release:        0
@@ -16,14 +14,6 @@ BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(glib-2.0)
-%if %{with wayland}
-BuildRequires:  pkgconfig(ecore-wayland)
-%endif
-%if %{with x}
-BuildRequires:  pkgconfig(x11)
-BuildRequires:  pkgconfig(xi)
-BuildRequires:  pkgconfig(xrandr)
-%endif
 
 %description
 
@@ -47,15 +37,11 @@ cp %{SOURCE1001} .
 %define tizen_id_path /opt/home/root/tizenid
 
 %build
-%cmake . \
-%if !%{with x} && %{with wayland}
-		-DENABLE_WAYLAND=TRUE \
-%endif
-		-DCONFIG_FILE_PATH=%{config_file_path} \
-		-DINFO_FILE_PATH=%{info_file_path} \
-		-DOS_RELEASE_FILE_PATH=%{os_release_file_path} \
-		-DSERIAL_PATH=%{serial_path} \
-		-DTIZEN_ID_PATH=%{tizen_id_path}
+%cmake . -DCONFIG_FILE_PATH=%{config_file_path} \
+		 -DINFO_FILE_PATH=%{info_file_path} \
+		 -DOS_RELEASE_FILE_PATH=%{os_release_file_path} \
+		 -DSERIAL_PATH=%{serial_path} \
+		 -DTIZEN_ID_PATH=%{tizen_id_path}
 
 %__make %{?_smp_mflags}
 
