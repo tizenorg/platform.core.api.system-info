@@ -10,8 +10,8 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE(FindPkgConfig)
 pkg_check_modules(tizenid_pkgs REQUIRED
 		dlog
+		glib-2.0
 		openssl
-		cryptsvc
 )
 
 FOREACH(flag ${tizenid_pkgs_CFLAGS})

@@ -15,7 +15,7 @@ BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(openssl)
-BuildRequires:  pkgconfig(cryptsvc)
+BuildRequires:  pkgconfig(glib-2.0)
 %if %{with wayland}
 BuildRequires:  pkgconfig(ecore-wayland)
 %endif
@@ -80,6 +80,8 @@ ln -s ../tizenid.service %{buildroot}%{_libdir}/systemd/system/multi-user.target
 %license LICENSE.APLv2
 %{_libdir}/libcapi-system-info.so.*
 %attr(0744,root,-) /etc/make_info_file.sh
+
+#tizenid
 %{_bindir}/tizen_id
 %{_libdir}/systemd/system/tizenid.service
 %{_libdir}/systemd/system/multi-user.target.wants/tizenid.service
