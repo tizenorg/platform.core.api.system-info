@@ -29,7 +29,7 @@
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <dlog.h>
-#include <SecCryptoSvc.h>
+#include <glib.h>
 
 #ifdef LOG_TAG
 #undef LOG_TAG
@@ -154,7 +154,8 @@ static int store_tizen_id(char *id)
 static int make_tizen_id(void)
 {
 	char salt[KEY_MAX], pw_key[KEY_MAX];
-	char *id = NULL, *id_64 = NULL;
+	char *id = NULL;
+	gchar *id_64 = NULL;
 	int ret;
 
 	ret = get_salt_by_model(salt, sizeof(salt));
@@ -188,7 +189,7 @@ static int make_tizen_id(void)
 	id[KEY_MAX-1] = '\0';
 	_I("ID: (%s)", id);
 
-	id_64 = Base64Encoding(id, KEY_MAX);
+	id_64 = g_base64_encode((const guchar *)id, KEY_MAX);
 
 	ret = store_tizen_id(id_64);
 	if (ret < 0) {
@@ -202,7 +203,7 @@ out:
 	if (id)
 		free(id);
 	if (id_64)
-		free(id_64);
+		g_free(id_64);
 
 	return ret;
 }
