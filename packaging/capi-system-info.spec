@@ -40,13 +40,23 @@ Requires: %{name} = %{version}-%{release}
 %setup -q
 cp %{SOURCE1001} .
 
+%define config_file_path /etc/config/model-config.xml
+%define info_file_path /etc/info.ini
+%define os_release_file_path /etc/os-release
+%define serial_path /csa/imei/serialno.dat
+%define tizen_id_path /opt/home/root/tizenid
+
 %build
-MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
+%cmake . \
 %if !%{with x} && %{with wayland}
-%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER} -DENABLE_WAYLAND=TRUE
-%else
-%cmake . -DFULLVER=%{version} -DMAJORVER=${MAJORVER}
+		-DENABLE_WAYLAND=TRUE \
 %endif
+		-DCONFIG_FILE_PATH=%{config_file_path} \
+		-DINFO_FILE_PATH=%{info_file_path} \
+		-DOS_RELEASE_FILE_PATH=%{os_release_file_path} \
+		-DSERIAL_PATH=%{serial_path} \
+		-DTIZEN_ID_PATH=%{tizen_id_path}
+
 %__make %{?_smp_mflags}
 
 %install
