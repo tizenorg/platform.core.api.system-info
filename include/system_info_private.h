@@ -33,7 +33,6 @@ extern "C"
 
 #define PLATFORM_TAG	"platform"
 #define CUSTOM_TAG		"custom"
-#define INTERNAL_TAG	"internal"
 
 #define BOOL_TYPE	"bool"
 #define INT_TYPE	"int"

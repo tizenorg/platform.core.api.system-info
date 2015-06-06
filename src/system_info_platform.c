@@ -33,22 +33,22 @@
 
 int system_info_get_model(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	return system_info_ini_get_string(INFO_FILE_PATH, "version:model", (char **)value);
+	return system_info_get_platform_string("tizen.org/system/model_name", (char **)value);
 }
 
 int system_info_get_build_string(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	return system_info_ini_get_string(INFO_FILE_PATH, "version:build", (char **)value);
+	return system_info_get_platform_string("tizen.org/system/build.string", (char **)value);
 }
 
 int system_info_get_build_date(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	return system_info_ini_get_string(INFO_FILE_PATH, "build:date", (char **)value);
+	return system_info_get_platform_string("tizen.org/system/build.date", (char **)value);
 }
 
 int system_info_get_build_time(system_info_key_e key, system_info_data_type_e data_type, void **value)
 {
-	return system_info_ini_get_string(INFO_FILE_PATH, "build:time", (char **)value);
+	return system_info_get_platform_string("tizen.org/system/build.time", (char **)value);
 }
 
 int system_info_get_tizen_version(system_info_key_e key, system_info_data_type_e data_type, void **value)

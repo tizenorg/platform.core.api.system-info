@@ -1,5 +1,3 @@
-%bcond_with x
-%bcond_with wayland
 Name:           capi-system-info
 Version:        0.2.0
 Release:        0
@@ -16,14 +14,6 @@ BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(glib-2.0)
-%if %{with wayland}
-BuildRequires:  pkgconfig(ecore-wayland)
-%endif
-%if %{with x}
-BuildRequires:  pkgconfig(x11)
-BuildRequires:  pkgconfig(xi)
-BuildRequires:  pkgconfig(xrandr)
-%endif
 
 %description
 
@@ -50,9 +40,6 @@ cp %{SOURCE1001} .
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 cmake . -DCMAKE_INSTALL_PREFIX=/usr \
 		-DFULLVER=%{version} -DMAJORVER=${MAJORVER} \
-%if !%{with x} && %{with wayland}
-		-DENABLE_WAYLAND=TRUE \
-%endif
 		-DCONFIG_FILE_PATH=%{config_file_path} \
 		-DINFO_FILE_PATH=%{info_file_path} \
 		-DOS_RELEASE_FILE_PATH=%{os_release_file_path} \
