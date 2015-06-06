@@ -36,8 +36,6 @@
 #define SERIAL_TOK_DELIMITER ","
 #define BUF_MAX 256
 
-#define TIZEN_ID_PATH	"/opt/home/root/tizenid"
-
 static int get_tizenid(char **value)
 {
 	char id[BUF_MAX];

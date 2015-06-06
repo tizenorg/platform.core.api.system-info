@@ -43,9 +43,7 @@
 
 #define KEY_MAX 20
 
-#define TIZEN_ID_PATH		"/opt/home/root/tizenid"
 #define RANDOM_PATH			"/dev/random"
-#define MODEL_CONFIG_PATH	"/etc/config/model-config.xml"
 
 static int get_pw_key(char *pw, unsigned int len)
 {
@@ -90,9 +88,9 @@ static int get_salt_by_model(char *salt, unsigned int len)
 	if (!salt)
 		return -EINVAL;
 
-	fp = fopen(MODEL_CONFIG_PATH, "r");
+	fp = fopen(CONFIG_FILE_PATH, "r");
 	if (!fp) {
-		_E("Failed to open (%s)", MODEL_CONFIG_PATH);
+		_E("Failed to open (%s)", CONFIG_FILE_PATH);
 		return -ENOENT;
 	}
 

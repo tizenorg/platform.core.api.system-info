@@ -27,12 +27,8 @@ extern "C"
 #define API __attribute__ ((visibility("default")))
 #endif
 
-#define INFO_FILE_PATH "/etc/info.ini"
-#define OS_RELEASE_FILE_PATH "/etc/os-release"
 #define CPU_INFO_FILE_PATH "/proc/cpuinfo"
 #define CPU_INFO_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
-#define CONFIG_FILE_PATH "/etc/config/model-config.xml"
-#define SERIAL_PATH "/csa/imei/serialno.dat"
 #define MAXBUFSIZE 512
 
 #define PLATFORM_TAG	"platform"
