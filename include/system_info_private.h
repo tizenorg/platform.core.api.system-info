@@ -107,7 +107,7 @@ int system_info_get_build_date(system_info_key_e key, system_info_data_type_e da
 int system_info_get_build_time(system_info_key_e key, system_info_data_type_e data_type, void **value);
 int system_info_get_tethering_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 
-int system_info_get_no_file(const char *key, void **value);
+int system_info_get_file(const char *key, void **value);
 
 #ifdef __cplusplus
 }
