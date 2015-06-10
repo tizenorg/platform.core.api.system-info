@@ -37,10 +37,14 @@ cp %{SOURCE1001} .
 %define tizen_id_path /opt/home/root/tizenid
 
 %build
+MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
+
 %cmake . -DCONFIG_FILE_PATH=%{config_file_path} \
 		 -DINFO_FILE_PATH=%{info_file_path} \
 		 -DOS_RELEASE_FILE_PATH=%{os_release_file_path} \
 		 -DSERIAL_PATH=%{serial_path} \
+		 -DMAJORVER=${MAJORVER} \
+		 -DFULLVER=%{version} \
 		 -DTIZEN_ID_PATH=%{tizen_id_path}
 
 %__make %{?_smp_mflags}
