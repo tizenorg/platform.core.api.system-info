@@ -41,6 +41,29 @@ typedef enum {
 	SYSTEM_INFO_ERROR_PERMISSION_DENIED = TIZEN_ERROR_PERMISSION_DENIED, /**< No permission to use the API */
 } system_info_error_e;
 
+/**
+ * @internal
+ * @brief Enumeration of key for system information
+ */
+typedef enum {
+	SYSTEM_INFO_KEY_MODEL,                  /**< @internal The model of the device */
+	SYSTEM_INFO_KEY_TIZEN_VERSION,          /**< @internal The version of the Tizen API */
+	SYSTEM_INFO_KEY_PLATFORM_NAME,          /**< @internal The name of platform */
+	SYSTEM_INFO_KEY_TIZEN_VERSION_NAME,     /**< @internal The name of tizen version  */
+	SYSTEM_INFO_KEY_MANUFACTURER,           /**< @internal The manufacturer of the device */
+	SYSTEM_INFO_KEY_CORE_CPU_ARCH,          /**< @internal The CORE CPU architecture of model */
+	SYSTEM_INFO_KEY_CORE_CPU_FREQ,          /**< @internal The CORE CPU frequency of model */
+	SYSTEM_INFO_KEY_BUILD_STRING,           /**< @internal The build string of platform binary */
+	SYSTEM_INFO_KEY_BUILD_DATE,             /**< @internal The build date of platform binary */
+	SYSTEM_INFO_KEY_BUILD_TIME,             /**< @internal The build time of platform binary */
+	SYSTEM_INFO_KEY_SCREEN_HEIGHT,          /**< @internal The height of the screen in pixels */
+	SYSTEM_INFO_KEY_SCREEN_WIDTH,           /**< @internal The width of the screen in pixels */
+	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_HEIGHT, /**< @internal The physical screen height in millimeters */
+	SYSTEM_INFO_KEY_PHYSICAL_SCREEN_WIDTH,  /**< @internal The physical screen width in millimeters */
+	SYSTEM_INFO_KEY_TETHERING_SUPPORTED,    /**< @internal Indicates whether the device supports tethering */
+} system_info_key_e;
+
+
 
 /**
  * @}

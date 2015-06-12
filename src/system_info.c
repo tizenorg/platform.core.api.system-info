@@ -239,6 +239,26 @@ int system_info_get_value(system_info_key_e key, system_info_data_type_e data_ty
 	return system_info_getter(key, system_info->data_type, value);
 }
 
+API int system_info_get_value_int(system_info_key_e key, int *value)
+{
+	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_INT, (void **)value);
+}
+
+API int system_info_get_value_bool(system_info_key_e key, bool *value)
+{
+	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_BOOL, (void **)value);
+}
+
+API int system_info_get_value_double(system_info_key_e key, double *value)
+{
+	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_DOUBLE, (void **)value);
+}
+
+API int system_info_get_value_string(system_info_key_e key, char **value)
+{
+	return system_info_get_value(key, SYSTEM_INFO_DATA_TYPE_STRING, (void **)value);
+}
+
 API int system_info_get_platform_bool(const char *key, bool *value)
 {
 	int ret;

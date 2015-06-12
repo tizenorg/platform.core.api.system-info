@@ -147,6 +147,29 @@ int system_info_get_custom_double(const char *key, double *value);
  */
 int system_info_get_custom_string(const char *key, char **value);
 
+/**
+ * @internal
+ * @brief Gets the integer value of the system information
+ */
+int system_info_get_value_int(system_info_key_e key, int *value);
+
+/**
+ * @internal
+ * @brief Gets the boolean value of the system information
+ */
+int system_info_get_value_bool(system_info_key_e key, bool *value);
+
+/**
+ * @internal
+ * @brief Gets the double value of the system information
+ */
+int system_info_get_value_double(system_info_key_e key, double *value);
+
+/**
+ * @internal
+ * @brief Gets the string value of the system information
+ */
+int system_info_get_value_string(system_info_key_e key, char **value);
 
 /**
  * @}
