@@ -54,9 +54,7 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 mkdir -p %{buildroot}/etc
 cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 
-mkdir -p %{buildroot}%{_libdir}/systemd/system/multi-user.target.wants
-install -m 0644 %SOURCE2001 %{buildroot}%{_libdir}/systemd/system/tizenid.service
-ln -s ../tizenid.service %{buildroot}%{_libdir}/systemd/system/multi-user.target.wants/tizenid.service
+%install_service multi-user.target.wants tizenid.service
 
 %post -p /sbin/ldconfig
 
@@ -71,8 +69,9 @@ ln -s ../tizenid.service %{buildroot}%{_libdir}/systemd/system/multi-user.target
 
 #tizenid
 %{_bindir}/tizen_id
-%{_libdir}/systemd/system/tizenid.service
-%{_libdir}/systemd/system/multi-user.target.wants/tizenid.service
+
+%{_unitdir}/tizenid.service
+%{_unitdir}/multi-user.target.wants/tizenid.service
 
 %files devel
 %manifest %{name}.manifest

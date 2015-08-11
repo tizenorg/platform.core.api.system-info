@@ -65,6 +65,7 @@ CONFIGURE_FILE(
     @ONLY
 )
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/packaging/tizenid.service DESTINATION lib/systemd/system)
 
 ADD_SUBDIRECTORY(src/tizenid)
 
