@@ -34,7 +34,7 @@ cp %{SOURCE1001} .
 %define info_file_path /etc/info.ini
 %define os_release_file_path /etc/os-release
 %define serial_path /csa/imei/serialno.dat
-%define tizen_id_path /opt/home/root/tizenid
+%define tizen_id_path /home/root/tizenid
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
