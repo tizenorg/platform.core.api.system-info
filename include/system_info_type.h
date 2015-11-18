@@ -39,6 +39,7 @@ typedef enum {
 	SYSTEM_INFO_ERROR_OUT_OF_MEMORY     = TIZEN_ERROR_OUT_OF_MEMORY, /**< Out of memory */
 	SYSTEM_INFO_ERROR_IO_ERROR          = TIZEN_ERROR_IO_ERROR,	 /**< An input/output error occurred when reading value from system */
 	SYSTEM_INFO_ERROR_PERMISSION_DENIED = TIZEN_ERROR_PERMISSION_DENIED, /**< No permission to use the API */
+	SYSTEM_INFO_ERROR_NOT_SUPPORTED     = TIZEN_ERROR_NOT_SUPPORTED,     /**< Not supported parameter (Since 3.0) */
 } system_info_error_e;
 
 /**
