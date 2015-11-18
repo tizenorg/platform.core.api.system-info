@@ -22,16 +22,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <dlog.h>
-
 #include <system_info.h>
 #include <system_info_private.h>
-
-#ifdef LOG_TAG
-#undef LOG_TAG
-#endif
-
-#define LOG_TAG "CAPI_SYSTEM_INFO"
 
 #define SERIAL_TOK_DELIMITER ","
 #define BUF_MAX 256
@@ -43,12 +35,12 @@ static int get_tizenid(char **value)
 
 	fp = fopen(TIZEN_ID_PATH, "r");
 	if (!fp) {
-		LOGE("Failed to open file (%s)", TIZEN_ID_PATH);
+		_E("Failed to open file (%s)", TIZEN_ID_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	if (fgets(id, sizeof(id), fp) == NULL) {
-		LOGE("Failed to get string (errno:%d)", errno);
+		_E("Failed to get string (errno:%d)", errno);
 		fclose(fp);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
@@ -56,7 +48,7 @@ static int get_tizenid(char **value)
 	fclose(fp);
 
 	if (strlen(id) == 0) {
-		LOGE("String length of id is 0");
+		_E("String length of id is 0");
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 

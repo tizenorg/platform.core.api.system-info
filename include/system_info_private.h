@@ -23,13 +23,18 @@ extern "C"
 {
 #endif
 
+#include <stdbool.h>
+#include <dlog.h>
+
 #ifndef API
 #define API __attribute__ ((visibility("default")))
 #endif
 
-#define CPU_INFO_FILE_PATH "/proc/cpuinfo"
-#define CPU_INFO_MAX_FREQ_PATH "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq"
-#define MAXBUFSIZE 512
+#undef LOG_TAG
+#define LOG_TAG "CAPI_SYSTEM_INFO"
+#define _D(fmt, args...)   SLOGD(fmt, ##args)
+#define _E(fmt, args...)   SLOGE(fmt, ##args)
+#define _I(fmt, args...)   SLOGI(fmt, ##args)
 
 #define PLATFORM_TAG	"platform"
 #define CUSTOM_TAG		"custom"

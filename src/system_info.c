@@ -21,17 +21,9 @@
 #include <unistd.h>
 #include <ctype.h>
 
-#include <dlog.h>
-
 #include <system_info.h>
 #include <system_info_private.h>
 #include <sys/utsname.h>
-
-#ifdef LOG_TAG
-#undef LOG_TAG
-#endif
-
-#define LOG_TAG "CAPI_SYSTEM_INFO"
 
 #define SYSTEM_INFO_MAX -1
 
@@ -64,7 +56,7 @@ API int system_info_get_platform_bool(const char *key, bool *value)
 	supported = (bool *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
-		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
@@ -72,7 +64,7 @@ API int system_info_get_platform_bool(const char *key, bool *value)
 
 	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, BOOL_TYPE, &string);
 	if (ret) {
-		LOGE("cannot get %s", key);
+		_E("cannot get %s", key);
 		return ret;
 	}
 
@@ -95,7 +87,7 @@ API int system_info_get_platform_int(const char *key, int *value)
 	ret_val = (int *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
-		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
@@ -103,7 +95,7 @@ API int system_info_get_platform_int(const char *key, int *value)
 
 	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, INT_TYPE, &string);
 	if (ret) {
-		LOGE("cannot get %s", key);
+		_E("cannot get %s", key);
 		return ret;
 	}
 
@@ -123,7 +115,7 @@ API int system_info_get_platform_double(const char *key, double *value)
 	ret_val = (double *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
-		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
@@ -131,7 +123,7 @@ API int system_info_get_platform_double(const char *key, double *value)
 
 	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, DBL_TYPE, &string);
 	if (ret) {
-		LOGE("cannot get %s", key);
+		_E("cannot get %s", key);
 		return ret;
 	}
 
@@ -148,7 +140,7 @@ API int system_info_get_platform_string(const char *key, char **value)
 	char *string = NULL;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
-		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
@@ -162,7 +154,7 @@ API int system_info_get_platform_string(const char *key, char **value)
 
 	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, STR_TYPE, &string);
 	if (ret) {
-		LOGE("cannot get %s", key);
+		_E("cannot get %s", key);
 		return ret;
 	}
 
@@ -180,7 +172,7 @@ API int system_info_get_custom_bool(const char *key, bool *value)
 	supported = (bool *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
-		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
@@ -188,7 +180,7 @@ API int system_info_get_custom_bool(const char *key, bool *value)
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, BOOL_TYPE, &string);
 	if (ret) {
-		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		_E("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
 		return ret;
 	}
 
@@ -211,7 +203,7 @@ API int system_info_get_custom_int(const char *key, int *value)
 	ret_val = (int *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
-		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
@@ -219,7 +211,7 @@ API int system_info_get_custom_int(const char *key, int *value)
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, INT_TYPE, &string);
 	if (ret) {
-		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		_E("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
 		return ret;
 	}
 
@@ -239,7 +231,7 @@ API int system_info_get_custom_double(const char *key, double *value)
 	ret_val = (double *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
-		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
@@ -247,7 +239,7 @@ API int system_info_get_custom_double(const char *key, double *value)
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, DBL_TYPE, &string);
 	if (ret) {
-		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		_E("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
 		return ret;
 	}
 
@@ -264,7 +256,7 @@ API int system_info_get_custom_string(const char *key, char **value)
 	char *string = NULL;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
-		LOGE("cannot find file %s!!!", CONFIG_FILE_PATH);
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
@@ -272,7 +264,7 @@ API int system_info_get_custom_string(const char *key, char **value)
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, STR_TYPE, &string);
 	if (ret) {
-		LOGE("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		_E("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
 		return ret;
 	}
 

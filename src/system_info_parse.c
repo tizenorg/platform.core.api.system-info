@@ -19,8 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <dlog.h>
-
 #include <system_info.h>
 #include <system_info_private.h>
 
@@ -29,12 +27,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
-
-#ifdef LOG_TAG
-#undef LOG_TAG
-#endif
-
-#define LOG_TAG "CAPI_SYSTEM_INFO"
 
 #define MODEL_CONFIG_TAG "model-config"
 
@@ -47,14 +39,14 @@ int system_info_ini_get_string(char *ini_file, char *key, char **output)
 	ini = iniparser_load(ini_file);
 
 	if (ini == NULL) {
-		LOGE("cannot file open %s file!!!", ini_file);
+		_E("cannot file open %s file!!!", ini_file);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	str = iniparser_getstring(ini, key, NULL);
 
 	if (str == NULL) {
-		LOGE("NOT found %s(0x%08x)", key, SYSTEM_INFO_ERROR_IO_ERROR);
+		_E("NOT found %s(0x%08x)", key, SYSTEM_INFO_ERROR_IO_ERROR);
 		iniparser_freedict(ini);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
@@ -62,7 +54,7 @@ int system_info_ini_get_string(char *ini_file, char *key, char **output)
 	tmp = strdup(str);
 
 	if (tmp == NULL) {
-		LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
+		_E("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
 		iniparser_freedict(ini);
 		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
 	}
@@ -86,13 +78,13 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	doc = xmlParseFile(CONFIG_FILE_PATH);
 
 	if (doc == NULL) {
-		LOGE("cannot file open %s file!!!", CONFIG_FILE_PATH);
+		_E("cannot file open %s file!!!", CONFIG_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	cur = xmlDocGetRootElement(doc);
 	if (cur == NULL) {
-		LOGE("empty document %s file!!!", CONFIG_FILE_PATH);
+		_E("empty document %s file!!!", CONFIG_FILE_PATH);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
@@ -103,7 +95,7 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	}
 
 	if (cur == NULL) {
-		LOGE("cannot find %s root element file!!!", MODEL_CONFIG_TAG);
+		_E("cannot find %s root element file!!!", MODEL_CONFIG_TAG);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
@@ -116,7 +108,7 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	}
 
 	if (model_node == NULL) {
-		LOGE("cannot find %s field from %s file!!!", name_field, CONFIG_FILE_PATH);
+		_E("cannot find %s field from %s file!!!", name_field, CONFIG_FILE_PATH);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 	}
@@ -138,7 +130,7 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 				if (!strncmp(name, p_name, strlen(name))) {
 					if (!strncmp(name, p_name, strlen(p_name))) {
 						if (strncmp(type, type_field, strlen(type_field))) {
-							LOGE("INVALID_PARAMETER(0x%08x) : invalid output param", SYSTEM_INFO_ERROR_INVALID_PARAMETER);
+							_E("INVALID_PARAMETER(0x%08x) : invalid output param", SYSTEM_INFO_ERROR_INVALID_PARAMETER);
 							free(name);
 							free(type);
 							xmlFreeDoc(doc);
@@ -161,13 +153,13 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	}
 
 	if (!cur_node) {
-		LOGE("cannot find %s field from %s file!!!", name_field, CONFIG_FILE_PATH);
+		_E("cannot find %s field from %s file!!!", name_field, CONFIG_FILE_PATH);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 	}
 
 	if (*value == NULL) {
-		LOGE("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
+		_E("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
 	}
