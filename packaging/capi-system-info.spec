@@ -63,7 +63,7 @@ cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 
 %files
 %manifest %{name}.manifest
-%license LICENSE.APLv2
+%license LICENSE
 %{_libdir}/libcapi-system-info.so.*
 %attr(0744,root,-) /etc/make_info_file.sh
 
