@@ -29,7 +29,7 @@
  * @section CAPI_SYSTEM_SYSTEM_INFO_MODULE_OVERVIEW Overview
  * The System Information API provides functions which can be used to obtain system information such as the device API and platform versions, device model number, supported device features, and device screen dimensions.
  * The available system information is stored in key/value pairs. Depending on their respective key, values can have different data types.
- * The keys for the platform functions are specified by the Tizen platform and can be seen <a href="../org.tizen.mobile.native.appprogramming/html/guide/system/sysinfo.htm">here.</a>
+ * The keys for the platform functions are specified by the Tizen platform and can be seen <a href="https://developer.tizen.org/development/guides/native-application/system/system-information">here.</a>
  * The keys for the custom functions are specified by OEM's and vendors. Developers should check with their OEM's Tizen OS support if they wish to use a custom functions.
  *
  */

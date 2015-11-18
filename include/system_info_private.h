@@ -39,8 +39,6 @@ extern "C"
 #define DBL_TYPE	"double"
 #define STR_TYPE	"string"
 
-#define BOARD_CONFIG	"board"
-
 typedef enum {
 	SYSTEM_INFO_DATA_TYPE_STRING,
 	SYSTEM_INFO_DATA_TYPE_INT,
@@ -48,37 +46,9 @@ typedef enum {
 	SYSTEM_INFO_DATA_TYPE_BOOL
 } system_info_data_type_e;
 
-/**
- * @brief Enumeration of Mode type
- */
-typedef enum {
-	SYSTEM_INFO_MODEL_TYPE_EMULATOR,
-	SYSTEM_INFO_MODEL_TYPE_TARGET
-} system_info_mode_type_e;
-
-typedef int (*system_info_get_value_cb) (system_info_key_e key, system_info_data_type_e data_type, void **value);
-
-system_info_mode_type_e system_info_get_system_info_model_type(void);
-
 int system_info_ini_get_string(char *ini_file, char *key, char **output);
-int system_info_get_value_from_xml(char *xml_file_path, char *model, char *id_field, char **value);
 int system_info_get_value_from_config_xml(char *feature_tag, const char *name_field, char *type_field, char **value);
 
-int system_info_get_model(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_tizen_version(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_platform_name(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_tizen_version_name(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_core_cpu_arch(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_core_cpu_freq(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_physical_screen_height(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_physical_screen_width(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_manufacturer(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_build_string(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_build_date(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_build_time(system_info_key_e key, system_info_data_type_e data_type, void **value);
-int system_info_get_tethering_supported(system_info_key_e key, system_info_data_type_e data_type, void **value);
 
 int system_info_get_file(const char *key, void **value);
 
