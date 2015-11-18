@@ -70,7 +70,6 @@ CONFIGURE_FILE(
     @ONLY
 )
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION ${LIB_INSTALL_DIR}/pkgconfig)
-INSTALL(FILES ${CMAKE_SOURCE_DIR}/packaging/tizenid.service DESTINATION lib/systemd/system)
 
 SET(PLUGIN_PC_NAME ${external_plugin})
 CONFIGURE_FILE(
