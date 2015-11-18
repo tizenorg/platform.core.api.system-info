@@ -180,8 +180,12 @@ API int system_info_get_custom_bool(const char *key, bool *value)
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, BOOL_TYPE, &string);
 	if (ret) {
-		_E("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
-		return ret;
+		_I("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		ret = external_get_value(CUSTOM_TAG, key, BOOL_TYPE, &string);
+		if (ret) {
+			_E("Cannot find key (%s) in the plugin (%d)", key, ret);
+			return ret;
+		}
 	}
 
 	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
@@ -211,8 +215,12 @@ API int system_info_get_custom_int(const char *key, int *value)
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, INT_TYPE, &string);
 	if (ret) {
-		_E("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
-		return ret;
+		_I("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		ret = external_get_value(CUSTOM_TAG, key, INT_TYPE, &string);
+		if (ret) {
+			_E("Cannot find key (%s) in the plugin (%d)", key, ret);
+			return ret;
+		}
 	}
 
 	*ret_val = atoi(string);
@@ -239,8 +247,12 @@ API int system_info_get_custom_double(const char *key, double *value)
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, DBL_TYPE, &string);
 	if (ret) {
-		_E("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
-		return ret;
+		_I("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		ret = external_get_value(CUSTOM_TAG, key, DBL_TYPE, &string);
+		if (ret) {
+			_E("Cannot find key (%s) in the plugin (%d)", key, ret);
+			return ret;
+		}
 	}
 
 	*ret_val = atof(string);
@@ -264,8 +276,12 @@ API int system_info_get_custom_string(const char *key, char **value)
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, STR_TYPE, &string);
 	if (ret) {
-		_E("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
-		return ret;
+		_I("cannot get %s info from %s!!!", key, CONFIG_FILE_PATH);
+		ret = external_get_value(CUSTOM_TAG, key, STR_TYPE, &string);
+		if (ret) {
+			_E("Cannot find key (%s) in the plugin (%d)", key, ret);
+			return ret;
+		}
 	}
 
 	*value = string;

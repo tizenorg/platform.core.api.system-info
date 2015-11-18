@@ -77,5 +77,6 @@ cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 %manifest %{name}.manifest
 %{_includedir}/system/system_info.h
 %{_includedir}/system/system_info_type.h
+%{_includedir}/plugin/system_info_intf.h
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libcapi-system-info.so

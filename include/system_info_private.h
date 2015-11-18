@@ -57,6 +57,8 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 
 int system_info_get_file(const char *key, void **value);
 
+int external_get_value(const char *tag, const char *key, const char *type, char **value);
+
 #ifdef __cplusplus
 }
 #endif

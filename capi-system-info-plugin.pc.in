@@ -1,0 +1,13 @@
+# Package Information for pkg-config
+
+prefix=@PREFIX@
+exec_prefix=/usr
+libdir=@LIB_INSTALL_DIR@
+includedir=/usr/include/plugin
+
+Name: @PLUGIN_PC_NAME@
+Description: capi-system-info plugin library
+Version: @VERSION@
+Requires:
+Cflags: -I${includedir}
+
