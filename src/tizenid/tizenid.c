@@ -67,7 +67,7 @@ static int get_pw_key(char *pw, unsigned int len)
 		return -errno;
 	}
 
-	for(i = 0 ; i < len - 1 ; i++) {
+	for (i = 0 ; i < len - 1 ; i++) {
 		if (i >= key_len)
 			break;
 		pw[i] = key[i];
@@ -108,9 +108,9 @@ static int get_salt_by_model(char *salt, unsigned int len)
 		if (start >= stop)
 			continue;
 
-		for(start += 1, i = 0; (start < stop) && (i < len-1) ; start++, i++) {
+		for (start += 1, i = 0; (start < stop) && (i < len-1) ; start++, i++)
 			salt[i] = start[i];
-		}
+
 		salt[i] = '\0';
 
 		break;
