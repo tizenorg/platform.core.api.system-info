@@ -208,9 +208,44 @@ out:
 	return ret;
 }
 
+static int check_tizen_id(void)
+{
+	struct stat buf;
+	int ret;
+	mode_t mode;
+
+	ret = lstat(TIZEN_ID_PATH, &buf);
+	if (ret != 0) {
+		ret = errno;
+		if (ret == ENOENT)
+			_I("Tizen ID does not exist");
+		else
+			_E("Failed to get info of Tizen ID (errno:%d)", ret);
+		return -ret;
+	}
+
+	mode = buf.st_mode & S_IFMT;
+	switch (mode) {
+	case S_IFREG:
+		_I("Tizen ID already exists");
+		return 0;
+	case S_IFLNK:
+		_E("Tizen ID is invalid (Symbolic link)");
+		break;
+	default:
+		_E("Tizen ID is invalid");
+		break;
+	}
+
+	if (unlink(TIZEN_ID_PATH) < 0)
+		_E("Failed to remove invalid tizenid (errno:%d)", errno);
+
+	return -ENOENT;
+}
+
 int main(int argc, char *argv[])
 {
-	if (access(TIZEN_ID_PATH, F_OK) == 0)
+	if (check_tizen_id() == 0)
 		return 0;
 
 	return make_tizen_id();
