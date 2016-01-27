@@ -1,0 +1,8 @@
+<manifest>
+	<request>
+		<domain name="_"/>
+	</request>
+	<assign>
+		<filesystem path="/etc/make_info_file.sh" exec_label="none" />
+	</assign>
+</manifest>
