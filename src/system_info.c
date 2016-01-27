@@ -27,6 +27,52 @@
 
 #define SYSTEM_INFO_MAX -1
 
+#ifdef SYSTEM_INFO_USE_TIZEN_PROP
+
+#include <dlfcn.h>
+#include "system_info_tizen_prop.h"
+#define TIZEN_PROP "/usr/lib/libsystem-info-tizen-prop.so"
+
+static struct tizen_prop *tp;
+
+API int system_info_init_tizen_prop(void)
+{
+	void *handle = NULL;
+	int ret;
+
+	if (access(TIZEN_PROP, F_OK) != 0) {
+		_E("Can't access tizen prop library");
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	handle = dlopen(TIZEN_PROP, RTLD_NOW);
+	if (!handle) {
+		_E("dlopen(%s) failed(%s)", TIZEN_PROP, dlerror());
+		ret = SYSTEM_INFO_ERROR_IO_ERROR;
+		goto out;
+	}
+
+	tp = (struct tizen_prop*)dlsym(handle, "tizen_prop_impl");
+	if(!tp) {
+		_E("dlsym failed(%s)", dlerror());
+		ret = SYSTEM_INFO_ERROR_IO_ERROR;
+		goto out;
+	}
+
+	ret = SYSTEM_INFO_ERROR_NONE;
+
+out:
+
+	return ret;
+}
+
+API struct tizen_prop* system_info_get_tizen_prop(void)
+{
+	return tp;
+}
+
+#endif
+
 API int system_info_get_value_int(system_info_key_e key, int *value)
 {
 	return SYSTEM_INFO_ERROR_NOT_SUPPORTED;

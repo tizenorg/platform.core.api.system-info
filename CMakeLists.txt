@@ -20,7 +20,7 @@ FOREACH(flag ${${fw_name}_CFLAGS})
     SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
 ENDFOREACH(flag)
 
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -fPIC -Wall -Werror -fvisibility=hidden")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS} -I${TIZEN_PROP_PATH} -fPIC -Wall -Werror -fvisibility=hidden")
 SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
 
 IF("${ARCH}" STREQUAL "arm")
@@ -34,6 +34,7 @@ ADD_DEFINITIONS("-DOS_RELEASE_FILE_PATH=\"${OS_RELEASE_FILE_PATH}\"")
 ADD_DEFINITIONS("-DSERIAL_PATH=\"${SERIAL_PATH}\"")
 ADD_DEFINITIONS("-DTIZEN_ID_PATH=\"${TIZEN_ID_PATH}\"")
 ADD_DEFINITIONS("-DLIBPATH=\"${LIB_INSTALL_DIR}\"")
+ADD_DEFINITIONS("-DSYSTEM_INFO_USE_TIZEN_PROP=\"${USE_TIZEN_PROP}\"")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=/usr/lib")
 
@@ -56,8 +57,17 @@ INSTALL(
         PATTERN "*_private.h" EXCLUDE
         PATTERN "*_doc.h" EXCLUDE
         PATTERN "*_intf.h" EXCLUDE
+		PATTERN "*_tizen_prop.h" EXCLUDE
         PATTERN "${INC_DIR}/*.h"
         )
+
+IF(${USE_TIZEN_PROP})
+	INSTALL(
+        DIRECTORY ${INC_DIR}/ DESTINATION include/system
+        FILES_MATCHING
+		PATTERN "*_tizen_prop.h"
+        )
+ENDIF(${USE_TIZEN_PROP})
 
 SET(PC_NAME ${fw_name})
 SET(PC_REQUIRED ${pc_requires})
