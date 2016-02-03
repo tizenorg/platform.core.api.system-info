@@ -28,6 +28,8 @@
 #define SERIAL_TOK_DELIMITER ","
 #define BUF_MAX 256
 
+#define ARRAY_SIZE(name) (sizeof(name)/sizeof(name[0]))
+
 static int get_tizenid(char **value)
 {
 	char id[BUF_MAX];
@@ -57,9 +59,36 @@ static int get_tizenid(char **value)
 	return 0;
 }
 
+static int get_build_date(char **value)
+{
+	return system_info_ini_get_string(INFO_FILE_PATH, "build:date", value);
+}
+
+static int get_build_str(char **value)
+{
+	return system_info_ini_get_string(INFO_FILE_PATH, "version:build", value);
+}
+
+static int get_build_time(char **value)
+{
+	return system_info_ini_get_string(INFO_FILE_PATH, "build:time", value);
+}
+
+struct system_info_file_key {
+	const char *key;
+	int (*get_value)(char **val);
+	system_info_type_e type;
+} info_file_key [] = {
+	{ "tizen.org/system/tizenid",      get_tizenid,    SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.date",   get_build_date, SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.string", get_build_str,  SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.time",   get_build_time, SYSTEM_INFO_STRING },
+};
+
 int system_info_get_file(const char *key, void **value)
 {
 	char *p_key;
+	int i, len;
 
 	if (!key || !value)
 		return -EINVAL;
@@ -70,17 +99,33 @@ int system_info_get_file(const char *key, void **value)
 	else
 		p_key = (char *)key;
 
-	if (!strncmp(p_key, "tizen.org/system/tizenid", strlen(p_key)))
-		return get_tizenid((char **)value);
-
-	if (!strncmp(p_key, "tizen.org/system/build.date", strlen(p_key)))
-		return system_info_ini_get_string(INFO_FILE_PATH, "build:date", (char **)value);
-
-	if (!strncmp(p_key, "tizen.org/system/build.string", strlen(p_key)))
-		return system_info_ini_get_string(INFO_FILE_PATH, "version:build", (char **)value);
-
-	if (!strncmp(p_key, "tizen.org/system/build.time", strlen(p_key)))
-		return system_info_ini_get_string(INFO_FILE_PATH, "build:time", (char **)value);
+	len = strlen(p_key) + 1;
+	for (i = 0 ; i < ARRAY_SIZE(info_file_key); i++)
+		if (!strncmp(p_key, info_file_key[i].key, len))
+			return info_file_key[i].get_value((char **)value);
 
 	return -ENOENT;
+}
+
+int system_info_get_type_file(const char *key)
+{
+	char *p_key;
+	int i, len;
+
+	if (!key)
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+
+	p_key = strstr(key, "http://");
+	if (p_key && p_key == key)
+		p_key = (char *)key + strlen("http://");
+	else
+		p_key = (char *)key;
+
+	len = strlen(p_key) + 1;
+	for (i = 0 ; i < ARRAY_SIZE(info_file_key); i++) {
+		if (!strncmp(p_key, info_file_key[i].key, len))
+			return info_file_key[i].type;
+	}
+
+	return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 }

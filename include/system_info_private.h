@@ -53,9 +53,11 @@ typedef enum {
 
 int system_info_ini_get_string(char *ini_file, char *key, char **output);
 int system_info_get_value_from_config_xml(char *feature_tag, const char *name_field, char *type_field, char **value);
-
+int system_info_get_type_from_config_xml(const char *feature_tag,
+		const char *name_field, char *type_field, size_t len);
 
 int system_info_get_file(const char *key, void **value);
+int system_info_get_type_file(const char *key);
 
 int external_get_value(const char *tag, const char *key, const char *type, char **value);
 
