@@ -288,3 +288,74 @@ API int system_info_get_custom_string(const char *key, char **value)
 
 	return SYSTEM_INFO_ERROR_NONE;
 }
+
+static int get_type_from_str(char *type)
+{
+	size_t len;
+
+	if (!type)
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+
+	len = strlen(type) + 1;
+	if (!strncmp(BOOL_TYPE, type, len))
+		return SYSTEM_INFO_BOOL;
+	if (!strncmp(INT_TYPE, type, len))
+		return SYSTEM_INFO_INT;
+	if (!strncmp(DBL_TYPE, type, len))
+		return SYSTEM_INFO_DOUBLE;
+	if (!strncmp(STR_TYPE, type, len))
+		return SYSTEM_INFO_STRING;
+
+	return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+}
+
+static int system_info_get_type(const char *key,
+		const char *tag, system_info_type_e *type)
+{
+	char type_str[16];
+	int ret;
+
+	if (!key || !tag || !type)
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+
+	if (access(CONFIG_FILE_PATH, R_OK)) {
+		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
+		if (errno == EPERM || errno == EACCES)
+			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	ret = system_info_get_type_from_config_xml(tag,
+			key, type_str, sizeof(type_str));
+	if (ret != SYSTEM_INFO_ERROR_NONE) {
+		if (!strncmp(tag, PLATFORM_TAG, sizeof(PLATFORM_TAG))) {
+			ret = system_info_get_type_file(key);
+			if (ret >= 0)
+				goto out;
+		}
+		_E("Failed to get type of key (%s)", key);
+		return ret;
+	}
+
+	ret = get_type_from_str(type_str);
+	if (ret < 0) {
+		_E("Invalid type (key:%s, type:%s)", key, type_str);
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+	}
+
+out:
+	*type = ret;
+
+	return SYSTEM_INFO_ERROR_NONE;
+}
+
+
+API int system_info_get_platform_type(const char *key, system_info_type_e *type)
+{
+	return system_info_get_type(key, PLATFORM_TAG, type);
+}
+
+API int system_info_get_custom_type(const char *key, system_info_type_e *type)
+{
+	return system_info_get_type(key, CUSTOM_TAG, type);
+}

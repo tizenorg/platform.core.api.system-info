@@ -167,3 +167,86 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
+
+int system_info_get_type_from_config_xml(const char *feature_tag,
+		const char *name_field, char *type_field, size_t len)
+{
+	xmlDocPtr doc;
+	xmlNodePtr cur, model_node;
+	xmlNode *cur_node;
+	char *name, *p_name, *type;
+	int ret;
+
+	doc = xmlParseFile(CONFIG_FILE_PATH);
+	if (!doc) {
+		_E("cannot file open %s file!!!", CONFIG_FILE_PATH);
+		return SYSTEM_INFO_ERROR_IO_ERROR;
+	}
+
+	cur = xmlDocGetRootElement(doc);
+	if (!cur) {
+		_E("empty document %s file!!!", CONFIG_FILE_PATH);
+		ret = SYSTEM_INFO_ERROR_IO_ERROR;
+		goto out;
+	}
+
+	for (cur_node = cur; cur_node ; cur_node = cur_node->next) {
+		if (!xmlStrcmp(cur->name, (const xmlChar*)MODEL_CONFIG_TAG))
+			break;
+	}
+	if (!cur_node) {
+		_E("cannot find %s root element file!!!", MODEL_CONFIG_TAG);
+		ret = SYSTEM_INFO_ERROR_IO_ERROR;
+		goto out;
+	}
+
+	cur = cur->xmlChildrenNode;
+
+	model_node = NULL;
+	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
+		if (!xmlStrcmp(cur_node->name, (const xmlChar*)feature_tag))
+			model_node = cur_node;
+	}
+	if (!model_node) {
+		_E("cannot find %s field from %s file!!!", name_field, CONFIG_FILE_PATH);
+		ret = SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+		goto out;
+	}
+
+	ret = SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+	cur = model_node->xmlChildrenNode;
+	for (cur_node = cur; cur_node ; cur_node = cur_node->next) {
+		if (cur_node->type != XML_ELEMENT_NODE)
+			continue;
+
+		name = (char *)xmlGetProp(cur_node, (const xmlChar*)"name");
+
+		p_name = strstr(name_field, "http://");
+		if (p_name && p_name == name_field)
+			p_name = (char *)name_field + strlen("http://");
+		else
+			p_name = (char *)name_field;
+
+		ret = strncmp(name, p_name, strlen(name) + 1);
+		xmlFree(name);
+		if (ret != 0)
+			continue;
+
+		type = (char *)xmlGetProp(cur_node, (const xmlChar*)"type");
+		if (!type) {
+			_E("Failed to get type of key (%s)", name_field);
+			ret = SYSTEM_INFO_ERROR_IO_ERROR;
+			goto out;
+		}
+
+		snprintf(type_field, len, "%s", type);
+		xmlFree(type);
+		ret = SYSTEM_INFO_ERROR_NONE;
+		break;
+	}
+
+out:
+	if (doc)
+		xmlFreeDoc(doc);
+	return ret;
+}
