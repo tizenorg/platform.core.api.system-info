@@ -172,6 +172,29 @@ int system_info_get_value_double(system_info_key_e key, double *value);
 int system_info_get_value_string(system_info_key_e key, char **value);
 
 /**
+ * @internal
+ * @brief It is not decided if it should be opened to public
+ */
+typedef enum {
+	SYSTEM_INFO_BOOL,
+	SYSTEM_INFO_INT,
+	SYSTEM_INFO_DOUBLE,
+	SYSTEM_INFO_STRING,
+} system_info_type_e;
+
+/**
+ * @internal
+ * @brief It is not decided if it should be opened to public
+ */
+int system_info_get_platform_type(const char *key, system_info_type_e *type);
+
+/**
+ * @internal
+ * @brief It is not decided if it should be opened to public
+ */
+int system_info_get_custom_type(const char *key, system_info_type_e *type);
+
+/**
  * @}
  */
 
