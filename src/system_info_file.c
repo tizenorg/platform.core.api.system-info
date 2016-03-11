@@ -74,15 +74,39 @@ static int get_build_time(char **value)
 	return system_info_ini_get_string(INFO_FILE_PATH, "build:time", value);
 }
 
+static int get_build_id(char **value)
+{
+	return system_info_ini_get_string(INFO_FILE_PATH, "build:id", value);
+}
+
+static int get_build_type(char **value)
+{
+	return system_info_ini_get_string(INFO_FILE_PATH, "build:type", value);
+}
+
+static int get_build_variant(char **value)
+{
+	return system_info_ini_get_string(INFO_FILE_PATH, "build:variant", value);
+}
+
+static int get_build_version_release(char **value)
+{
+	return system_info_ini_get_string(INFO_FILE_PATH, "version:release", value);
+}
+
 struct system_info_file_key {
 	const char *key;
 	int (*get_value)(char **val);
 	system_info_type_e type;
 } info_file_key [] = {
-	{ "tizen.org/system/tizenid",      get_tizenid,    SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.date",   get_build_date, SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.string", get_build_str,  SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.time",   get_build_time, SYSTEM_INFO_STRING },
+	{ "tizen.org/system/tizenid",       get_tizenid,       SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.date",    get_build_date,    SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.string",  get_build_str,     SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.time",    get_build_time,    SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.id",      get_build_id,      SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.type",    get_build_type,    SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.variant", get_build_variant, SYSTEM_INFO_STRING },
+	{ "tizen.org/system/build.version.release", get_build_version_release, SYSTEM_INFO_STRING }
 };
 
 int system_info_get_file(const char *key, void **value)
