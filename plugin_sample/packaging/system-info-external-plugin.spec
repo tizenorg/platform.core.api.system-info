@@ -3,7 +3,7 @@ Summary:	External plugin for System information library
 Version:	0.0.1
 Release:	1
 Group:		System/Libraries
-License:	Apache License, Version 2.0
+License:	Apache-2.0
 Source0:	%{name}-%{version}.tar.gz
 Source1001:	%{name}.manifest
 BuildRequires:	cmake
