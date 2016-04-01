@@ -98,7 +98,7 @@ struct system_info_file_key {
 	const char *key;
 	int (*get_value)(char **val);
 	system_info_type_e type;
-} info_file_key [] = {
+} info_file_key[] = {
 	{ "tizen.org/system/tizenid",       get_tizenid,       SYSTEM_INFO_STRING },
 	{ "tizen.org/system/build.date",    get_build_date,    SYSTEM_INFO_STRING },
 	{ "tizen.org/system/build.string",  get_build_str,     SYSTEM_INFO_STRING },
