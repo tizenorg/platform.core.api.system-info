@@ -8,8 +8,10 @@ TYPE=$(echo $TZ_BUILD_RELEASE_TYPE | tr '[:upper:]' '[:lower:]')
 
 RELEASE=$(echo $TZ_BUILD_ID | sed 's/[^0-9.]//g')
 
-BUILDID=$(sed -n '/BUILD_ID=/p' /etc/tizen-release)
-BUILDID=$(echo $BUILDID | sed 's/BUILD_ID=//g')
+DATE=$(echo $TZ_BUILD_DATE | awk -F"[_.]" '{ print $1 }')
+ID=$(echo $TZ_BUILD_ID | sed "s/$DATE.*//")
+ID=$(echo $ID | sed "s/[-_.]*$//")
+
 
 cat <<EOF > /etc/info.ini
 [Version]
@@ -21,5 +23,5 @@ Type=$TYPE;
 Date=$TZ_BUILD_DATE;
 Time=$TZ_BUILD_TIME;
 Variant=$TZ_BUILD_VARIANT;
-ID=$BUILDID;
+ID=$ID;
 EOF
