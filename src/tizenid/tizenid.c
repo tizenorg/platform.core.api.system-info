@@ -208,6 +208,40 @@ out:
 	return ret;
 }
 
+static int check_tizen_id_content(void)
+{
+	FILE *fp;
+	int ret;
+	char id[KEY_MAX] = {0, };
+
+	fp = fopen(TIZEN_ID_PATH, "r");
+	if (!fp) {
+		_E("Failed to open tizen id");
+		return -ENOMEM;
+	}
+
+	if (fgets(id, sizeof(id), fp) == NULL) {
+		if (errno == 0) {
+			_E("Invalid Tizen ID (empty)");
+			ret = -ENOENT;
+		} else {
+			_E("Failed to get tizen id (errno:%d)", errno);
+			ret = -errno;
+		}
+		fclose(fp);
+		return ret;
+	}
+
+	fclose(fp);
+
+	if (strlen(id) == 0) {
+		_E("Invalid Tizen ID (empty)");
+		return -ENOENT;
+	}
+
+	return 0;
+}
+
 static int check_tizen_id(void)
 {
 	struct stat buf;
@@ -227,6 +261,10 @@ static int check_tizen_id(void)
 	mode = buf.st_mode & S_IFMT;
 	switch (mode) {
 	case S_IFREG:
+		if (check_tizen_id_content() < 0) {
+			_I("Tizen ID is empty");
+			break;
+		}
 		_I("Tizen ID already exists");
 		return 0;
 	case S_IFLNK:
