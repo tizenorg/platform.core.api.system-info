@@ -25,12 +25,14 @@
 #include <system_info.h>
 #include <system_info_private.h>
 
-#define SERIAL_TOK_DELIMITER ","
+#define KEY_PREFIX "http://"
+
 #define BUF_MAX 256
+#define KEY_MAX 128
 
 #define ARRAY_SIZE(name) (sizeof(name)/sizeof(name[0]))
 
-static int get_tizenid(char **value)
+static int get_tizenid(char *val, size_t len)
 {
 	char id[BUF_MAX];
 	FILE *fp;
@@ -54,101 +56,59 @@ static int get_tizenid(char **value)
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
-	*value = strdup(id);
-
-	return 0;
-}
-
-static int get_build_date(char **value)
-{
-	return system_info_ini_get_string(INFO_FILE_PATH, "build:date", value);
-}
-
-static int get_build_str(char **value)
-{
-	return system_info_ini_get_string(INFO_FILE_PATH, "version:build", value);
-}
-
-static int get_build_time(char **value)
-{
-	return system_info_ini_get_string(INFO_FILE_PATH, "build:time", value);
-}
-
-static int get_build_id(char **value)
-{
-	return system_info_ini_get_string(INFO_FILE_PATH, "build:id", value);
-}
-
-static int get_build_type(char **value)
-{
-	return system_info_ini_get_string(INFO_FILE_PATH, "build:type", value);
-}
-
-static int get_build_variant(char **value)
-{
-	return system_info_ini_get_string(INFO_FILE_PATH, "build:variant", value);
-}
-
-static int get_build_version_release(char **value)
-{
-	return system_info_ini_get_string(INFO_FILE_PATH, "version:release", value);
+	snprintf(val, len, "%s", id);
+	return SYSTEM_INFO_ERROR_NONE;
 }
 
 struct system_info_file_key {
 	const char *key;
-	int (*get_value)(char **val);
+	int (*get_value)(char *val, size_t len);
 	system_info_type_e type;
 } info_file_key[] = {
-	{ "tizen.org/system/tizenid",       get_tizenid,       SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.date",    get_build_date,    SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.string",  get_build_str,     SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.time",    get_build_time,    SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.id",      get_build_id,      SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.type",    get_build_type,    SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.variant", get_build_variant, SYSTEM_INFO_STRING },
-	{ "tizen.org/system/build.version.release", get_build_version_release, SYSTEM_INFO_STRING }
+	{ "http://tizen.org/system/tizenid", get_tizenid, SYSTEM_INFO_STRING },
 };
 
-int system_info_get_file(const char *key, void **value)
+int system_info_get_file(const char *key, char *value, size_t len)
 {
-	char *p_key;
-	int i, len;
+	char p_key[KEY_MAX];
+	int i;
+	size_t p_len;
 
 	if (!key || !value)
-		return -EINVAL;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 
-	p_key = strstr(key, "http://");
-	if (p_key && p_key == key)
-		p_key = (char *)key + strlen("http://");
+	if (strstr(key, KEY_PREFIX) == key)
+		snprintf(p_key, sizeof(p_key), "%s", key);
 	else
-		p_key = (char *)key;
+		snprintf(p_key, sizeof(p_key), "%s%s", KEY_PREFIX, key);
 
-	len = strlen(p_key) + 1;
+	p_len = strlen(p_key) + 1;
 	for (i = 0 ; i < ARRAY_SIZE(info_file_key); i++)
-		if (!strncmp(p_key, info_file_key[i].key, len))
-			return info_file_key[i].get_value((char **)value);
+		if (!strncmp(p_key, info_file_key[i].key, p_len))
+			return info_file_key[i].get_value(value, len);
 
-	return -ENOENT;
+	return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 }
 
-int system_info_get_type_file(const char *key)
+int system_info_get_type_file(const char *key, system_info_type_e *type)
 {
-	char *p_key;
+	char p_key[KEY_MAX];
 	int i, len;
 
 	if (!key)
 		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 
-	p_key = strstr(key, "http://");
-	if (p_key && p_key == key)
-		p_key = (char *)key + strlen("http://");
+	if (strstr(key, KEY_PREFIX) == key)
+		snprintf(p_key, sizeof(p_key), "%s", key);
 	else
-		p_key = (char *)key;
+		snprintf(p_key, sizeof(p_key), "%s%s", KEY_PREFIX, key);
 
 	len = strlen(p_key) + 1;
 	for (i = 0 ; i < ARRAY_SIZE(info_file_key); i++) {
-		if (!strncmp(p_key, info_file_key[i].key, len))
-			return info_file_key[i].type;
+		if (strncmp(p_key, info_file_key[i].key, len))
+			continue;
+		*type = info_file_key[i].type;
+		return SYSTEM_INFO_ERROR_NONE;
 	}
 
 	return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
