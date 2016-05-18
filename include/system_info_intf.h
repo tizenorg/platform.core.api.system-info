@@ -36,6 +36,9 @@ typedef struct {
 	int (*get_value_external)(const char *tag,
 			const char *key, const char *type,
 			char *buf, unsigned int len);
+	int (*get_type_external)(const char *tag,
+			const char *key, char *buf, unsigned int len);
+
 } system_info_external_plugin_interface;
 
 #ifdef __cplusplus

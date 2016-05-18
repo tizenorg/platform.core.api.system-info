@@ -14,6 +14,8 @@ BuildRequires:  pkgconfig(iniparser)
 BuildRequires:  pkgconfig(libxml-2.0)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:  pkgconfig(libtzplatform-config)
+BuildRequires:  gdbm-devel
 
 %description
 
@@ -35,6 +37,7 @@ cp %{SOURCE1001} .
 %define os_release_file_path /etc/os-release
 %define serial_path /csa/imei/serialno.dat
 %define tizen_id_path /etc/tizenid
+%define db_path %{TZ_SYS_RO_ETC}/system_info_db
 
 %build
 MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
@@ -45,7 +48,8 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 		 -DSERIAL_PATH=%{serial_path} \
 		 -DMAJORVER=${MAJORVER} \
 		 -DFULLVER=%{version} \
-		 -DTIZEN_ID_PATH=%{tizen_id_path}
+		 -DTIZEN_ID_PATH=%{tizen_id_path} \
+		 -DDB_PATH=%{db_path}
 
 %__make %{?_smp_mflags}
 
@@ -60,12 +64,12 @@ cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 
 %postun -p /sbin/ldconfig
 
-
 %files
 %manifest %{name}.manifest
 %license LICENSE
 %{_libdir}/libcapi-system-info.so.*
 %attr(0744,root,-) /etc/make_info_file.sh
+%{_bindir}/system_info_init_db
 
 #tizenid
 %{_bindir}/tizen_id

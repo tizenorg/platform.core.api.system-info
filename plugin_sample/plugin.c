@@ -82,8 +82,37 @@ static int get_value_external(const char *tag,
 	return -EINVAL;
 }
 
+static int get_type_external(const char *tag,
+		const char *key, char *buf, unsigned int len)
+{
+	int i;
+	int key_len, tag_len;
+
+	if (!tag || !key || !buf)
+		return -EINVAL;
+
+	key_len = strlen(key);
+	tag_len = strlen(tag);
+	if (key_len == 0 || tag_len == 0)
+		return -EINVAL;
+
+	for (i = 0 ; i < ARRAY_SIZE(system_info_key) ; i++) {
+		if (strncmp(system_info_key[i].tag, tag, tag_len))
+			continue;
+		if (strncmp(system_info_key[i].key, key, key_len))
+			continue;
+
+		snprintf(buf, len, "%s", system_info_key[i].type);
+		return 0;
+	}
+
+	LOGE("Failed to find system info key in the plugin (%s)", key);
+	return -EINVAL;
+}
+
 const system_info_external_plugin_interface external_plugin = {
 	.get_value_external = get_value_external,
+	.get_type_external  = get_type_external,
 };
 
 API const system_info_external_plugin_interface *system_info_get_external_plugin_interface(void)
