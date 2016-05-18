@@ -25,6 +25,7 @@ extern "C"
 
 #include <stdbool.h>
 #include <dlog.h>
+#include "system_info_type.h"
 
 #ifndef API
 #define API __attribute__ ((visibility("default")))
@@ -44,22 +45,11 @@ extern "C"
 #define DBL_TYPE	"double"
 #define STR_TYPE	"string"
 
-typedef enum {
-	SYSTEM_INFO_DATA_TYPE_STRING,
-	SYSTEM_INFO_DATA_TYPE_INT,
-	SYSTEM_INFO_DATA_TYPE_DOUBLE,
-	SYSTEM_INFO_DATA_TYPE_BOOL
-} system_info_data_type_e;
-
-int system_info_ini_get_string(char *ini_file, char *key, char **output);
-int system_info_get_value_from_config_xml(char *feature_tag, const char *name_field, char *type_field, char **value);
-int system_info_get_type_from_config_xml(const char *feature_tag,
-		const char *name_field, char *type_field, size_t len);
-
-int system_info_get_file(const char *key, void **value);
-int system_info_get_type_file(const char *key);
+int system_info_get_file(const char *key, char *value, size_t len);
+int system_info_get_type_file(const char *key, system_info_type_e *type);
 
 int external_get_value(const char *tag, const char *key, const char *type, char **value);
+int external_get_type(const char *tag, const char *key, char **type);
 
 #ifdef __cplusplus
 }
