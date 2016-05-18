@@ -44,6 +44,17 @@ typedef enum {
 
 /**
  * @internal
+ * @brief It is not decided if it should be opened to public
+ */
+typedef enum {
+	SYSTEM_INFO_BOOL,
+	SYSTEM_INFO_INT,
+	SYSTEM_INFO_DOUBLE,
+	SYSTEM_INFO_STRING,
+} system_info_type_e;
+
+/**
+ * @internal
  * @brief Enumeration of key for system information
  */
 typedef enum {

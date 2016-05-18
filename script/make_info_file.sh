@@ -27,3 +27,5 @@ Time=$TZ_BUILD_TIME;
 Variant=$TZ_BUILD_VARIANT;
 ID=$ID;
 EOF
+
+/usr/bin/system_info_init_db

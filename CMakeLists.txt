@@ -11,7 +11,7 @@ SET(PREFIX ${CMAKE_INSTALL_PREFIX})
 SET(INC_DIR include)
 INCLUDE_DIRECTORIES(${INC_DIR})
 
-SET(requires "dlog capi-base-common iniparser libxml-2.0")
+SET(requires "dlog capi-base-common")
 SET(pc_requires "capi-base-common")
 
 INCLUDE(FindPkgConfig)
@@ -32,13 +32,14 @@ ADD_DEFINITIONS("-DCONFIG_FILE_PATH=\"${CONFIG_FILE_PATH}\"")
 ADD_DEFINITIONS("-DINFO_FILE_PATH=\"${INFO_FILE_PATH}\"")
 ADD_DEFINITIONS("-DTIZEN_ID_PATH=\"${TIZEN_ID_PATH}\"")
 ADD_DEFINITIONS("-DLIBPATH=\"${LIB_INSTALL_DIR}\"")
+ADD_DEFINITIONS("-DSYSTEM_INFO_DB_PATH=\"${DB_PATH}\"")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -Wl,--rpath=/usr/lib")
 
 aux_source_directory(src SOURCES)
 ADD_LIBRARY(${fw_name} SHARED ${SOURCES})
 
-TARGET_LINK_LIBRARIES(${fw_name} ${${fw_name}_LDFLAGS} "-ldl")
+TARGET_LINK_LIBRARIES(${fw_name} ${${fw_name}_LDFLAGS} "-ldl -lgdbm")
 
 SET_TARGET_PROPERTIES(${fw_name}
      PROPERTIES
@@ -79,6 +80,7 @@ INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_PC_NAME}.pc DESTINATION ${LIB
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/system_info_intf.h DESTINATION include/plugin)
 
 ADD_SUBDIRECTORY(src/tizenid)
+ADD_SUBDIRECTORY(src/init_db)
 
 IF(UNIX)
 
