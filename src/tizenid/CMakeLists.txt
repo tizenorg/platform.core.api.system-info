@@ -28,4 +28,10 @@ ADD_EXECUTABLE(${TIZENID} ${SRCS})
 TARGET_LINK_LIBRARIES(${TIZENID} ${tizenid_pkgs_LDFLAGS})
 
 INSTALL(TARGETS ${TIZENID} DESTINATION bin)
-INSTALL(FILES ${CMAKE_SOURCE_DIR}/packaging/tizenid.service DESTINATION lib/systemd/system)
+
+CONFIGURE_FILE(
+		tizenid.service.in
+		${CMAKE_CURRENT_SOURCE_DIR}/tizenid.service
+		@ONLY
+)
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/tizenid.service DESTINATION lib/systemd/system)

@@ -4,7 +4,7 @@ Description=Making Tizen ID
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/tizen_id
-ExecStartPost=/usr/bin/chsmack -a "System::Shared" /etc/tizenid
+ExecStartPost=/usr/bin/chsmack -a "System::Shared" @TIZEN_ID_PATH@
 
 [Install]
 WantedBy=multi-user.target
