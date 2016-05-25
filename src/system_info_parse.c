@@ -39,24 +39,28 @@ int system_info_ini_get_string(char *ini_file, char *key, char **output)
 	ini = iniparser_load(ini_file);
 
 	if (ini == NULL) {
-		_E("cannot file open %s file!!!", ini_file);
+		_E("cannot file open %s file!!!", ini_file); //LCOV_EXCL_LINE
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	str = iniparser_getstring(ini, key, NULL);
 
 	if (str == NULL) {
+//LCOV_EXCL_START System Error
 		_E("NOT found %s(0x%08x)", key, SYSTEM_INFO_ERROR_IO_ERROR);
 		iniparser_freedict(ini);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	tmp = strdup(str);
 
 	if (tmp == NULL) {
+//LCOV_EXCL_START System Error
 		_E("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
 		iniparser_freedict(ini);
 		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	*output = tmp;
@@ -78,15 +82,19 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	doc = xmlParseFile(CONFIG_FILE_PATH);
 
 	if (doc == NULL) {
+//LCOV_EXCL_START System Error
 		_E("cannot file open %s file!!!", CONFIG_FILE_PATH);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	cur = xmlDocGetRootElement(doc);
 	if (cur == NULL) {
+//LCOV_EXCL_START System Error
 		_E("empty document %s file!!!", CONFIG_FILE_PATH);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	for (cur_node = cur; cur_node; cur_node = cur_node->next) {
@@ -95,9 +103,11 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	}
 
 	if (cur == NULL) {
+//LCOV_EXCL_START System Error
 		_E("cannot find %s root element file!!!", MODEL_CONFIG_TAG);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	cur = cur->xmlChildrenNode;
@@ -108,9 +118,11 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	}
 
 	if (model_node == NULL) {
+//LCOV_EXCL_START System Error
 		_E("cannot find %s field from %s file!!!", name_field, CONFIG_FILE_PATH);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+//LCOV_EXCL_STOP
 	}
 
 	if (model_node) {
@@ -130,11 +142,13 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 				if (!strncmp(name, p_name, strlen(name))) {
 					if (!strncmp(name, p_name, strlen(p_name))) {
 						if (strncmp(type, type_field, strlen(type_field))) {
+//LCOV_EXCL_START System Error 
 							_E("INVALID_PARAMETER(0x%08x) : invalid output param", SYSTEM_INFO_ERROR_INVALID_PARAMETER);
 							free(name);
 							free(type);
 							xmlFreeDoc(doc);
 							return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+//LCOV_EXCL_STOP
 						}
 						string = (char *)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
 						if (string) {
@@ -159,15 +173,18 @@ int system_info_get_value_from_config_xml(char *feature_tag, const char *name_fi
 	}
 
 	if (*value == NULL) {
+//LCOV_EXCL_START System Error
 		_E("OUT_OF_MEMORY(0x%08x)", SYSTEM_INFO_ERROR_OUT_OF_MEMORY);
 		xmlFreeDoc(doc);
 		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
+//LCOV_EXCL_STOP
 	}
 
 	xmlFreeDoc(doc);
 	return SYSTEM_INFO_ERROR_NONE;
 }
 
+//LCOV_EXCL_START Not used function TODO Will make iUTC
 int system_info_get_type_from_config_xml(const char *feature_tag,
 		const char *name_field, char *type_field, size_t len)
 {
@@ -250,3 +267,4 @@ out:
 		xmlFreeDoc(doc);
 	return ret;
 }
+//LCOV_EXCL_STOP

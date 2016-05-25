@@ -37,12 +37,12 @@ static int get_tizenid(char **value)
 
 	fp = fopen(TIZEN_ID_PATH, "r");
 	if (!fp) {
-		_E("Failed to open file (%s)", TIZEN_ID_PATH);
+		_E("Failed to open file (%s)", TIZEN_ID_PATH); //LCOV_EXCL_LINE
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 
 	if (fgets(id, sizeof(id), fp) == NULL) {
-		_E("Failed to get string (errno:%d)", errno);
+		_E("Failed to get string (errno:%d)", errno); //LCOV_EXCL_LINE
 		fclose(fp);
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
@@ -50,7 +50,7 @@ static int get_tizenid(char **value)
 	fclose(fp);
 
 	if (strlen(id) == 0) {
-		_E("String length of id is 0");
+		_E("String length of id is 0"); //LCOV_EXCL_LINE
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
 

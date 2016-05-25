@@ -27,6 +27,7 @@
 
 #define SYSTEM_INFO_MAX -1
 
+//LCOV_EXCL_START Not used function
 API int system_info_get_value_int(system_info_key_e key, int *value)
 {
 	return SYSTEM_INFO_ERROR_NOT_SUPPORTED;
@@ -46,6 +47,7 @@ API int system_info_get_value_string(system_info_key_e key, char **value)
 {
 	return SYSTEM_INFO_ERROR_NOT_SUPPORTED;
 }
+//LCOV_EXCL_STOP
 
 API int system_info_get_platform_bool(const char *key, bool *value)
 {
@@ -56,10 +58,12 @@ API int system_info_get_platform_bool(const char *key, bool *value)
 	supported = (bool *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
+//LCOV_EXCL_START System Error
 		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, BOOL_TYPE, &string);
@@ -87,10 +91,12 @@ API int system_info_get_platform_int(const char *key, int *value)
 	ret_val = (int *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
+//LCOV_EXCL_START System Error
 		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, INT_TYPE, &string);
@@ -115,10 +121,12 @@ API int system_info_get_platform_double(const char *key, double *value)
 	ret_val = (double *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
+//LCOV_EXCL_START System Error
 		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	ret = system_info_get_value_from_config_xml(PLATFORM_TAG, key, DBL_TYPE, &string);
@@ -127,11 +135,13 @@ API int system_info_get_platform_double(const char *key, double *value)
 		return ret;
 	}
 
+//LCOV_EXCL_START Not supported feature
 	*ret_val = atof(string);
 
 	free(string);
 
 	return SYSTEM_INFO_ERROR_NONE;
+//LCOV_EXCL_STOP
 }
 
 API int system_info_get_platform_string(const char *key, char **value)
@@ -140,10 +150,12 @@ API int system_info_get_platform_string(const char *key, char **value)
 	char *string = NULL;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
+//LCOV_EXCL_START System Error
 		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	ret = system_info_get_file(key, (void**)&string);
@@ -172,10 +184,12 @@ API int system_info_get_custom_bool(const char *key, bool *value)
 	supported = (bool *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
+//LCOV_EXCL_START System Error
 		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, BOOL_TYPE, &string);
@@ -188,6 +202,7 @@ API int system_info_get_custom_bool(const char *key, bool *value)
 		}
 	}
 
+//LCOV_EXCL_START Not supported feature
 	if (!strcmp(string, "true") || !strcmp(string, "TRUE"))
 		*supported = true;
 	else
@@ -196,6 +211,7 @@ API int system_info_get_custom_bool(const char *key, bool *value)
 	free(string);
 
 	return SYSTEM_INFO_ERROR_NONE;
+//LCOV_EXCL_STOP
 }
 
 API int system_info_get_custom_int(const char *key, int *value)
@@ -207,10 +223,12 @@ API int system_info_get_custom_int(const char *key, int *value)
 	ret_val = (int *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
+//LCOV_EXCL_START System Error
 		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, INT_TYPE, &string);
@@ -223,11 +241,13 @@ API int system_info_get_custom_int(const char *key, int *value)
 		}
 	}
 
+//LCOV_EXCL_START Not supported feature
 	*ret_val = atoi(string);
 
 	free(string);
 
 	return SYSTEM_INFO_ERROR_NONE;
+//LCOV_EXCL_STOP
 }
 
 API int system_info_get_custom_double(const char *key, double *value)
@@ -239,10 +259,12 @@ API int system_info_get_custom_double(const char *key, double *value)
 	ret_val = (double *)value;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
+//LCOV_EXCL_START System Error
 		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, DBL_TYPE, &string);
@@ -255,11 +277,13 @@ API int system_info_get_custom_double(const char *key, double *value)
 		}
 	}
 
+//LCOV_EXCL_START Not supported feature
 	*ret_val = atof(string);
 
 	free(string);
 
 	return SYSTEM_INFO_ERROR_NONE;
+//LCOV_EXCL_STOP
 }
 
 API int system_info_get_custom_string(const char *key, char **value)
@@ -268,10 +292,12 @@ API int system_info_get_custom_string(const char *key, char **value)
 	char *string = NULL;
 
 	if (access(CONFIG_FILE_PATH, R_OK)) {
+//LCOV_EXCL_START System Error
 		_E("cannot find file %s!!!", CONFIG_FILE_PATH);
 		if (errno == EPERM || errno == EACCES)
 			return SYSTEM_INFO_ERROR_PERMISSION_DENIED;
 		return SYSTEM_INFO_ERROR_IO_ERROR;
+//LCOV_EXCL_STOP
 	}
 
 	ret = system_info_get_value_from_config_xml(CUSTOM_TAG, key, STR_TYPE, &string);
@@ -284,11 +310,14 @@ API int system_info_get_custom_string(const char *key, char **value)
 		}
 	}
 
+//LCOV_EXCL_START Not supported feature
 	*value = string;
 
 	return SYSTEM_INFO_ERROR_NONE;
+//LCOV_EXCL_STOP Not supported feature
 }
 
+//LCOV_EXCL_START Not used function
 static int get_type_from_str(char *type)
 {
 	size_t len;
@@ -359,3 +388,4 @@ API int system_info_get_custom_type(const char *key, system_info_type_e *type)
 {
 	return system_info_get_type(key, CUSTOM_TAG, type);
 }
+//LCOV_EXCL_STOP

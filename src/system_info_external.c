@@ -28,6 +28,7 @@
 
 #define EXTERNAL_SYSTEM_INFO "/usr/lib/libsystem-info-external-plugin.so"
 
+//LCOV_EXCL_START Not used function
 int external_get_value(const char *tag, const char *key,
 		const char *type, char **val)
 {
@@ -92,3 +93,4 @@ out:
 
 	return ret;
 }
+//LCOV_EXCL_STOP
