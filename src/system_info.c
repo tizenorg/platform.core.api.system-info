@@ -35,6 +35,8 @@
 #define KEY_MAX 256
 #define STR_MAX 256
 
+#define GDBM_CACHE_SIZE 10 /* GDBM default == 100 */
+
 enum tag_type {
 	TAG_TYPE_PLATFORM,
 	TAG_TYPE_CUSTOM,
@@ -69,6 +71,7 @@ static int db_get_value(enum tag_type tag, const char *key,
 	datum d_data;
 	int ret;
 	char *tag_s;
+	int cache_size = GDBM_CACHE_SIZE;
 
 	if (!key || !type || !value)
 		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
@@ -89,6 +92,10 @@ static int db_get_value(enum tag_type tag, const char *key,
 		_E("Failed to open db (%d, %s)", gdbm_errno, gdbm_strerror(gdbm_errno));
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
+
+	ret = gdbm_setopt(db, GDBM_CACHESIZE, &cache_size, sizeof(cache_size));
+	if (ret < 0)
+		_E("Failed to set cache size to (%d) (ret:%d)", cache_size, gdbm_errno);
 
 	if (strstr(key, KEY_PREFIX) == key)
 		snprintf(key_internal, sizeof(key_internal),
@@ -135,6 +142,7 @@ static int system_info_get_type(enum tag_type tag, const char *key,
 	datum d_data;
 	int ret, i;
 	char *tag_s;
+	int cache_size = GDBM_CACHE_SIZE;
 
 	if (!key || !type)
 		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
@@ -155,6 +163,10 @@ static int system_info_get_type(enum tag_type tag, const char *key,
 		_E("Failed to open db (%d, %s)", gdbm_errno, gdbm_strerror(gdbm_errno));
 		return SYSTEM_INFO_ERROR_IO_ERROR;
 	}
+
+	ret = gdbm_setopt(db, GDBM_CACHESIZE, &cache_size, sizeof(cache_size));
+	if (ret < 0)
+		_E("Failed to set cache size to (%d) (ret:%d)", cache_size, gdbm_errno);
 
 	for (i = 0 ; i < ARRAY_SIZE(info_type); i++) {
 		if (strstr(key, KEY_PREFIX) == key)
