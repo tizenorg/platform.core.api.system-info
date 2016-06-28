@@ -228,7 +228,7 @@ static int system_info_get_bool(enum tag_type tag, const char *key, bool *value)
 out:
 	len = strlen(val) + 1;
 	if (!strncmp(val, "true", len) || !strncmp(val, "TRUE", len))
-		*value= true;
+		*value = true;
 	else
 		*value = false;
 
