@@ -53,7 +53,7 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 mkdir -p %{buildroot}/etc
 cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 
-%install_service multi-user.target.wants tizenid.service
+%install_service sysinit.target.wants tizenid.service
 
 %post -p /sbin/ldconfig
 
@@ -70,7 +70,7 @@ cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 %{_bindir}/tizen_id
 
 %{_unitdir}/tizenid.service
-%{_unitdir}/multi-user.target.wants/tizenid.service
+%{_unitdir}/sysinit.target.wants/tizenid.service
 
 %files devel
 %manifest %{name}.manifest
