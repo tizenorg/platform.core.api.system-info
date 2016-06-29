@@ -43,36 +43,23 @@
 
 #define KEY_MAX 20
 
-#define RANDOM_PATH			"/dev/random"
+#define CHAR_POOL "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!"
 
 static int get_pw_key(char *pw, unsigned int len)
 {
-	char key[KEY_MAX];/* 128 bit */
-	int fd, ret, i, key_len;
+	int i, val, poolsize;
+	char *charpool = CHAR_POOL;
 
 	if (!pw)
 		return -EINVAL;
 
-	fd = open(RANDOM_PATH, O_RDONLY);
-	if (fd == -1) {
-		_E("Failed to open (%s, errno:%d)", RANDOM_PATH, errno);
-		return -errno;
-	}
+	poolsize = strlen(charpool);
+	srand(time(NULL));
 
-	key_len = sizeof(key);
-	ret = read(fd, key, key_len);
-	close(fd);
-	if (ret == -1) {
-		_E("Failed to read (%s, errno:%d)", RANDOM_PATH, errno);
-		return -errno;
+	for (i = 0 ; i < len ; i++) {
+		val = rand() % poolsize;
+		pw[i] = *(charpool + val);
 	}
-
-	for (i = 0 ; i < len - 1 ; i++) {
-		if (i >= key_len)
-			break;
-		pw[i] = key[i];
-	}
-	pw[i] = '\0';
 
 	return 0;
 }
