@@ -2,6 +2,8 @@
 # make_info_file.sh : make /etc/info.ini
 #
 
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+
 . /etc/tizen-build.conf
 
 TYPE=$(echo $TZ_BUILD_RELEASE_TYPE | tr '[:upper:]' '[:lower:]')
