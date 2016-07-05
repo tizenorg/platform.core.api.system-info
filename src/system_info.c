@@ -74,7 +74,7 @@ static int db_get_value(enum tag_type tag, const char *key,
 	int cache_size = GDBM_CACHE_SIZE;
 
 	if (!key || !type || !value)
-		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER; //LCOV_EXCL_LINE
 
 	switch (tag) {
 	case TAG_TYPE_PLATFORM:
@@ -89,13 +89,13 @@ static int db_get_value(enum tag_type tag, const char *key,
 
 	db = gdbm_open(SYSTEM_INFO_DB_PATH, 0, GDBM_READER, S_IRUSR | S_IRGRP | S_IROTH, NULL);
 	if (!db) {
-		_E("Failed to open db (%d, %s)", gdbm_errno, gdbm_strerror(gdbm_errno));
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+		_E("Failed to open db (%d, %s)", gdbm_errno, gdbm_strerror(gdbm_errno)); //LCOV_EXCL_LINE
+		return SYSTEM_INFO_ERROR_IO_ERROR; //LCOV_EXCL_LINE
 	}
 
 	ret = gdbm_setopt(db, GDBM_CACHESIZE, &cache_size, sizeof(cache_size));
 	if (ret < 0)
-		_E("Failed to set cache size to (%d) (ret:%d)", cache_size, gdbm_errno);
+		_E("Failed to set cache size to (%d) (ret:%d)", cache_size, gdbm_errno); //LCOV_EXCL_LINE
 
 	if (strstr(key, KEY_PREFIX) == key)
 		snprintf(key_internal, sizeof(key_internal),
@@ -145,7 +145,7 @@ static int system_info_get_type(enum tag_type tag, const char *key,
 	int cache_size = GDBM_CACHE_SIZE;
 
 	if (!key || !type)
-		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER; //LCOV_EXCL_LINE
 
 	switch (tag) {
 	case TAG_TYPE_PLATFORM:
@@ -160,13 +160,13 @@ static int system_info_get_type(enum tag_type tag, const char *key,
 
 	db = gdbm_open(SYSTEM_INFO_DB_PATH, 0, GDBM_READER, S_IRUSR | S_IRGRP | S_IROTH, NULL);
 	if (!db) {
-		_E("Failed to open db (%d, %s)", gdbm_errno, gdbm_strerror(gdbm_errno));
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+		_E("Failed to open db (%d, %s)", gdbm_errno, gdbm_strerror(gdbm_errno)); //LCOV_EXCL_LINE
+		return SYSTEM_INFO_ERROR_IO_ERROR; //LCOV_EXCL_LINE
 	}
 
 	ret = gdbm_setopt(db, GDBM_CACHESIZE, &cache_size, sizeof(cache_size));
 	if (ret < 0)
-		_E("Failed to set cache size to (%d) (ret:%d)", cache_size, gdbm_errno);
+		_E("Failed to set cache size to (%d) (ret:%d)", cache_size, gdbm_errno); //LCOV_EXCL_LINE
 
 	for (i = 0 ; i < ARRAY_SIZE(info_type); i++) {
 		if (strstr(key, KEY_PREFIX) == key)
@@ -206,7 +206,7 @@ static int system_info_get_bool(enum tag_type tag, const char *key, bool *value)
 	size_t len;
 
 	if (!key || !value)
-		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER; //LCOV_EXCL_LINE
 
 	ret = db_get_value(tag, key, BOOL_TYPE, val, sizeof(val));
 	if (ret == SYSTEM_INFO_ERROR_NONE)
@@ -215,9 +215,9 @@ static int system_info_get_bool(enum tag_type tag, const char *key, bool *value)
 	if (tag == TAG_TYPE_CUSTOM) {
 		ret = external_get_value(TAG_TYPE_CUSTOM_STR, key, BOOL_TYPE, &valp);
 		if (ret == SYSTEM_INFO_ERROR_NONE) {
-			snprintf(val, sizeof(val), "%s", valp);
-			free(valp);
-			goto out;
+			snprintf(val, sizeof(val), "%s", valp); //LCOV_EXCL_LINE
+			free(valp); //LCOV_EXCL_LINE
+			goto out; //LCOV_EXCL_LINE
 		}
 	}
 
@@ -242,7 +242,7 @@ static int system_info_get_int(enum tag_type tag, const char *key, int *value)
 	char *valp;
 
 	if (!key || !value)
-		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER; //LCOV_EXCL_LINE
 
 	ret = db_get_value(tag, key, INT_TYPE, val, sizeof(val));
 	if (ret == SYSTEM_INFO_ERROR_NONE)
@@ -251,9 +251,9 @@ static int system_info_get_int(enum tag_type tag, const char *key, int *value)
 	if (tag == TAG_TYPE_CUSTOM) {
 		ret = external_get_value(TAG_TYPE_CUSTOM_STR, key, INT_TYPE, &valp);
 		if (ret == SYSTEM_INFO_ERROR_NONE) {
-			snprintf(val, sizeof(val), "%s", valp);
-			free(valp);
-			goto out;
+			snprintf(val, sizeof(val), "%s", valp); //LCOV_EXCL_LINE
+			free(valp); //LCOV_EXCL_LINE
+			goto out; //LCOV_EXCL_LINE
 		}
 	}
 
@@ -283,9 +283,9 @@ static int system_info_get_double(enum tag_type tag, const char *key, double *va
 	if (tag == TAG_TYPE_CUSTOM) {
 		ret = external_get_value(TAG_TYPE_CUSTOM_STR, key, DBL_TYPE, &valp);
 		if (ret == SYSTEM_INFO_ERROR_NONE) {
-			snprintf(val, sizeof(val), "%s", valp);
-			free(valp);
-			goto out;
+			snprintf(val, sizeof(val), "%s", valp); //LCOV_EXCL_LINE
+			free(valp); //LCOV_EXCL_LINE
+			goto out; //LCOV_EXCL_LINE
 		}
 	}
 
@@ -307,7 +307,7 @@ static int system_info_get_string(enum tag_type tag, const char *key, char **val
 	char *valp;
 
 	if (!key || !value)
-		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER; //LCOV_EXCL_LINE
 
 	ret = db_get_value(tag, key, STR_TYPE, val, sizeof(val));
 	if (ret == SYSTEM_INFO_ERROR_NONE)
@@ -322,9 +322,9 @@ static int system_info_get_string(enum tag_type tag, const char *key, char **val
 	if (tag == TAG_TYPE_CUSTOM) {
 		ret = external_get_value(TAG_TYPE_CUSTOM_STR, key, DBL_TYPE, &valp);
 		if (ret == SYSTEM_INFO_ERROR_NONE) {
-			snprintf(val, sizeof(val), "%s", valp);
-			free(valp);
-			goto out;
+			snprintf(val, sizeof(val), "%s", valp); //LCOV_EXCL_LINE
+			free(valp); //LCOV_EXCL_LINE
+			goto out; //LCOV_EXCL_LINE
 		}
 	}
 
@@ -335,8 +335,8 @@ static int system_info_get_string(enum tag_type tag, const char *key, char **val
 out:
 	string = strdup(val);
 	if (!string) {
-		_E("malloc failed");
-		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY;
+		_E("malloc failed"); //LCOV_EXCL_LINE
+		return SYSTEM_INFO_ERROR_OUT_OF_MEMORY; //LCOV_EXCL_LINE
 	}
 
 	*value = string;
@@ -405,6 +405,7 @@ API int system_info_get_custom_type(const char *key, system_info_type_e *type)
 		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
 	}
 
+	//LCOV_EXCL_START
 	len = strlen(val) + 1;
 	if (!strncmp(BOOL_TYPE, val, len))
 		*type = SYSTEM_INFO_BOOL;
@@ -420,4 +421,5 @@ API int system_info_get_custom_type(const char *key, system_info_type_e *type)
 	}
 
 	return SYSTEM_INFO_ERROR_NONE;
+	//LCOV_EXCL_STOP
 }

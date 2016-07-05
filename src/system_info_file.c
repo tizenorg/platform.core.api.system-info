@@ -39,21 +39,21 @@ static int get_tizenid(char *val, size_t len)
 
 	fp = fopen(TIZEN_ID_PATH, "r");
 	if (!fp) {
-		_E("Failed to open file (%s)", TIZEN_ID_PATH);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+		_E("Failed to open file (%s)", TIZEN_ID_PATH); //LCOV_EXCL_LINE
+		return SYSTEM_INFO_ERROR_IO_ERROR; //LCOV_EXCL_LINE
 	}
 
 	if (fgets(id, sizeof(id), fp) == NULL) {
-		_E("Failed to get string (errno:%d)", errno);
-		fclose(fp);
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+		_E("Failed to get string (errno:%d)", errno); //LCOV_EXCL_LINE
+		fclose(fp); //LCOV_EXCL_LINE
+		return SYSTEM_INFO_ERROR_IO_ERROR; //LCOV_EXCL_LINE
 	}
 
 	fclose(fp);
 
 	if (strlen(id) == 0) {
-		_E("String length of id is 0");
-		return SYSTEM_INFO_ERROR_IO_ERROR;
+		_E("String length of id is 0"); //LCOV_EXCL_LINE
+		return SYSTEM_INFO_ERROR_IO_ERROR; //LCOV_EXCL_LINE
 	}
 
 	snprintf(val, len, "%s", id);
@@ -75,7 +75,7 @@ int system_info_get_file(const char *key, char *value, size_t len)
 	size_t p_len;
 
 	if (!key || !value)
-		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER; //LCOV_EXCL_LINE
 
 	if (strstr(key, KEY_PREFIX) == key)
 		snprintf(p_key, sizeof(p_key), "%s", key);
@@ -96,7 +96,7 @@ int system_info_get_type_file(const char *key, system_info_type_e *type)
 	int i, len;
 
 	if (!key)
-		return SYSTEM_INFO_ERROR_INVALID_PARAMETER;
+		return SYSTEM_INFO_ERROR_INVALID_PARAMETER; //LCOV_EXCL_LINE
 
 	if (strstr(key, KEY_PREFIX) == key)
 		snprintf(p_key, sizeof(p_key), "%s", key);
