@@ -49,15 +49,16 @@ static int get_pw_key(char *pw, unsigned int len)
 {
 	int i, val, poolsize;
 	char *charpool = CHAR_POOL;
+	unsigned int seed;
 
 	if (!pw)
 		return -EINVAL;
 
 	poolsize = strlen(charpool);
-	srand(time(NULL));
+	seed = time(NULL);
 
 	for (i = 0 ; i < len ; i++) {
-		val = rand() % poolsize;
+		val = rand_r(&seed) % poolsize;
 		pw[i] = *(charpool + val);
 	}
 
