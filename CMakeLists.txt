@@ -81,6 +81,9 @@ INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/system_info_intf.h DESTINATION
 
 ADD_SUBDIRECTORY(src/tizenid)
 ADD_SUBDIRECTORY(src/init_db)
+IF("${EMULATOR}" STREQUAL "on")
+	ADD_SUBDIRECTORY(src/update_db)
+ENDIF("${EMULATOR}" STREQUAL "on")
 
 IF(UNIX)
 
