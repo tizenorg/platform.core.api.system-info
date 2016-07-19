@@ -1,3 +1,5 @@
+%bcond_with emulator
+
 Name:           capi-system-info
 Version:        0.2.0
 Release:        0
@@ -31,6 +33,12 @@ Requires: %{name} = %{version}-%{release}
 %setup -q
 cp %{SOURCE1001} .
 
+%if %{with emulator}
+%define EMULATOR on
+%else
+%define EMULATOR off
+%endif
+
 %define config_file_path /etc/config/model-config.xml
 %define info_file_path /etc/info.ini
 %define tizen_id_path %{TZ_SYS_ETC}/tizenid
@@ -43,6 +51,7 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 		 -DINFO_FILE_PATH=%{info_file_path} \
 		 -DMAJORVER=${MAJORVER} \
 		 -DFULLVER=%{version} \
+		 -DEMULATOR=%{EMULATOR} \
 		 -DTIZEN_ID_PATH=%{tizen_id_path} \
 		 -DDB_PATH=%{db_path}
 
@@ -65,6 +74,9 @@ cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 %{_libdir}/libcapi-system-info.so.*
 %attr(0744,root,-) /etc/make_info_file.sh
 %{_bindir}/system_info_init_db
+%if "%{EMULATOR}" == "on"
+%{_bindir}/system_info_update_db
+%endif
 
 #tizenid
 %{_bindir}/tizen_id

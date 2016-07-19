@@ -20,6 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <getopt.h>
 #include <gdbm.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -213,7 +214,7 @@ static int system_info_get_values_ini(GDBM_FILE *db)
 	return 0;
 }
 
-int main(int argc, char *argv[])
+static int system_info_create_db(void)
 {
 	int ret;
 	GDBM_FILE db;
@@ -235,4 +236,104 @@ int main(int argc, char *argv[])
 	gdbm_close(db);
 
 	return 0;
+}
+
+static void show_help(void)
+{
+	printf("system_info_init_db [OPTIONS]\n");
+	printf("  -h --help         Show this help\n");
+	printf("  -k --key=KEY      System info key to update\n");
+	printf("  -t --type=TYPE    System info type to update (int/bool/double/string)\n");
+	printf("  -g --tag=TAGE     System info tag to update (platform/custom)\n");
+	printf("  -v --value=VALUE  System info value to update\n");
+}
+
+static int system_info_update_db(int argc, char *argv[])
+{
+	int ret;
+	GDBM_FILE db;
+	int opt;
+	bool failed = false;
+	char key[KEY_MAX] = { 0, };
+	char type[KEY_MAX] = { 0, };
+	char tag[KEY_MAX] = { 0, };
+	char value[KEY_MAX] = { 0, };
+	struct option long_options[] = {
+		{ "key",   required_argument, 0, 0 },
+		{ "type",  required_argument, 0, 0 },
+		{ "tag",   required_argument, 0, 0 },
+		{ "value", required_argument, 0, 0 },
+		{ "help",  no_argument,       0, 0 },
+		{ 0,       0,                 0, 0 },
+	};
+
+	while (1) {
+		opt = getopt_long(argc, argv, "k:t:g:v:h",
+				long_options, NULL);
+		if (opt < 0)
+			break;
+		switch (opt) {
+		case 'k':
+			snprintf(key, sizeof(key), "%s", optarg);
+			break;
+		case 't':
+			snprintf(type, sizeof(type), "%s", optarg);
+			break;
+		case 'g':
+			snprintf(tag, sizeof(tag), "%s", optarg);
+			break;
+		case 'v':
+			snprintf(value, sizeof(value), "%s", optarg);
+			break;
+		case 'h':
+		default:
+			show_help();
+			return 0;
+		}
+	}
+
+	failed = false;
+	if (key[0] == '\0') {
+		printf("Invalid Parameter: no key\n");
+		failed = true;
+	}
+	if (type[0] == '\0') {
+		printf("Invalid Parameter: no type\n");
+		failed = true;
+	}
+	if (tag[0] == '\0') {
+		printf("Invalid Parameter: no tag\n");
+		failed = true;
+	}
+	if (value[0] == '\0') {
+		printf("Invalid Parameter: no value\n");
+		failed = true;
+	}
+
+	if (failed)
+		return -EINVAL;
+
+	_I("Request to update: key(%s), type(%s), tag(%s), value(%s)",
+			key, type, tag, value);
+
+	db = gdbm_open(SYSTEM_INFO_DB_PATH, 0, GDBM_WRCREAT, S_IRUSR | S_IRGRP | S_IROTH, NULL);
+	if (!db) {
+		_E("Failed to open db (%d, %s)", gdbm_errno, gdbm_strerror(gdbm_errno));
+		return -ENOENT;
+	}
+
+	ret = db_set_value(&db, tag, key, type, value);
+	if (ret != 0)
+		_E("Failed to set value (%d)", ret);
+
+	gdbm_close(db);
+	return ret;
+}
+
+int main(int argc, char *argv[])
+{
+	if (argc == 1)
+		return system_info_create_db();
+
+	return system_info_update_db(argc, argv);
 }
