@@ -1,3 +1,5 @@
+%bcond_with emulator
+
 Name:           capi-system-info
 Version:        0.2.0
 Release:        0
@@ -15,6 +17,7 @@ BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(libtzplatform-config)
 BuildRequires:  gdbm-devel
+BuildRequires:  glibc-devel-static
 
 %description
 
@@ -31,6 +34,12 @@ Requires: %{name} = %{version}-%{release}
 %setup -q
 cp %{SOURCE1001} .
 
+%if %{with emulator}
+%define EMULATOR on
+%else
+%define EMULATOR off
+%endif
+
 %define config_file_path /etc/config/model-config.xml
 %define info_file_path /etc/info.ini
 %define sysinfo_shared_path %{TZ_SYS_ETC}/sysinfo
@@ -44,6 +53,7 @@ MAJORVER=`echo %{version} | awk 'BEGIN {FS="."}{print $1}'`
 		 -DINFO_FILE_PATH=%{info_file_path} \
 		 -DMAJORVER=${MAJORVER} \
 		 -DFULLVER=%{version} \
+		 -DEMULATOR=%{EMULATOR} \
 		 -DTIZEN_ID_PATH=%{tizen_id_path} \
 		 -DDB_PATH=%{db_path}
 
@@ -70,6 +80,9 @@ chsmack -a "System::Shared" -t %{sysinfo_shared_path}
 %{_libdir}/libcapi-system-info.so.*
 %attr(0744,root,-) /etc/make_info_file.sh
 %{_bindir}/system_info_init_db
+%if "%{EMULATOR}" == "on"
+%{_bindir}/system_info_update_db
+%endif
 
 #tizenid
 %dir %{sysinfo_shared_path}
