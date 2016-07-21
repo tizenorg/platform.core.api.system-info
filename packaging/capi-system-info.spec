@@ -33,7 +33,8 @@ cp %{SOURCE1001} .
 
 %define config_file_path /etc/config/model-config.xml
 %define info_file_path /etc/info.ini
-%define tizen_id_path %{TZ_SYS_ETC}/tizenid
+%define sysinfo_shared_path %{TZ_SYS_ETC}/sysinfo
+%define tizen_id_path %{sysinfo_shared_path}/tizenid
 %define db_path %{TZ_SYS_RO_ETC}/system_info_db
 
 %build
@@ -55,7 +56,11 @@ cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 
 %install_service sysinit.target.wants tizenid.service
 
-%post -p /sbin/ldconfig
+mkdir -p %{buildroot}/%{sysinfo_shared_path}
+
+%post
+chsmack -a "System::Shared" -t "System::Shared" %{sysinfo_shared_path}
+/sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
@@ -67,6 +72,7 @@ cp -f script/make_info_file.sh %{buildroot}/etc/make_info_file.sh
 %{_bindir}/system_info_init_db
 
 #tizenid
+%dir %{sysinfo_shared_path}
 %{_bindir}/tizen_id
 
 %{_unitdir}/tizenid.service
